@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marvel Accesible | Laboratorio WCAG</title>
+  <meta name="description" content="Pagina de ejemplo sobre accesibilidad web WCAG con tema Marvel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- WCAG 3.2 (Nivel A): se ofrece un enlace para mantener un orden de navegacion claro con teclado. -->
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="site-width">
+      <!-- WCAG 3.1 (Nivel A): navegacion en region semantica con nombre programatico. -->
+      <nav class="main-nav" aria-label="Navegacion principal">
+        <a class="nav-pill" href="#heroes">Heroes</a>
+        <a class="nav-pill" href="#multimedia">Multimedia</a>
+        <a class="nav-pill" href="#pruebas">Pruebas de texto</a>
+        <a class="nav-pill" href="#criterios">Checklist</a>
+        <!-- Solicitud del usuario: formulario en otra pestana. -->
+        <a class="nav-pill alt" href="formulario.html">Formulario</a>
+      </nav>
+
+      <section class="hero-banner" aria-labelledby="titulo-principal">
+        <h1 id="titulo-principal">Marvel Accesible: Heroes para Todos</h1>
+        <p>
+          Esta demo mejora la estetica y demuestra criterios WCAG A y AA en una sola pagina.
+          Usa teclado, mouse o tactil para navegar.
+        </p>
+        <!-- WCAG 3.3 + 4.1: la instruccion no depende solo del color. -->
+        <p><strong>Importante:</strong> Las alertas muestran color + texto + icono para comunicar estado.</p>
+        <div class="banner-badges" aria-label="Estado de demostracion">
+          <span class="badge">Contraste alto</span>
+          <span class="badge">Responsive</span>
+          <span class="badge">Teclado primero</span>
+        </div>
+      </section>
+    </div>
+  </header>
+
+  <!-- WCAG 3.1 + 3.2 (Nivel A): estructura semantica principal con orden logico de lectura. -->
+  <main id="contenido" class="site-width">
+    <section id="heroes" class="section" aria-labelledby="titulo-heroes">
+      <h2 id="titulo-heroes">Escuadron Marvel</h2>
+      <p class="help">Imagenes obtenidas de internet (Wikimedia) con alternativa textual.</p>
+
+      <div class="hero-grid">
+        <article class="hero-card" aria-labelledby="iron-man">
+          <h3 id="iron-man">Iron Man</h3>
+          <figure>
+            <!-- WCAG 1.1 (Nivel A): contenido no textual con texto alternativo descriptivo. -->
+            <img
+              class="poster"
+              src="https://upload.wikimedia.org/wikipedia/en/1/19/Iron_Man_3_poster.jpg"
+              alt="Poster de Iron Man 3 con Tony Stark al frente y armaduras volando sobre un fondo de batalla.">
+            <figcaption>Tecnologia, estrategia y liderazgo en combate.</figcaption>
+          </figure>
+          <div class="meta-list">
+            <span class="meta-pill">Rol: Estratega</span>
+            <span class="meta-pill">Estado: Activo</span>
+          </div>
+        </article>
+
+        <article class="hero-card" aria-labelledby="black-widow">
+          <h3 id="black-widow">Black Widow</h3>
+          <figure>
+            <img
+              class="poster"
+              src="https://upload.wikimedia.org/wikipedia/en/9/9b/Black_Widow_%282021_film%29_poster.jpg"
+              alt="Poster de Black Widow con Natasha Romanoff en primer plano y el equipo de la pelicula detras.">
+            <figcaption>Operacion encubierta y reaccion rapida.</figcaption>
+          </figure>
+          <div class="meta-list">
+            <span class="meta-pill">Rol: Infiltracion</span>
+            <span class="meta-pill">Estado: En mision</span>
+          </div>
+        </article>
+
+        <article class="hero-card" aria-labelledby="captain-america">
+          <h3 id="captain-america">Captain America</h3>
+          <figure>
+            <img
+              class="poster"
+              src="https://upload.wikimedia.org/wikipedia/en/5/53/Captain_America_Civil_War_poster.jpg"
+              alt="Poster de Captain America Civil War con Steve Rogers sosteniendo su escudo frente al equipo rival.">
+            <figcaption>Defensa y coordinacion tactica del equipo.</figcaption>
+          </figure>
+          <div class="meta-list">
+            <span class="meta-pill">Rol: Defensa</span>
+            <span class="meta-pill">Estado: Disponible</span>
+          </div>
+        </article>
+
+        <article class="hero-card" aria-labelledby="thor">
+          <h3 id="thor">Thor</h3>
+          <figure>
+            <img
+              class="poster"
+              src="https://upload.wikimedia.org/wikipedia/en/7/7d/Thor_Ragnarok_poster.jpg"
+              alt="Poster de Thor Ragnarok con Thor al centro, casco de combate y personajes del universo cosmico.">
+            <figcaption>Poder ofensivo y contencion de amenazas.</figcaption>
+          </figure>
+          <div class="meta-list">
+            <span class="meta-pill">Rol: Choque</span>
+            <span class="meta-pill">Estado: Patrulla</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="multimedia" class="section" aria-labelledby="titulo-multimedia">
+      <h2 id="titulo-multimedia">Multimedia accesible</h2>
+      <div class="media-grid">
+        <article class="media-card" aria-labelledby="audio-titulo">
+          <h3 id="audio-titulo">Solo audio: alerta de base</h3>
+          <!-- WCAG 4.2 (Nivel A): control de audio con controles nativos y sin autoplay. -->
+          <!-- WCAG 2.1 (Nivel A): para contenido de solo audio se provee transcripcion. -->
+          <audio controls preload="metadata">
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio HTML5.
+          </audio>
+          <p><strong>Transcripcion:</strong> "Alerta nivel rojo en la torre. Activar protocolo de evacuacion y defensa inmediata."</p>
+        </article>
+
+        <article class="media-card" aria-labelledby="video-titulo">
+          <h3 id="video-titulo">Video de entrenamiento</h3>
+          <!-- WCAG 2.2 (Nivel AA): video con subtitulos y resumen textual. -->
+          <video controls preload="metadata" aria-describedby="resumen-video">
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+            <track kind="captions" src="media/briefing-es.vtt" srclang="es" label="Espanol" default>
+            Tu navegador no soporta video HTML5.
+          </video>
+          <p id="resumen-video"><strong>Resumen:</strong> El equipo practica coordinacion por fases: observacion, avance y contencion.</p>
+        </article>
+      </div>
+
+      <div class="form-link-box" role="note">
+        El formulario fue movido a una pagina separada como solicitaste: <a href="formulario.html">abrir formulario de registro</a>.
+      </div>
+    </section>
+
+    <section id="pruebas" class="section" aria-labelledby="titulo-pruebas">
+      <h2 id="titulo-pruebas">Panel de pruebas de legibilidad</h2>
+      <p class="help">Usa estos controles para probar crecimiento de texto y espaciados sin romper el layout.</p>
+
+      <div class="lab-grid">
+        <article class="control-card" aria-labelledby="controles-texto">
+          <h3 id="controles-texto">Ajustes en vivo</h3>
+
+          <!-- WCAG 4.4 (Nivel AA): opcion para cambiar el tamano del texto. -->
+          <div class="control-field">
+            <label for="text-size">Tamano del texto</label>
+            <input id="text-size" type="range" min="100" max="200" step="10" value="100">
+            <span class="control-value" id="value-size">100%</span>
+          </div>
+
+          <!-- WCAG 4.8 (Nivel AA): opciones para espaciado de texto sin perdida de contenido. -->
+          <div class="control-field">
+            <label for="letter-spacing">Espaciado de letras</label>
+            <input id="letter-spacing" type="range" min="-0.08" max="0.2" step="0.01" value="0">
+            <span class="control-value" id="value-letter">0.00em</span>
+          </div>
+
+          <div class="control-field">
+            <label for="word-spacing">Espaciado de palabras</label>
+            <input id="word-spacing" type="range" min="0" max="0.4" step="0.02" value="0">
+            <span class="control-value" id="value-word">0.00em</span>
+          </div>
+
+          <div class="control-field">
+            <label for="line-height">Altura de linea</label>
+            <input id="line-height" type="range" min="1.4" max="2.2" step="0.1" value="1.6">
+            <span class="control-value" id="value-line">1.6</span>
+          </div>
+
+          <div class="toggle">
+            <input id="contrast-toggle" type="checkbox">
+            <label for="contrast-toggle">Modo alto contraste</label>
+          </div>
+
+          <div class="button-row">
+            <button id="preset-large-text" type="button">Preset texto 200%</button>
+            <button id="preset-aa-spacing" type="button">Preset espaciado AA</button>
+            <button id="preset-tight-text" type="button">Pegar letras</button>
+            <button id="reset-accessibility" type="button">Restablecer</button>
+          </div>
+
+          <p id="live-config" class="help" aria-live="polite"></p>
+        </article>
+
+        <article class="control-card" aria-labelledby="mensajes-estado">
+          <h3 id="mensajes-estado">Estados sin depender solo del color</h3>
+          <!-- WCAG 4.1 (Nivel A): estado con color + texto explicito. -->
+          <div class="status" role="status" aria-live="polite">
+            Estado operativo: Mision disponible. Icono + texto + color.
+          </div>
+          <div class="status alert" role="note">
+            Alerta tactica: Requiere revision manual. No depende solo del color naranja.
+          </div>
+
+          <!-- WCAG 4.9 (Nivel AA): contenido visible en hover y en focus. -->
+          <div class="tooltip-wrap" style="margin-top: 0.75rem;">
+            <button type="button" aria-describedby="tip-estrategia">Ver pista tactica</button>
+            <div class="tooltip" id="tip-estrategia" role="tooltip">
+              Consejo: evacua civiles antes del combate. Esta ayuda aparece con mouse y teclado.
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="criterios" class="section" aria-labelledby="titulo-criterios">
+      <h2 id="titulo-criterios">Checklist de 17 criterios</h2>
+      <ol class="checklist">
+        <li><strong>1.1 Contenido no textual:</strong> imagenes con texto alternativo descriptivo.</li>
+        <li><strong>2.1 Solo audio o solo video:</strong> audio con transcripcion textual.</li>
+        <li><strong>2.2 Multimedia:</strong> video con subtitulos y resumen.</li>
+        <li><strong>3.1 Informacion y relaciones:</strong> uso de `header`, `nav`, `main`, `section`, `article`, `label`.</li>
+        <li><strong>3.2 Orden adecuado:</strong> jerarquia de encabezados y flujo de lectura lineal.</li>
+        <li><strong>3.3 Caracteristicas sensoriales:</strong> instrucciones explicitas en texto.</li>
+        <li><strong>3.4 Orientacion:</strong> no se bloquea horizontal/vertical y es responsive.</li>
+        <li><strong>3.5 Identificar proposito de entrada:</strong> aplicado en `formulario.html` con `autocomplete`.</li>
+        <li><strong>4.1 Uso del color:</strong> texto + color para comunicar estado.</li>
+        <li><strong>4.2 Control del audio:</strong> controles activos y sin autoplay.</li>
+        <li><strong>4.3 Contraste minimo:</strong> paleta de alto contraste entre texto/fondo.</li>
+        <li><strong>4.4 Cambio de tamano del texto:</strong> slider y preset de 200%.</li>
+        <li><strong>4.5 Imagenes de texto:</strong> informacion principal en texto real HTML.</li>
+        <li><strong>4.6 Reajuste:</strong> grid fluido y media queries para pantallas pequenas.</li>
+        <li><strong>4.7 Contraste para elementos graficos:</strong> bordes y controles con contraste marcado.</li>
+        <li><strong>4.8 Espaciado del texto:</strong> sliders para letter/word spacing y line-height.</li>
+        <li><strong>4.9 Contenido en hover o focus:</strong> tooltip visible en ambos estados.</li>
+      </ol>
+      <!-- WCAG 4.5 (Nivel AA): no se usan imagenes para representar texto esencial. -->
+    </section>
+  </main>
+
+  <footer class="site-width">
+    <p>Fuentes de imagen: Wikimedia Commons/Wikipedia. Esta pagina es una demo educativa de accesibilidad.</p>
+  </footer>
+
+  <script src="accesibilidad.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario S.H.I.E.L.D. | Marvel Accesible</title>
+  <meta name="description" content="Formulario accesible para registro de reclutas de SHIELD.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#form-principal">Saltar al formulario</a>
+
+  <header class="site-header">
+    <div class="site-width">
+      <nav class="main-nav" aria-label="Navegacion de formulario">
+        <a class="nav-pill" href="index.html">Volver al inicio</a>
+      </nav>
+
+      <section class="hero-banner" aria-labelledby="titulo-formulario">
+        <h1 id="titulo-formulario">Registro de reclutas S.H.I.E.L.D.</h1>
+        <p>Formulario separado en otra pestana para mantener el contenido principal mas limpio.</p>
+      </section>
+    </div>
+  </header>
+
+  <main id="form-principal" class="site-width">
+    <section class="section" aria-labelledby="titulo-form">
+      <h2 id="titulo-form">Completa tu ingreso</h2>
+      <p class="help">Todos los campos tienen etiqueta visible y orden logico de tabulacion.</p>
+
+      <!-- WCAG 3.1 + 3.2: relaciones semanticas con fieldset/legend y orden consistente. -->
+      <form class="control-card" action="#" method="post">
+        <fieldset style="border: 0.12rem solid var(--line); border-radius: 0.75rem; padding: 0.8rem;">
+          <legend><strong>Datos personales</strong></legend>
+
+          <!-- WCAG 3.5 (Nivel AA): identificar proposito de entrada con autocomplete. -->
+          <div class="control-field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="given-name" required>
+          </div>
+
+          <div class="control-field">
+            <label for="apellido">Apellido</label>
+            <input id="apellido" name="apellido" type="text" autocomplete="family-name" required>
+          </div>
+
+          <div class="control-field">
+            <label for="correo">Correo electronico</label>
+            <input id="correo" name="correo" type="email" autocomplete="email" required>
+          </div>
+
+          <div class="control-field">
+            <label for="telefono">Telefono</label>
+            <input id="telefono" name="telefono" type="tel" autocomplete="tel">
+          </div>
+
+          <div class="control-field">
+            <label for="pais">Pais</label>
+            <input id="pais" name="pais" type="text" autocomplete="country-name">
+          </div>
+        </fieldset>
+
+        <fieldset style="border: 0.12rem solid var(--line); border-radius: 0.75rem; padding: 0.8rem; margin-top: 0.8rem;">
+          <legend><strong>Perfil tactico</strong></legend>
+
+          <div class="control-field">
+            <label for="rol">Rol preferido</label>
+            <select id="rol" name="rol" required>
+              <option value="">Selecciona un rol</option>
+              <option value="rescate">Rescate</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="estrategia">Estrategia</option>
+              <option value="reconocimiento">Reconocimiento</option>
+            </select>
+          </div>
+
+          <!-- WCAG 3.3: instrucciones textuales claras, no sensoriales. -->
+          <div class="control-field">
+            <label for="comentarios">Describe tus habilidades (minimo 30 caracteres)</label>
+            <textarea id="comentarios" name="comentarios" rows="5" minlength="30" required></textarea>
+          </div>
+        </fieldset>
+
+        <div class="button-row" style="margin-top: 0.8rem;">
+          <button type="submit">Enviar solicitud</button>
+          <a class="link-button" href="index.html">Regresar al laboratorio</a>
+        </div>
+
+        <!-- WCAG 4.1: estado con texto + color, no solo color. -->
+        <div class="status" role="status" aria-live="polite">
+          Estado del formulario: listo para enviar. Indicador visual y textual.
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-width">
+    <p>Este formulario mantiene foco visible, contraste alto y campos identificables por proposito.</p>
+  </footer>
+</body>
+</html>
