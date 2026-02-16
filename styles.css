@@ -18,6 +18,7 @@
   --line-space: 1.6;
   --letter-space: 0em;
   --word-space: 0em;
+  --paragraph-space: 0em;
 }
 
 * {
@@ -41,6 +42,13 @@ body {
     radial-gradient(circle at 88% 18%, #14213d 0, transparent 30%),
     linear-gradient(140deg, var(--bg-main), var(--bg-accent));
   min-height: 100vh;
+}
+
+/* WCAG 4.8: espaciado de parrafos controlable. */
+p + p,
+section + section,
+article + article {
+  margin-top: var(--paragraph-space);
 }
 
 /* WCAG 4.3 + 4.7: strong, visible focus style with high contrast. */
@@ -139,12 +147,13 @@ a:focus-visible {
   gap: 0.45rem;
 }
 
+/* WCAG 4.3: fondo solido para garantizar contraste minimo 4.5:1. */
 .badge {
   border: 0.12rem solid var(--line);
   border-radius: 999px;
   padding: 0.2rem 0.7rem;
   font-weight: 800;
-  background: rgba(2, 6, 23, 0.45);
+  background: #0a1628;
 }
 
 main {
@@ -223,12 +232,13 @@ figcaption {
   margin-top: 0.55rem;
 }
 
+/* WCAG 4.3: fondo solido para contraste fiable sobre cualquier panel. */
 .meta-pill {
   border: 0.12rem solid var(--line);
   border-radius: 999px;
   padding: 0.14rem 0.6rem;
   font-weight: 700;
-  background: rgba(8, 47, 73, 0.4);
+  background: #0b2537;
 }
 
 audio,
@@ -270,8 +280,14 @@ button {
   color: inherit;
 }
 
+/* WCAG 4.7: estilos de controles nativos para garantizar contraste 3:1. */
 input[type="range"] {
   width: 100%;
+  accent-color: var(--secondary);
+}
+
+input[type="checkbox"] {
+  accent-color: var(--secondary);
 }
 
 .control-value {
@@ -338,11 +354,12 @@ button:focus-visible,
   display: inline-block;
 }
 
+/* WCAG 4.9: tooltip hoverable con margen de conexion para que el usuario pueda moverlo al contenido. */
 .tooltip {
   display: none;
   position: absolute;
   left: 0;
-  top: 2.5rem;
+  top: calc(100% + 0.3rem);
   width: min(21rem, 88vw);
   z-index: 10;
   border: 0.12rem solid #334155;
@@ -352,14 +369,20 @@ button:focus-visible,
   padding: 0.75rem;
 }
 
-/* WCAG 4.9: same help content for hover and keyboard focus. */
-.tooltip-wrap:hover .tooltip,
-.tooltip-wrap:focus-within .tooltip {
-  display: block;
+.tooltip::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  width: 100%;
+  height: 0.5rem;
 }
 
-.checklist li {
-  margin-bottom: 0.42rem;
+/* WCAG 4.9: same help content for hover and keyboard focus. */
+.tooltip-wrap:hover .tooltip,
+.tooltip-wrap:focus-within .tooltip,
+.tooltip-wrap .tooltip.tooltip-visible {
+  display: block;
 }
 
 footer {

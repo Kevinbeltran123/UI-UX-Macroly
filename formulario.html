@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Formulario S.H.I.E.L.D. | Marvel Accesible</title>
-  <meta name="description" content="Formulario accesible para registro de reclutas de SHIELD.">
+  <title>Registro de colaborador | Marvel Wiki</title>
+  <meta name="description" content="Formulario de registro para colaboradores de Marvel Wiki.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
@@ -16,19 +16,19 @@
   <header class="site-header">
     <div class="site-width">
       <nav class="main-nav" aria-label="Navegacion de formulario">
-        <a class="nav-pill" href="index.html">Volver al inicio</a>
+        <a class="nav-pill" href="index.html">Volver a la enciclopedia</a>
       </nav>
 
       <section class="hero-banner" aria-labelledby="titulo-formulario">
-        <h1 id="titulo-formulario">Registro de reclutas S.H.I.E.L.D.</h1>
-        <p>Formulario separado en otra pestana para mantener el contenido principal mas limpio.</p>
+        <h1 id="titulo-formulario">Unirse a la comunidad Marvel Wiki</h1>
+        <p>Crea tu cuenta de colaborador y ayuda a construir la enciclopedia Marvel.</p>
       </section>
     </div>
   </header>
 
   <main id="form-principal" class="site-width">
     <section class="section" aria-labelledby="titulo-form">
-      <h2 id="titulo-form">Completa tu ingreso</h2>
+      <h2 id="titulo-form">Completa tu registro</h2>
       <p class="help">Todos los campos tienen etiqueta visible y orden logico de tabulacion.</p>
 
       <!-- WCAG 3.1 + 3.2: relaciones semanticas con fieldset/legend y orden consistente. -->
@@ -64,41 +64,41 @@
         </fieldset>
 
         <fieldset style="border: 0.12rem solid var(--line); border-radius: 0.75rem; padding: 0.8rem; margin-top: 0.8rem;">
-          <legend><strong>Perfil tactico</strong></legend>
+          <legend><strong>Perfil de colaborador</strong></legend>
 
           <div class="control-field">
-            <label for="rol">Rol preferido</label>
+            <label for="rol">Area de interes</label>
             <select id="rol" name="rol" required>
-              <option value="">Selecciona un rol</option>
-              <option value="rescate">Rescate</option>
-              <option value="tecnologia">Tecnologia</option>
-              <option value="estrategia">Estrategia</option>
-              <option value="reconocimiento">Reconocimiento</option>
+              <option value="">Selecciona un area</option>
+              <option value="rescate">Biografias de personajes</option>
+              <option value="tecnologia">Tecnologia y armamento</option>
+              <option value="estrategia">Eventos y sagas</option>
+              <option value="reconocimiento">Multimedia y galeria</option>
             </select>
           </div>
 
           <!-- WCAG 3.3: instrucciones textuales claras, no sensoriales. -->
           <div class="control-field">
-            <label for="comentarios">Describe tus habilidades (minimo 30 caracteres)</label>
+            <label for="comentarios">Describe tu experiencia o motivacion (minimo 30 caracteres)</label>
             <textarea id="comentarios" name="comentarios" rows="5" minlength="30" required></textarea>
           </div>
         </fieldset>
 
         <div class="button-row" style="margin-top: 0.8rem;">
-          <button type="submit">Enviar solicitud</button>
-          <a class="link-button" href="index.html">Regresar al laboratorio</a>
+          <button type="submit">Crear cuenta</button>
+          <a class="link-button" href="index.html">Volver a la enciclopedia</a>
         </div>
 
         <!-- WCAG 4.1: estado con texto + color, no solo color. -->
         <div class="status" role="status" aria-live="polite">
-          Estado del formulario: listo para enviar. Indicador visual y textual.
+          Estado del registro: listo para enviar. Indicador visual y textual.
         </div>
       </form>
     </section>
   </main>
 
   <footer class="site-width">
-    <p>Este formulario mantiene foco visible, contraste alto y campos identificables por proposito.</p>
+    <p>Marvel Wiki es un proyecto comunitario con accesibilidad WCAG AA.</p>
   </footer>
 </body>
 </html>

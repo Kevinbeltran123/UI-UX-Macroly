@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marvel Accesible | Laboratorio WCAG</title>
-  <meta name="description" content="Pagina de ejemplo sobre accesibilidad web WCAG con tema Marvel.">
+  <title>Marvel Wiki | Enciclopedia del Universo Marvel</title>
+  <meta name="description" content="Enciclopedia colaborativa del Universo Marvel con accesibilidad web WCAG AA.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
@@ -18,26 +18,25 @@
     <div class="site-width">
       <!-- WCAG 3.1 (Nivel A): navegacion en region semantica con nombre programatico. -->
       <nav class="main-nav" aria-label="Navegacion principal">
-        <a class="nav-pill" href="#heroes">Heroes</a>
-        <a class="nav-pill" href="#multimedia">Multimedia</a>
-        <a class="nav-pill" href="#pruebas">Pruebas de texto</a>
-        <a class="nav-pill" href="#criterios">Checklist</a>
+        <a class="nav-pill" href="#heroes">Enciclopedia</a>
+        <a class="nav-pill" href="#multimedia">Mediateca</a>
+        <a class="nav-pill" href="#pruebas">Preferencias de lectura</a>
         <!-- Solicitud del usuario: formulario en otra pestana. -->
-        <a class="nav-pill alt" href="formulario.html">Formulario</a>
+        <a class="nav-pill alt" href="formulario.html">Unirse a la comunidad</a>
       </nav>
 
       <section class="hero-banner" aria-labelledby="titulo-principal">
-        <h1 id="titulo-principal">Marvel Accesible: Heroes para Todos</h1>
+        <h1 id="titulo-principal">Marvel Wiki: Tu Enciclopedia del Universo Marvel</h1>
         <p>
-          Esta demo mejora la estetica y demuestra criterios WCAG A y AA en una sola pagina.
-          Usa teclado, mouse o tactil para navegar.
+          Explora biografias, eventos y curiosidades del Universo Marvel.
+          Navega con teclado, mouse o pantalla tactil.
         </p>
         <!-- WCAG 3.3 + 4.1: la instruccion no depende solo del color. -->
-        <p><strong>Importante:</strong> Las alertas muestran color + texto + icono para comunicar estado.</p>
-        <div class="banner-badges" aria-label="Estado de demostracion">
-          <span class="badge">Contraste alto</span>
-          <span class="badge">Responsive</span>
-          <span class="badge">Teclado primero</span>
+        <p><strong>Importante:</strong> Los avisos editoriales usan color + texto + icono para comunicar estado.</p>
+        <div class="banner-badges" aria-label="Datos de la wiki">
+          <span class="badge">+500 articulos</span>
+          <span class="badge">Multimedia integrada</span>
+          <span class="badge">Comunidad activa</span>
         </div>
       </section>
     </div>
@@ -46,8 +45,8 @@
   <!-- WCAG 3.1 + 3.2 (Nivel A): estructura semantica principal con orden logico de lectura. -->
   <main id="contenido" class="site-width">
     <section id="heroes" class="section" aria-labelledby="titulo-heroes">
-      <h2 id="titulo-heroes">Escuadron Marvel</h2>
-      <p class="help">Imagenes obtenidas de internet (Wikimedia) con alternativa textual.</p>
+      <h2 id="titulo-heroes">Personajes destacados</h2>
+      <p class="help">Imagenes obtenidas de Wikimedia Commons. Seleccion editorial de la comunidad.</p>
 
       <div class="hero-grid">
         <article class="hero-card" aria-labelledby="iron-man">
@@ -58,11 +57,11 @@
               class="poster"
               src="https://upload.wikimedia.org/wikipedia/en/1/19/Iron_Man_3_poster.jpg"
               alt="Poster de Iron Man 3 con Tony Stark al frente y armaduras volando sobre un fondo de batalla.">
-            <figcaption>Tecnologia, estrategia y liderazgo en combate.</figcaption>
+            <figcaption>Tony Stark. Primera aparicion: Tales of Suspense #39 (1963).</figcaption>
           </figure>
           <div class="meta-list">
-            <span class="meta-pill">Rol: Estratega</span>
-            <span class="meta-pill">Estado: Activo</span>
+            <span class="meta-pill">Nombre real: Tony Stark</span>
+            <span class="meta-pill">Debut: 1963</span>
           </div>
         </article>
 
@@ -73,11 +72,11 @@
               class="poster"
               src="https://upload.wikimedia.org/wikipedia/en/9/9b/Black_Widow_%282021_film%29_poster.jpg"
               alt="Poster de Black Widow con Natasha Romanoff en primer plano y el equipo de la pelicula detras.">
-            <figcaption>Operacion encubierta y reaccion rapida.</figcaption>
+            <figcaption>Natasha Romanoff. Primera aparicion: Tales of Suspense #52 (1964).</figcaption>
           </figure>
           <div class="meta-list">
-            <span class="meta-pill">Rol: Infiltracion</span>
-            <span class="meta-pill">Estado: En mision</span>
+            <span class="meta-pill">Nombre real: Natasha Romanoff</span>
+            <span class="meta-pill">Debut: 1964</span>
           </div>
         </article>
 
@@ -88,11 +87,11 @@
               class="poster"
               src="https://upload.wikimedia.org/wikipedia/en/5/53/Captain_America_Civil_War_poster.jpg"
               alt="Poster de Captain America Civil War con Steve Rogers sosteniendo su escudo frente al equipo rival.">
-            <figcaption>Defensa y coordinacion tactica del equipo.</figcaption>
+            <figcaption>Steve Rogers. Primera aparicion: Captain America Comics #1 (1941).</figcaption>
           </figure>
           <div class="meta-list">
-            <span class="meta-pill">Rol: Defensa</span>
-            <span class="meta-pill">Estado: Disponible</span>
+            <span class="meta-pill">Nombre real: Steve Rogers</span>
+            <span class="meta-pill">Debut: 1941</span>
           </div>
         </article>
 
@@ -103,54 +102,54 @@
               class="poster"
               src="https://upload.wikimedia.org/wikipedia/en/7/7d/Thor_Ragnarok_poster.jpg"
               alt="Poster de Thor Ragnarok con Thor al centro, casco de combate y personajes del universo cosmico.">
-            <figcaption>Poder ofensivo y contencion de amenazas.</figcaption>
+            <figcaption>Thor Odinson. Primera aparicion: Journey into Mystery #83 (1962).</figcaption>
           </figure>
           <div class="meta-list">
-            <span class="meta-pill">Rol: Choque</span>
-            <span class="meta-pill">Estado: Patrulla</span>
+            <span class="meta-pill">Nombre real: Thor Odinson</span>
+            <span class="meta-pill">Debut: 1962</span>
           </div>
         </article>
       </div>
     </section>
 
     <section id="multimedia" class="section" aria-labelledby="titulo-multimedia">
-      <h2 id="titulo-multimedia">Multimedia accesible</h2>
+      <h2 id="titulo-multimedia">Mediateca Marvel</h2>
       <div class="media-grid">
         <article class="media-card" aria-labelledby="audio-titulo">
-          <h3 id="audio-titulo">Solo audio: alerta de base</h3>
+          <h3 id="audio-titulo">Archivo sonoro: ambientacion Marvel</h3>
           <!-- WCAG 4.2 (Nivel A): control de audio con controles nativos y sin autoplay. -->
           <!-- WCAG 2.1 (Nivel A): para contenido de solo audio se provee transcripcion. -->
           <audio controls preload="metadata">
             <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" type="audio/mpeg">
             Tu navegador no soporta audio HTML5.
           </audio>
-          <p><strong>Transcripcion:</strong> "Alerta nivel rojo en la torre. Activar protocolo de evacuacion y defensa inmediata."</p>
+          <p><strong>Transcripcion:</strong> "Efecto sonoro ambiental utilizado en secuencias de accion del Universo Marvel."</p>
         </article>
 
         <article class="media-card" aria-labelledby="video-titulo">
-          <h3 id="video-titulo">Video de entrenamiento</h3>
+          <h3 id="video-titulo">Documental: Como Marvel se destruyo a si mismo</h3>
           <!-- WCAG 2.2 (Nivel AA): video con subtitulos y resumen textual. -->
           <video controls preload="metadata" aria-describedby="resumen-video">
-            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-            <track kind="captions" src="media/briefing-es.vtt" srclang="es" label="Espanol" default>
+            <source src="media/video/¿Cómo Marvel se destruyó a si mismo.mp4" type="video/mp4">
+            <track kind="captions" src="media/video/como-marvel-se-destruyo.vtt" srclang="es" label="Espanol" default>
             Tu navegador no soporta video HTML5.
           </video>
-          <p id="resumen-video"><strong>Resumen:</strong> El equipo practica coordinacion por fases: observacion, avance y contencion.</p>
+          <p id="resumen-video"><strong>Resumen:</strong> Analisis de como el MCU paso de su era dorada a un periodo de declive tras Endgame.</p>
         </article>
       </div>
 
       <div class="form-link-box" role="note">
-        El formulario fue movido a una pagina separada como solicitaste: <a href="formulario.html">abrir formulario de registro</a>.
+        Quieres colaborar con la wiki? <a href="formulario.html">Unete a la comunidad de editores</a>.
       </div>
     </section>
 
     <section id="pruebas" class="section" aria-labelledby="titulo-pruebas">
-      <h2 id="titulo-pruebas">Panel de pruebas de legibilidad</h2>
-      <p class="help">Usa estos controles para probar crecimiento de texto y espaciados sin romper el layout.</p>
+      <h2 id="titulo-pruebas">Preferencias de lectura</h2>
+      <p class="help">Ajusta el tamano de texto y los espaciados para una lectura mas comoda.</p>
 
       <div class="lab-grid">
         <article class="control-card" aria-labelledby="controles-texto">
-          <h3 id="controles-texto">Ajustes en vivo</h3>
+          <h3 id="controles-texto">Ajustes del lector</h3>
 
           <!-- WCAG 4.4 (Nivel AA): opcion para cambiar el tamano del texto. -->
           <div class="control-field">
@@ -178,15 +177,22 @@
             <span class="control-value" id="value-line">1.6</span>
           </div>
 
+          <!-- WCAG 4.8: espaciado de parrafos como parte del criterio. -->
+          <div class="control-field">
+            <label for="paragraph-spacing">Espaciado de parrafos</label>
+            <input id="paragraph-spacing" type="range" min="0" max="2" step="0.1" value="0">
+            <span class="control-value" id="value-paragraph">0em</span>
+          </div>
+
           <div class="toggle">
             <input id="contrast-toggle" type="checkbox">
             <label for="contrast-toggle">Modo alto contraste</label>
           </div>
 
           <div class="button-row">
-            <button id="preset-large-text" type="button">Preset texto 200%</button>
-            <button id="preset-aa-spacing" type="button">Preset espaciado AA</button>
-            <button id="preset-tight-text" type="button">Pegar letras</button>
+            <button id="preset-large-text" type="button">Texto grande</button>
+            <button id="preset-aa-spacing" type="button">Lectura comoda</button>
+            <button id="preset-tight-text" type="button">Texto compacto</button>
             <button id="reset-accessibility" type="button">Restablecer</button>
           </div>
 
@@ -194,53 +200,30 @@
         </article>
 
         <article class="control-card" aria-labelledby="mensajes-estado">
-          <h3 id="mensajes-estado">Estados sin depender solo del color</h3>
-          <!-- WCAG 4.1 (Nivel A): estado con color + texto explicito. -->
+          <h3 id="mensajes-estado">Avisos editoriales</h3>
+          <!-- WCAG 4.1 (Nivel A): estado con color + icono + texto explicito. -->
           <div class="status" role="status" aria-live="polite">
-            Estado operativo: Mision disponible. Icono + texto + color.
+            <span aria-hidden="true">&#10003;</span> Articulo verificado: contenido revisado por la comunidad.
           </div>
           <div class="status alert" role="note">
-            Alerta tactica: Requiere revision manual. No depende solo del color naranja.
+            <span aria-hidden="true">&#9888;</span> Articulo en revision: pendiente de verificacion editorial.
           </div>
 
           <!-- WCAG 4.9 (Nivel AA): contenido visible en hover y en focus. -->
           <div class="tooltip-wrap" style="margin-top: 0.75rem;">
-            <button type="button" aria-describedby="tip-estrategia">Ver pista tactica</button>
+            <button type="button" aria-describedby="tip-estrategia">Consejo para editores</button>
             <div class="tooltip" id="tip-estrategia" role="tooltip">
-              Consejo: evacua civiles antes del combate. Esta ayuda aparece con mouse y teclado.
+              Recuerda citar fuentes oficiales de Marvel al editar articulos. Esta ayuda aparece con mouse y teclado.
             </div>
           </div>
         </article>
       </div>
     </section>
 
-    <section id="criterios" class="section" aria-labelledby="titulo-criterios">
-      <h2 id="titulo-criterios">Checklist de 17 criterios</h2>
-      <ol class="checklist">
-        <li><strong>1.1 Contenido no textual:</strong> imagenes con texto alternativo descriptivo.</li>
-        <li><strong>2.1 Solo audio o solo video:</strong> audio con transcripcion textual.</li>
-        <li><strong>2.2 Multimedia:</strong> video con subtitulos y resumen.</li>
-        <li><strong>3.1 Informacion y relaciones:</strong> uso de `header`, `nav`, `main`, `section`, `article`, `label`.</li>
-        <li><strong>3.2 Orden adecuado:</strong> jerarquia de encabezados y flujo de lectura lineal.</li>
-        <li><strong>3.3 Caracteristicas sensoriales:</strong> instrucciones explicitas en texto.</li>
-        <li><strong>3.4 Orientacion:</strong> no se bloquea horizontal/vertical y es responsive.</li>
-        <li><strong>3.5 Identificar proposito de entrada:</strong> aplicado en `formulario.html` con `autocomplete`.</li>
-        <li><strong>4.1 Uso del color:</strong> texto + color para comunicar estado.</li>
-        <li><strong>4.2 Control del audio:</strong> controles activos y sin autoplay.</li>
-        <li><strong>4.3 Contraste minimo:</strong> paleta de alto contraste entre texto/fondo.</li>
-        <li><strong>4.4 Cambio de tamano del texto:</strong> slider y preset de 200%.</li>
-        <li><strong>4.5 Imagenes de texto:</strong> informacion principal en texto real HTML.</li>
-        <li><strong>4.6 Reajuste:</strong> grid fluido y media queries para pantallas pequenas.</li>
-        <li><strong>4.7 Contraste para elementos graficos:</strong> bordes y controles con contraste marcado.</li>
-        <li><strong>4.8 Espaciado del texto:</strong> sliders para letter/word spacing y line-height.</li>
-        <li><strong>4.9 Contenido en hover o focus:</strong> tooltip visible en ambos estados.</li>
-      </ol>
-      <!-- WCAG 4.5 (Nivel AA): no se usan imagenes para representar texto esencial. -->
-    </section>
   </main>
 
   <footer class="site-width">
-    <p>Fuentes de imagen: Wikimedia Commons/Wikipedia. Esta pagina es una demo educativa de accesibilidad.</p>
+    <p>Fuentes de imagen: Wikimedia Commons/Wikipedia. Marvel Wiki es un proyecto comunitario con accesibilidad WCAG AA.</p>
   </footer>
 
   <script src="accesibilidad.js"></script>
