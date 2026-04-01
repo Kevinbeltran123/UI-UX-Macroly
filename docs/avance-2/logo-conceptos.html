@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macroly - Logo Refinado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 48px;
+        }
+        h1 { font-size: 1.8rem; color: #1B5E20; font-weight: 800; }
+        h2 { font-size: 1rem; color: #888; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 48px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            max-width: 900px;
+            width: 100%;
+        }
+        .row {
+            display: flex;
+            gap: 48px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .variant {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .variant-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .dark-bg {
+            background: #121A12;
+            border-radius: 16px;
+            padding: 28px 32px;
+        }
+        .app-icon-frame {
+            width: 100px;
+            height: 100px;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(27,94,32,0.15);
+        }
+        .app-icon-light { background: white; border: 1px solid #e0e0e0; }
+        .app-icon-dark { background: #121A12; }
+        .app-icon-green { background: linear-gradient(135deg, #2E7D32, #43A047); }
+
+        /* Paleta */
+        .palette {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .color-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .color-swatch {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .color-name { font-size: 0.72rem; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .color-hex { font-size: 0.7rem; color: #aaa; font-family: monospace; }
+        .divider { width: 1px; height: 64px; background: #e0e0e0; align-self: center; margin: 0 8px; }
+
+        hr { border: none; border-top: 1px solid #eee; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Macroly - Logo Refinado (Opcion B)</h1>
+
+    <!-- ============ LOGO PRINCIPAL ============ -->
+    <div class="section">
+        <h2>Logo principal</h2>
+
+        <svg width="360" height="110" viewBox="0 0 360 110" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(50, 55)">
+                <!-- Carrito cuerpo - centrado en (0,0) -->
+                <path d="M-18,-2 L-13,-20 L25,-20 L21,12 L-15,12 Z"
+                      fill="none" stroke="#1B5E20" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+                <!-- Manija -->
+                <path d="M-26,-10 L-18,-2" fill="none" stroke="#1B5E20" stroke-width="4" stroke-linecap="round"/>
+                <!-- Ruedas -->
+                <circle cx="-9" cy="20" r="5" fill="#1B5E20"/>
+                <circle cx="15" cy="20" r="5" fill="#1B5E20"/>
+
+                <!-- Barras de macros - centradas en el cuerpo del carrito -->
+                <!-- Proteina -->
+                <rect x="-8" y="-14" width="26" height="5" rx="2.5" fill="#C8E6C9"/>
+                <rect x="-8" y="-14" width="20" height="5" rx="2.5" fill="#43A047"/>
+                <!-- Carbohidratos -->
+                <rect x="-8" y="-6" width="26" height="5" rx="2.5" fill="#FFE0B2"/>
+                <rect x="-8" y="-6" width="15" height="5" rx="2.5" fill="#FB8C00"/>
+                <!-- Grasas -->
+                <rect x="-8" y="2" width="26" height="5" rx="2.5" fill="#BBDEFB"/>
+                <rect x="-8" y="2" width="10" height="5" rx="2.5" fill="#1E88E5"/>
+            </g>
+            <!-- Texto -->
+            <text x="118" y="52" font-family="'Nunito', sans-serif" font-size="44" font-weight="800" fill="#1B5E20">
+                Macro<tspan fill="#43A047">ly</tspan>
+            </text>
+            <text x="120" y="74" font-family="'Nunito', sans-serif" font-size="12" fill="#999" letter-spacing="4" font-weight="700">
+                NUTRICION INTELIGENTE
+            </text>
+        </svg>
+    </div>
+
+    <!-- ============ VARIANTES ============ -->
+    <div class="section">
+        <h2>Variantes</h2>
+        <div class="row">
+
+            <!-- Isotipo claro -->
+            <div class="variant">
+                <div class="app-icon-frame app-icon-light">
+                    <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="translate(32, 30)">
+                            <path d="M-16,2 L-11,-14 L21,-14 L18,12 L-13,12 Z"
+                                  fill="none" stroke="#1B5E20" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+                            <path d="M-23,-6 L-16,2" fill="none" stroke="#1B5E20" stroke-width="3.5" stroke-linecap="round"/>
+                            <circle cx="-8" cy="19" r="4" fill="#1B5E20"/>
+                            <circle cx="13" cy="19" r="4" fill="#1B5E20"/>
+                            <rect x="-7" y="-9" width="22" height="4.5" rx="2.25" fill="#C8E6C9"/>
+                            <rect x="-7" y="-9" width="17" height="4.5" rx="2.25" fill="#43A047"/>
+                            <rect x="-7" y="-2.5" width="22" height="4.5" rx="2.25" fill="#FFE0B2"/>
+                            <rect x="-7" y="-2.5" width="13" height="4.5" rx="2.25" fill="#FB8C00"/>
+                            <rect x="-7" y="4" width="22" height="4.5" rx="2.25" fill="#BBDEFB"/>
+                            <rect x="-7" y="4" width="9" height="4.5" rx="2.25" fill="#1E88E5"/>
+                        </g>
+                    </svg>
+                </div>
+                <span class="variant-label">App icon (claro)</span>
+            </div>
+
+            <!-- Isotipo oscuro -->
+            <div class="variant">
+                <div class="app-icon-frame app-icon-dark">
+                    <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="translate(32, 30)">
+                            <path d="M-16,2 L-11,-14 L21,-14 L18,12 L-13,12 Z"
+                                  fill="none" stroke="#66BB6A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+                            <path d="M-23,-6 L-16,2" fill="none" stroke="#66BB6A" stroke-width="3.5" stroke-linecap="round"/>
+                            <circle cx="-8" cy="19" r="4" fill="#66BB6A"/>
+                            <circle cx="13" cy="19" r="4" fill="#66BB6A"/>
+                            <rect x="-7" y="-9" width="22" height="4.5" rx="2.25" fill="#1B3A1B"/>
+                            <rect x="-7" y="-9" width="17" height="4.5" rx="2.25" fill="#43A047"/>
+                            <rect x="-7" y="-2.5" width="22" height="4.5" rx="2.25" fill="#3A2A1B"/>
+                            <rect x="-7" y="-2.5" width="13" height="4.5" rx="2.25" fill="#FB8C00"/>
+                            <rect x="-7" y="4" width="22" height="4.5" rx="2.25" fill="#1B2A3A"/>
+                            <rect x="-7" y="4" width="9" height="4.5" rx="2.25" fill="#1E88E5"/>
+                        </g>
+                    </svg>
+                </div>
+                <span class="variant-label">App icon (oscuro)</span>
+            </div>
+
+            <!-- Isotipo verde -->
+            <div class="variant">
+                <div class="app-icon-frame app-icon-green">
+                    <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="translate(32, 30)">
+                            <path d="M-16,2 L-11,-14 L21,-14 L18,12 L-13,12 Z"
+                                  fill="none" stroke="white" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+                            <path d="M-23,-6 L-16,2" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+                            <circle cx="-8" cy="19" r="4" fill="white"/>
+                            <circle cx="13" cy="19" r="4" fill="white"/>
+                            <rect x="-7" y="-9" width="22" height="4.5" rx="2.25" fill="rgba(255,255,255,0.25)"/>
+                            <rect x="-7" y="-9" width="17" height="4.5" rx="2.25" fill="white"/>
+                            <rect x="-7" y="-2.5" width="22" height="4.5" rx="2.25" fill="rgba(255,255,255,0.25)"/>
+                            <rect x="-7" y="-2.5" width="13" height="4.5" rx="2.25" fill="rgba(255,255,255,0.85)"/>
+                            <rect x="-7" y="4" width="22" height="4.5" rx="2.25" fill="rgba(255,255,255,0.25)"/>
+                            <rect x="-7" y="4" width="9" height="4.5" rx="2.25" fill="rgba(255,255,255,0.7)"/>
+                        </g>
+                    </svg>
+                </div>
+                <span class="variant-label">App icon (color)</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Logo horizontal oscuro -->
+        <div class="variant">
+            <div class="dark-bg">
+                <svg width="280" height="70" viewBox="0 0 280 70" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(38, 35)">
+                        <path d="M-14,1 L-10,-12 L18,-12 L15,9 L-11,9 Z"
+                              fill="none" stroke="#66BB6A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+                        <path d="M-20,-5 L-14,1" fill="none" stroke="#66BB6A" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="-7" cy="15" r="3.5" fill="#66BB6A"/>
+                        <circle cx="11" cy="15" r="3.5" fill="#66BB6A"/>
+                        <rect x="-7" y="-7.5" width="19" height="4" rx="2" fill="#1B3A1B"/>
+                        <rect x="-7" y="-7.5" width="15" height="4" rx="2" fill="#43A047"/>
+                        <rect x="-7" y="-1.5" width="19" height="4" rx="2" fill="#3A2A1B"/>
+                        <rect x="-7" y="-1.5" width="11" height="4" rx="2" fill="#FB8C00"/>
+                        <rect x="-7" y="4.5" width="19" height="4" rx="2" fill="#1B2A3A"/>
+                        <rect x="-7" y="4.5" width="7" height="4" rx="2" fill="#1E88E5"/>
+                    </g>
+                    <text x="76" y="33" font-family="'Nunito', sans-serif" font-size="32" font-weight="800" fill="#FFFFFF">
+                        Macro<tspan fill="#66BB6A">ly</tspan>
+                    </text>
+                    <text x="78" y="50" font-family="'Nunito', sans-serif" font-size="9" fill="#666" letter-spacing="3" font-weight="700">
+                        NUTRICION INTELIGENTE
+                    </text>
+                </svg>
+            </div>
+            <span class="variant-label">Version oscura</span>
+        </div>
+    </div>
+
+    <!-- ============ PALETA DE COLORES ============ -->
+    <div class="section">
+        <h2>Paleta de colores</h2>
+        <div class="palette">
+            <!-- Primarios -->
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#1B5E20;"></div>
+                <span class="color-name">Verde oscuro</span>
+                <span class="color-hex">#1B5E20</span>
+            </div>
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#2E7D32;"></div>
+                <span class="color-name">Verde primario</span>
+                <span class="color-hex">#2E7D32</span>
+            </div>
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#43A047;"></div>
+                <span class="color-name">Verde medio</span>
+                <span class="color-hex">#43A047</span>
+            </div>
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#66BB6A;"></div>
+                <span class="color-name">Verde claro</span>
+                <span class="color-hex">#66BB6A</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Secundarios (macros) -->
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#FB8C00;"></div>
+                <span class="color-name">Naranja</span>
+                <span class="color-hex">#FB8C00</span>
+            </div>
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#1E88E5;"></div>
+                <span class="color-name">Azul</span>
+                <span class="color-hex">#1E88E5</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Neutros -->
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#121A12;"></div>
+                <span class="color-name">Fondo oscuro</span>
+                <span class="color-hex">#121A12</span>
+            </div>
+            <div class="color-chip">
+                <div class="color-swatch" style="background:#F5F7F5; border:1px solid #e0e0e0;"></div>
+                <span class="color-name">Fondo claro</span>
+                <span class="color-hex">#F5F7F5</span>
+            </div>
+        </div>
+
+        <div style="text-align:center; max-width:600px;">
+            <p style="font-size:0.85rem; color:#888; line-height:1.6;">
+                <strong style="color:#666;">Primarios:</strong> Escala de verdes (salud, frescura, naturaleza) — ideal para apps de alimentacion.<br>
+                <strong style="color:#666;">Secundarios:</strong> Naranja (carbohidratos/energia) y Azul (grasas/confianza) — codifican los macronutrientes.<br>
+                <strong style="color:#666;">Combinacion:</strong> Triadica (verde-naranja-azul) con variaciones monocromaticas del verde.
+            </p>
+        </div>
+    </div>
+
+    <p style="color:#bbb; font-size:0.8rem;">Macroly Logo — Concepto B refinado</p>
+</body>
+</html>

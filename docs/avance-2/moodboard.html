@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macroly - Moodboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f2f2f2;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .title {
+            text-align: center;
+        }
+        .title h1 {
+            font-size: 2rem;
+            color: #1B5E20;
+            font-weight: 900;
+        }
+        .title p {
+            color: #999;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* Moodboard grid */
+        .moodboard {
+            display: grid;
+            grid-template-columns: repeat(4, 260px);
+            grid-auto-rows: auto;
+            gap: 20px;
+            max-width: 1100px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+        }
+        .card.span-2 { grid-column: span 2; }
+        .card.span-row-2 { grid-row: span 2; }
+
+        .card-label {
+            padding: 12px 16px;
+            font-size: 0.7rem;
+            color: #aaa;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* ===== CARD: Brand Personality ===== */
+        .brand-keywords {
+            padding: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-content: flex-start;
+            flex: 1;
+        }
+        .keyword {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .kw-green { background: #E8F5E9; color: #2E7D32; }
+        .kw-orange { background: #FFF3E0; color: #E65100; }
+        .kw-blue { background: #E3F2FD; color: #1565C0; }
+        .kw-gray { background: #F5F5F5; color: #616161; }
+
+        /* ===== CARD: Color Palette ===== */
+        .palette-strip {
+            display: flex;
+            flex: 1;
+            min-height: 120px;
+        }
+        .palette-strip div {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 8px 4px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.8);
+        }
+        .palette-strip div.light-text { color: rgba(0,0,0,0.3); }
+
+        /* ===== CARD: Typography ===== */
+        .typo-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+        .typo-sample {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .typo-label {
+            font-size: 0.65rem;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .typo-h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #1B5E20;
+        }
+        .typo-h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+        }
+        .typo-body {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* ===== CARD: UI Mood - Components ===== */
+        .ui-components {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+        .ui-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+        }
+        .ui-btn-primary { background: #2E7D32; color: white; }
+        .ui-btn-secondary { background: #E8F5E9; color: #2E7D32; }
+        .ui-btn-outline { background: transparent; border: 2px solid #C8E6C9; color: #2E7D32; }
+        .ui-input {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: #999;
+        }
+        .ui-chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .ui-chip {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #F5F5F5;
+            color: #666;
+        }
+        .ui-chip.active { background: #2E7D32; color: white; }
+
+        /* ===== CARD: Macro Bars Visual ===== */
+        .macro-visual {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
+        .macro-bar-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .macro-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #555;
+        }
+        .macro-bar-track {
+            height: 10px;
+            border-radius: 5px;
+            background: #f0f0f0;
+            overflow: hidden;
+        }
+        .macro-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
+
+        /* ===== CARD: Imagery mood - gradient placeholders ===== */
+        .img-mood {
+            min-height: 160px;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+            position: relative;
+            flex: 1;
+        }
+        .img-mood .img-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+        .img-mood .img-sub {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 2px;
+        }
+        .mood-fresh {
+            background: linear-gradient(135deg, #43A047 0%, #66BB6A 40%, #A5D6A7 70%, #C8E6C9 100%);
+        }
+        .mood-food {
+            background: linear-gradient(135deg, #FF8F00 0%, #FFB74D 50%, #FFE0B2 100%);
+        }
+        .mood-clean {
+            background: linear-gradient(135deg, #E8F5E9 0%, #F5F7F5 50%, #FFFFFF 100%);
+        }
+        .mood-data {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 30%, #1E88E5 70%, #42A5F5 100%);
+        }
+        .mood-lifestyle {
+            background: linear-gradient(135deg, #2E7D32 0%, #43A047 50%, #FB8C00 100%);
+        }
+
+        /* ===== CARD: Product Card Mock ===== */
+        .product-mock {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+        .product-img-placeholder {
+            height: 100px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #66BB6A;
+            font-size: 2rem;
+        }
+        .product-name {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .product-macros {
+            display: flex;
+            gap: 8px;
+        }
+        .product-macro-chip {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .pm-protein { background: #E8F5E9; color: #2E7D32; }
+        .pm-carbs { background: #FFF3E0; color: #E65100; }
+        .pm-fat { background: #E3F2FD; color: #1565C0; }
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1B5E20;
+        }
+        .product-add {
+            background: #2E7D32;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* ===== CARD: Iconography style ===== */
+        .icons-grid {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            flex: 1;
+        }
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        .icon-circle.green { background: #E8F5E9; }
+        .icon-circle.orange { background: #FFF3E0; }
+        .icon-circle.blue { background: #E3F2FD; }
+        .icon-name {
+            font-size: 0.65rem;
+            color: #999;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* ===== CARD: Rounded / Soft shapes ===== */
+        .shapes-card {
+            padding: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+        .shape {
+            border-radius: 16px;
+        }
+        .shape-1 { width: 60px; height: 60px; background: #1B5E20; border-radius: 16px; }
+        .shape-2 { width: 48px; height: 48px; background: #43A047; border-radius: 50%; }
+        .shape-3 { width: 80px; height: 40px; background: #FB8C00; border-radius: 20px; }
+        .shape-4 { width: 40px; height: 40px; background: #1E88E5; border-radius: 12px; }
+        .shape-5 { width: 100px; height: 30px; background: #C8E6C9; border-radius: 15px; }
+        .shape-6 { width: 50px; height: 50px; background: #66BB6A; border-radius: 50%; }
+        .shape-7 { width: 70px; height: 35px; background: #FFE0B2; border-radius: 17px; }
+
+        /* ===== CARD: Spacing / Grid ===== */
+        .spacing-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+        .spacing-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .spacing-box {
+            height: 32px;
+            border-radius: 8px;
+            background: #E8F5E9;
+        }
+        .spacing-label {
+            font-size: 0.65rem;
+            color: #bbb;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Footer */
+        .footer {
+            color: #ccc;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title">
+        <h1>Macroly - Moodboard</h1>
+        <p>Direccion visual &bull; Nutricion inteligente &bull; Web App</p>
+    </div>
+
+    <div class="moodboard">
+
+        <!-- ROW 1 -->
+
+        <!-- Brand Personality Keywords -->
+        <div class="card span-2">
+            <div class="card-label">Personalidad de marca</div>
+            <div class="brand-keywords">
+                <span class="keyword kw-green">Fresco</span>
+                <span class="keyword kw-green">Saludable</span>
+                <span class="keyword kw-blue">Inteligente</span>
+                <span class="keyword kw-orange">Energetico</span>
+                <span class="keyword kw-gray">Minimalista</span>
+                <span class="keyword kw-green">Natural</span>
+                <span class="keyword kw-blue">Confiable</span>
+                <span class="keyword kw-orange">Amigable</span>
+                <span class="keyword kw-gray">Moderno</span>
+                <span class="keyword kw-green">Organico</span>
+                <span class="keyword kw-blue">Datos claros</span>
+                <span class="keyword kw-orange">Accesible</span>
+            </div>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="card span-2">
+            <div class="card-label">Paleta de colores</div>
+            <div class="palette-strip">
+                <div style="background:#1B5E20;">#1B5E20</div>
+                <div style="background:#2E7D32;">#2E7D32</div>
+                <div style="background:#43A047;">#43A047</div>
+                <div style="background:#66BB6A;">#66BB6A</div>
+                <div style="background:#C8E6C9;" class="light-text">#C8E6C9</div>
+                <div style="background:#FB8C00;">#FB8C00</div>
+                <div style="background:#1E88E5;">#1E88E5</div>
+                <div style="background:#121A12;">#121A12</div>
+            </div>
+        </div>
+
+        <!-- ROW 2 -->
+
+        <!-- Mood: Fresh/Nature -->
+        <div class="card">
+            <div class="img-mood mood-fresh">
+                <div>
+                    <div class="img-text">Frescura & Naturaleza</div>
+                    <div class="img-sub">Alimentos frescos, hojas verdes, vida sana</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="card">
+            <div class="card-label">Tipografia</div>
+            <div class="typo-card">
+                <div class="typo-sample">
+                    <span class="typo-label">Titulos &mdash; Nunito Black</span>
+                    <span class="typo-h1">Aa Bb Cc</span>
+                </div>
+                <div class="typo-sample">
+                    <span class="typo-label">Subtitulos &mdash; Nunito Bold</span>
+                    <span class="typo-h2">Tus macros de hoy</span>
+                </div>
+                <div class="typo-sample">
+                    <span class="typo-label">Cuerpo &mdash; Inter Regular</span>
+                    <span class="typo-body">Cada producto muestra su aporte nutricional para que tomes mejores decisiones.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Macro Bars -->
+        <div class="card">
+            <div class="card-label">Visualizacion de macros</div>
+            <div class="macro-visual">
+                <div class="macro-bar-group">
+                    <div class="macro-bar-label"><span>Proteina</span><span>120g / 150g</span></div>
+                    <div class="macro-bar-track"><div class="macro-bar-fill" style="width:80%; background:#43A047;"></div></div>
+                </div>
+                <div class="macro-bar-group">
+                    <div class="macro-bar-label"><span>Carbohidratos</span><span>180g / 250g</span></div>
+                    <div class="macro-bar-track"><div class="macro-bar-fill" style="width:72%; background:#FB8C00;"></div></div>
+                </div>
+                <div class="macro-bar-group">
+                    <div class="macro-bar-label"><span>Grasas</span><span>45g / 70g</span></div>
+                    <div class="macro-bar-track"><div class="macro-bar-fill" style="width:64%; background:#1E88E5;"></div></div>
+                </div>
+                <div class="macro-bar-group">
+                    <div class="macro-bar-label"><span>Calorias</span><span>1,620 / 2,200</span></div>
+                    <div class="macro-bar-track"><div class="macro-bar-fill" style="width:74%; background:linear-gradient(90deg,#43A047,#66BB6A);"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood: Food/Warm -->
+        <div class="card">
+            <div class="img-mood mood-food">
+                <div>
+                    <div class="img-text">Calidez & Energia</div>
+                    <div class="img-sub">Colores calidos, apetitoso, nutritivo</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 3 -->
+
+        <!-- UI Components -->
+        <div class="card">
+            <div class="card-label">Componentes UI</div>
+            <div class="ui-components">
+                <div class="ui-btn ui-btn-primary">Agregar al carrito</div>
+                <div class="ui-btn ui-btn-secondary">Ver detalle nutricional</div>
+                <div class="ui-btn ui-btn-outline">Guardar favorito</div>
+                <div class="ui-input">Buscar producto...</div>
+                <div class="ui-chip-row">
+                    <span class="ui-chip active">Proteina</span>
+                    <span class="ui-chip">Bajo en grasa</span>
+                    <span class="ui-chip">Keto</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Card Mock -->
+        <div class="card">
+            <div class="card-label">Tarjeta de producto</div>
+            <div class="product-mock">
+                <div class="product-img-placeholder">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#66BB6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                        <circle cx="9" cy="9" r="2"/>
+                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                    </svg>
+                </div>
+                <div class="product-name">Pechuga de Pollo Organica</div>
+                <div class="product-macros">
+                    <span class="product-macro-chip pm-protein">31g prot</span>
+                    <span class="product-macro-chip pm-carbs">0g carb</span>
+                    <span class="product-macro-chip pm-fat">3.6g gra</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="product-price">$12.500</span>
+                </div>
+                <div class="product-add">+ Agregar</div>
+            </div>
+        </div>
+
+        <!-- Iconography -->
+        <div class="card">
+            <div class="card-label">Iconografia (Lucide Icons &mdash; Outline)</div>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-circle green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                        </svg>
+                    </div>
+                    <span class="icon-name">Carrito</span>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-circle green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 21h10"/><path d="M12 21V3"/>
+                            <path d="M3 7c2.5-3 6-4 9-4s6.5 1 9 4"/>
+                            <path d="M3 7c0 4 2 8 9 14 7-6 9-10 9-14"/>
+                        </svg>
+                    </div>
+                    <span class="icon-name">Nutricion</span>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-circle orange">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/>
+                        </svg>
+                    </div>
+                    <span class="icon-name">Calorias</span>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-circle blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <span class="icon-name">Progreso</span>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-circle green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        </svg>
+                    </div>
+                    <span class="icon-name">Favoritos</span>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-circle orange">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                        </svg>
+                    </div>
+                    <span class="icon-name">Educacion</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood: Data/Tech -->
+        <div class="card">
+            <div class="img-mood mood-data">
+                <div>
+                    <div class="img-text">Datos & Tecnologia</div>
+                    <div class="img-sub">Visualizaciones claras, dashboards, precision</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 4 -->
+
+        <!-- Shapes / Corners -->
+        <div class="card">
+            <div class="card-label">Formas & Bordes redondeados</div>
+            <div class="shapes-card">
+                <div class="shape-1"></div>
+                <div class="shape-2"></div>
+                <div class="shape-3"></div>
+                <div class="shape-4"></div>
+                <div class="shape-5"></div>
+                <div class="shape-6"></div>
+                <div class="shape-7"></div>
+            </div>
+        </div>
+
+        <!-- Mood: Clean UI -->
+        <div class="card">
+            <div class="img-mood mood-clean" style="border:1px solid #e8e8e8;">
+                <div>
+                    <div class="img-text" style="color:#1B5E20; text-shadow:none;">UI Limpio & Espacioso</div>
+                    <div class="img-sub" style="color:#999;">Mucho espacio en blanco, respiracion visual</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spacing System -->
+        <div class="card">
+            <div class="card-label">Sistema de espaciado</div>
+            <div class="spacing-card">
+                <div class="spacing-row">
+                    <div class="spacing-box" style="width:16px; background:#1B5E20;"></div>
+                    <span class="spacing-label">4px &mdash; micro</span>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-box" style="width:32px; background:#2E7D32;"></div>
+                    <span class="spacing-label">8px &mdash; tight</span>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-box" style="width:64px; background:#43A047;"></div>
+                    <span class="spacing-label">16px &mdash; base</span>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-box" style="width:96px; background:#66BB6A;"></div>
+                    <span class="spacing-label">24px &mdash; relaxed</span>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-box" style="width:128px; background:#C8E6C9;"></div>
+                    <span class="spacing-label">32px &mdash; spacious</span>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-box" style="width:192px; background:#E8F5E9;"></div>
+                    <span class="spacing-label">48px &mdash; section</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood: Lifestyle -->
+        <div class="card">
+            <div class="img-mood mood-lifestyle">
+                <div>
+                    <div class="img-text">Estilo de Vida Activo</div>
+                    <div class="img-sub">Fitness, meal prep, bienestar integral</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">Macroly &mdash; Moodboard v1.0 &mdash; Direccion visual del proyecto</div>
+</body>
+</html>

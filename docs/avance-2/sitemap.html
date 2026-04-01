@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macroly - Site Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f8f9fa;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            min-width: 1200px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .header h1 {
+            font-size: 1.6rem;
+            color: #1B5E20;
+            font-weight: 800;
+        }
+        .header p {
+            color: #999;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* Sitemap tree */
+        .sitemap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* Node styles */
+        .node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .node-box {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-align: center;
+            white-space: nowrap;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        /* Level 0 - Root */
+        .level-0 > .node-box {
+            background: #1B5E20;
+            color: white;
+            font-size: 1.1rem;
+            padding: 14px 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(27,94,32,0.25);
+        }
+
+        /* Level 1 - Pre-app flow */
+        .level-pre > .node-box {
+            background: #E8F5E9;
+            color: #1B5E20;
+            border: 2px solid #A5D6A7;
+        }
+
+        /* Level 1 - Main tabs */
+        .level-1 > .node-box {
+            background: #2E7D32;
+            color: white;
+            font-size: 0.9rem;
+            padding: 12px 24px;
+            box-shadow: 0 3px 12px rgba(46,125,50,0.2);
+        }
+
+        /* Level 2 */
+        .level-2 > .node-box {
+            background: white;
+            color: #333;
+            border: 2px solid #C8E6C9;
+        }
+
+        /* Level 3 */
+        .level-3 > .node-box {
+            background: #F5F7F5;
+            color: #666;
+            border: 1px solid #e0e0e0;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 8px 14px;
+        }
+
+        /* Action badge */
+        .action-badge {
+            display: inline-block;
+            background: #FB8C00;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        .action-badge.blue {
+            background: #1E88E5;
+        }
+        .action-badge.green {
+            background: #43A047;
+        }
+
+        /* Connectors */
+        .connector-v {
+            width: 2px;
+            height: 24px;
+            background: #C8E6C9;
+        }
+        .connector-v.short {
+            height: 16px;
+        }
+
+        /* Horizontal groups */
+        .h-group {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            position: relative;
+        }
+        .h-group-tight {
+            gap: 16px;
+        }
+
+        /* Horizontal connector bar */
+        .h-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .h-bar {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+        }
+        .h-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #C8E6C9;
+        }
+
+        /* Children columns */
+        .children {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* Section wrapper */
+        .section-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* Pre-app section */
+        .pre-app {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .pre-app .section-col .level-2 > .node-box {
+            background: #FFF8E1;
+            border-color: #FFE082;
+            color: #F57F17;
+        }
+
+        /* Tabs row */
+        .tabs-row {
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
+            position: relative;
+        }
+        .tabs-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 80px;
+            right: 80px;
+            height: 2px;
+            background: #A5D6A7;
+        }
+
+        /* Tab column */
+        .tab-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            min-width: 160px;
+        }
+
+        /* Subpages */
+        .subpages {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+        }
+
+        /* Overlay section */
+        .overlay-section {
+            position: relative;
+            margin-top: 8px;
+        }
+        .overlay-label {
+            font-size: 0.7rem;
+            color: #999;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Macroly - Site Map</h1>
+        <p>Arquitectura de informacion &mdash; Web App Responsiva</p>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-dot" style="background:#1B5E20;"></div> Raiz
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background:#E8F5E9; border:1.5px solid #A5D6A7;"></div> Flujo pre-app
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background:#2E7D32;"></div> Navegacion principal (tabs)
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background:white; border:1.5px solid #C8E6C9;"></div> Paginas
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background:#F5F7F5; border:1.5px solid #e0e0e0;"></div> Sub-secciones
+        </div>
+        <div class="legend-item">
+            <span class="action-badge" style="font-size:0.65rem;">A1</span> Accion de usuario
+        </div>
+    </div>
+
+    <div class="sitemap">
+
+        <!-- ROOT -->
+        <div class="node level-0">
+            <div class="node-box">macroly.com</div>
+        </div>
+        <div class="connector-v"></div>
+
+        <!-- PRE-APP: Login / Onboarding -->
+        <div class="overlay-section">
+            <div class="overlay-label">Flujo de entrada</div>
+            <div class="pre-app">
+                <div class="section-col">
+                    <div class="node level-pre">
+                        <div class="node-box">Login / Registro</div>
+                    </div>
+                    <div class="connector-v short"></div>
+                    <div class="subpages">
+                        <div class="node level-3"><div class="node-box">Email + Password</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-3"><div class="node-box">OAuth (Google)</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-3"><div class="node-box">Recuperar contrasena</div></div>
+                    </div>
+                </div>
+                <div class="section-col">
+                    <div class="node level-pre">
+                        <div class="node-box">Onboarding <span class="action-badge green">A1</span></div>
+                    </div>
+                    <div class="connector-v short"></div>
+                    <div class="subpages">
+                        <div class="node level-3"><div class="node-box">Datos personales</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-3"><div class="node-box">Objetivo nutricional</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-3"><div class="node-box">Metas de macros</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-3"><div class="node-box">Preferencias / alergias</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="connector-v"></div>
+
+        <!-- MAIN NAV TABS -->
+        <div class="overlay-section">
+            <div class="overlay-label">Navegacion principal (navbar / tabs)</div>
+            <div class="tabs-row">
+
+                <!-- TAB 1: Inicio -->
+                <div class="tab-col">
+                    <div class="connector-v"></div>
+                    <div class="node level-1">
+                        <div class="node-box">Inicio</div>
+                    </div>
+                    <div class="connector-v short"></div>
+                    <div class="subpages">
+                        <div class="node level-2"><div class="node-box">Progreso diario de macros</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Resumen del carrito</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2">
+                            <div class="node-box">Recomendaciones <span class="action-badge">A4</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Notificaciones</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="subpages">
+                            <div class="node level-3"><div class="node-box">Pedido en camino</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Pedido entregado</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Recordatorio semanal</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Catalogo -->
+                <div class="tab-col">
+                    <div class="connector-v"></div>
+                    <div class="node level-1">
+                        <div class="node-box">Catalogo</div>
+                    </div>
+                    <div class="connector-v short"></div>
+                    <div class="subpages">
+                        <div class="node level-2">
+                            <div class="node-box">Busqueda y filtros <span class="action-badge">A2</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="subpages">
+                            <div class="node level-3"><div class="node-box">Por categoria</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Por macronutriente</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Por rango calorico</div></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Lista de productos</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Detalle de producto</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="subpages">
+                            <div class="node level-3"><div class="node-box">Info nutricional</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Impacto en macros</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Agregar al carrito</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Carrito -->
+                <div class="tab-col">
+                    <div class="connector-v"></div>
+                    <div class="node level-1">
+                        <div class="node-box">Carrito</div>
+                    </div>
+                    <div class="connector-v short"></div>
+                    <div class="subpages">
+                        <div class="node level-2">
+                            <div class="node-box">Progreso de macros <span class="action-badge">A3</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Lista de productos</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2">
+                            <div class="node-box">Sugerencias <span class="action-badge">A4</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Checkout</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="subpages">
+                            <div class="node level-3"><div class="node-box">Direccion de envio</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Metodo de pago</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Confirmacion</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: Educacion -->
+                <div class="tab-col">
+                    <div class="connector-v"></div>
+                    <div class="node level-1">
+                        <div class="node-box">Educacion</div>
+                    </div>
+                    <div class="connector-v short"></div>
+                    <div class="subpages">
+                        <div class="node level-2">
+                            <div class="node-box">Articulos <span class="action-badge blue">A6</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Tips nutricionales</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Guias de macros</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Detalle articulo</div></div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: Perfil -->
+                <div class="tab-col">
+                    <div class="connector-v"></div>
+                    <div class="node level-1">
+                        <div class="node-box">Perfil</div>
+                    </div>
+                    <div class="connector-v short"></div>
+                    <div class="subpages">
+                        <div class="node level-2">
+                            <div class="node-box">Config. nutricional <span class="action-badge green">A1</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2">
+                            <div class="node-box">Favoritos <span class="action-badge green">A7</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="subpages">
+                            <div class="node level-3"><div class="node-box">Combinaciones guardadas</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Recompra rapida</div></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2">
+                            <div class="node-box">Pedido recurrente <span class="action-badge">A5</span></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="subpages">
+                            <div class="node level-3"><div class="node-box">Config. semanal</div></div>
+                            <div class="connector-v short"></div>
+                            <div class="node level-3"><div class="node-box">Historial de pedidos</div></div>
+                        </div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Datos personales</div></div>
+                        <div class="connector-v short"></div>
+                        <div class="node level-2"><div class="node-box">Cerrar sesion</div></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <p style="color:#bbb; font-size:0.75rem; margin-top:24px;">Macroly &mdash; Site Map v1.0 &mdash; Web App Responsiva</p>
+</body>
+</html>
