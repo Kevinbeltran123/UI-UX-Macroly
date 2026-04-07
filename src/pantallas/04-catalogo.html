@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macroly - Catalogo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#E8E8E8;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.phone{width:390px;height:844px;background:#F5F7F5;border-radius:40px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.2);display:flex;flex-direction:column;position:relative}
+.content{flex:1;overflow-y:auto;padding:16px 20px 80px}
+h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:#333;margin-bottom:14px}
+.search{background:#fff;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;border:2px solid #E0E0E0}
+.search input{border:none;outline:none;flex:1;font-size:13px;color:#333;font-family:'Inter',sans-serif;background:transparent}
+.search input::placeholder{color:#9CA3AF}
+.filter-btn{width:30px;height:30px;border-radius:8px;background:#E8F5E9;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.macro-mini{background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid #F0F0F0;display:flex;gap:12px}
+.mm-item{flex:1}
+.mm-top{display:flex;justify-content:space-between;margin-bottom:3px}
+.mm-top span:first-child{font-size:9px;font-weight:700}
+.mm-top span:last-child{font-size:9px;color:#6B7280}
+.mm-track{height:4px;border-radius:2px}
+.mm-fill{height:100%;border-radius:2px}
+.cat-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px}
+.cat-chips::-webkit-scrollbar{display:none}
+.cat-chip{padding:7px 14px;border-radius:50px;white-space:nowrap;font-size:11px;font-weight:600;cursor:pointer;border:1px solid #E0E0E0;background:#fff;color:#333;flex-shrink:0}
+.cat-chip.active{background:#2E7D32;color:#fff;border-color:#2E7D32}
+.macro-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:6px}
+.macro-chips::-webkit-scrollbar{display:none}
+.m-chip{padding:6px 12px;border-radius:50px;white-space:nowrap;font-size:10px;font-weight:600;cursor:pointer;flex-shrink:0;border:1.5px solid #C8E6C9;background:#E8F5E9;color:#2E7D32}
+.m-chip.inactive{background:#fff;border-color:#E0E0E0;color:#6B7280}
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.p-card{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #F0F0F0}
+.p-img{height:100px;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);position:relative}
+.p-prot{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.92);border-radius:50px;padding:3px 8px;font-size:9px;font-weight:700;color:#43A047}
+.p-info{padding:10px 12px 12px}
+.p-name{font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:#333;margin-bottom:2px}
+.p-brand{font-size:10px;color:#6B7280;margin-bottom:6px}
+.p-macros{display:flex;gap:3px;margin-bottom:6px}
+.p-chip{font-size:8px;padding:2px 6px;border-radius:50px;font-weight:600}
+.chip-pr{background:#E8F5E9;color:#43A047}
+.chip-ca{background:#FFF3E0;color:#FB8C00}
+.chip-fa{background:#E3F2FD;color:#1E88E5}
+.p-bottom{display:flex;justify-content:space-between;align-items:center}
+.p-price{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:#333}
+.p-add{width:28px;height:28px;border-radius:8px;background:#2E7D32;border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.bottom-nav{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid #F0F0F0;display:flex;justify-content:space-around;padding:8px 0 14px}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px 10px}
+.nav-item span{font-size:9px;font-weight:600}
+.nav-item.active span{color:#1B5E20}
+.nav-item:not(.active){opacity:.45}
+.nav-item:not(.active) span{color:#333}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="content">
+    <h1>Catalogo</h1>
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="Buscar productos...">
+      <button class="filter-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg></button>
+    </div>
+    <div class="macro-mini">
+      <div class="mm-item"><div class="mm-top"><span style="color:#43A047">P</span><span>55/150g</span></div><div class="mm-track" style="background:#E8F5E9"><div class="mm-fill" style="width:37%;background:#43A047"></div></div></div>
+      <div class="mm-item"><div class="mm-top"><span style="color:#FB8C00">C</span><span>0/250g</span></div><div class="mm-track" style="background:#FFF3E0"><div class="mm-fill" style="width:0%;background:#FB8C00"></div></div></div>
+      <div class="mm-item"><div class="mm-top"><span style="color:#1E88E5">G</span><span>3/65g</span></div><div class="mm-track" style="background:#E3F2FD"><div class="mm-fill" style="width:5%;background:#1E88E5"></div></div></div>
+    </div>
+    <div class="cat-chips">
+      <span class="cat-chip active">Todos</span><span class="cat-chip">Proteinas</span><span class="cat-chip">Carbohidratos</span><span class="cat-chip">Grasas saludables</span><span class="cat-chip">Lacteos</span><span class="cat-chip">Frutas</span>
+    </div>
+    <div class="macro-chips">
+      <span class="m-chip">Alto en proteina</span><span class="m-chip inactive">Bajo en carbos</span><span class="m-chip inactive">Bajo en grasa</span><span class="m-chip inactive">Mejor precio/g</span>
+    </div>
+    <div class="product-grid">
+      <div class="p-card"><div class="p-img"><div class="p-prot">55g prot</div></div><div class="p-info"><div class="p-name">Pechuga de Pollo</div><div class="p-brand">Pollos Bucanero · 500g</div><div class="p-macros"><span class="p-chip chip-pr">P 55g</span><span class="p-chip chip-ca">C 0g</span><span class="p-chip chip-fa">G 3g</span></div><div class="p-bottom"><span class="p-price">$12.500</span><button class="p-add">+</button></div></div></div>
+      <div class="p-card"><div class="p-img"><div class="p-prot">72g prot</div></div><div class="p-info"><div class="p-name">Proteina Whey</div><div class="p-brand">Star Nutrition · 908g</div><div class="p-macros"><span class="p-chip chip-pr">P 72g</span><span class="p-chip chip-ca">C 8g</span><span class="p-chip chip-fa">G 4g</span></div><div class="p-bottom"><span class="p-price">$89.900</span><button class="p-add">+</button></div></div></div>
+      <div class="p-card"><div class="p-img"><div class="p-prot">72g prot</div></div><div class="p-info"><div class="p-name">Huevos AAA x12</div><div class="p-brand">Santa Reyes · 780g</div><div class="p-macros"><span class="p-chip chip-pr">P 72g</span><span class="p-chip chip-ca">C 0g</span><span class="p-chip chip-fa">G 60g</span></div><div class="p-bottom"><span class="p-price">$8.900</span><button class="p-add">+</button></div></div></div>
+      <div class="p-card"><div class="p-img"><div class="p-prot">17g prot</div></div><div class="p-info"><div class="p-name">Avena en Hojuelas</div><div class="p-brand">Quaker · 500g</div><div class="p-macros"><span class="p-chip chip-pr">P 17g</span><span class="p-chip chip-ca">C 134g</span><span class="p-chip chip-fa">G 14g</span></div><div class="p-bottom"><span class="p-price">$5.400</span><button class="p-add">+</button></div></div></div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="m3 9 9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+    <button class="nav-item active"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B5E20" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Catalogo</span></button>
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57l1.65-7.43H5.12"/></svg><span>Carrito</span></button>
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg><span>Educacion</span></button>
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+  </nav>
+</div>
+</body>
+</html>

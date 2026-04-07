@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macroly - Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#E8E8E8;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.phone{width:390px;height:844px;background:#F5F7F5;border-radius:40px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.2);display:flex;flex-direction:column}
+.content{flex:1;padding:40px 28px 24px;display:flex;flex-direction:column}
+.dots{display:flex;gap:8px;justify-content:center;margin-bottom:32px}
+.dot{width:10px;height:10px;border-radius:50%;background:#E0E0E0}
+.dot.active{background:#2E7D32;width:24px;border-radius:5px}
+h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;color:#333;text-align:center;margin-bottom:6px}
+.subtitle{text-align:center;font-size:13px;color:#6B7280;margin-bottom:32px}
+.slider-section{margin-bottom:24px}
+.slider-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.slider-label{font-size:14px;font-weight:700}
+.slider-value{font-size:16px;font-weight:800;font-family:'Nunito',sans-serif}
+.slider-track{position:relative;height:8px;border-radius:4px;margin-bottom:6px}
+.slider-fill{height:100%;border-radius:4px;position:absolute;top:0;left:0}
+.slider-thumb{width:22px;height:22px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2);position:absolute;top:-7px}
+.slider-range{display:flex;justify-content:space-between;font-size:11px;color:#9CA3AF}
+.s-protein .slider-label,.s-protein .slider-value{color:#43A047}
+.s-protein .slider-track{background:#E8F5E9}
+.s-protein .slider-fill{background:#43A047;width:40%}
+.s-protein .slider-thumb{background:#43A047;left:38%}
+.s-carbs .slider-label,.s-carbs .slider-value{color:#FB8C00}
+.s-carbs .slider-track{background:#FFF3E0}
+.s-carbs .slider-fill{background:#FB8C00;width:37%}
+.s-carbs .slider-thumb{background:#FB8C00;left:35%}
+.s-fat .slider-label,.s-fat .slider-value{color:#1E88E5}
+.s-fat .slider-track{background:#E3F2FD}
+.s-fat .slider-fill{background:#1E88E5;width:35%}
+.s-fat .slider-thumb{background:#1E88E5;left:33%}
+.cal-card{background:#F3EFFE;border:1px solid rgba(139,92,246,.15);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;margin-bottom:auto}
+.cal-icon{width:40px;height:40px;border-radius:12px;background:#8B5CF6;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cal-value{font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:#8B5CF6}
+.cal-sub{font-size:11px;color:#9CA3AF;margin-top:2px}
+.btn-start{width:100%;padding:16px;background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 4px 16px rgba(46,125,50,.3);margin-top:28px}
+.skip{text-align:center;margin-top:14px;font-size:13px;color:#43A047;font-weight:600}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="content">
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
+    <h1>Configura tus metas</h1>
+    <p class="subtitle">Define tus objetivos diarios de macronutrientes</p>
+    <div class="slider-section s-protein">
+      <div class="slider-header"><span class="slider-label">Proteina</span><span class="slider-value">150g</span></div>
+      <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+      <div class="slider-range"><span>50g</span><span>300g</span></div>
+    </div>
+    <div class="slider-section s-carbs">
+      <div class="slider-header"><span class="slider-label">Carbohidratos</span><span class="slider-value">250g</span></div>
+      <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+      <div class="slider-range"><span>100g</span><span>500g</span></div>
+    </div>
+    <div class="slider-section s-fat">
+      <div class="slider-header"><span class="slider-label">Grasas</span><span class="slider-value">65g</span></div>
+      <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+      <div class="slider-range"><span>20g</span><span>150g</span></div>
+    </div>
+    <div class="cal-card">
+      <div class="cal-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div>
+      <div><div class="cal-value">= 2,185 kcal/dia</div><div class="cal-sub">Calculado automaticamente</div></div>
+    </div>
+    <button class="btn-start">Comenzar</button>
+    <p class="skip">Saltar por ahora</p>
+  </div>
+</div>
+</body>
+</html>

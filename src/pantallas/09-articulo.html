@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macroly - Articulo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#E8E8E8;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.phone{width:390px;height:844px;background:#F5F7F5;border-radius:40px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.2);display:flex;flex-direction:column;position:relative}
+.content{flex:1;overflow-y:auto;padding:0 20px 80px}
+.back{display:flex;align-items:center;gap:6px;font-size:13px;color:#2E7D32;font-weight:600;padding:14px 0;background:none;border:none;cursor:pointer}
+h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:#333;margin-bottom:6px}
+.meta{display:flex;gap:8px;margin-bottom:20px}
+.tag{font-size:12px;color:#2E7D32;font-weight:600}
+.time{font-size:12px;color:#9CA3AF}
+.section{margin-bottom:20px}
+.section h3{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;margin-bottom:8px}
+.section p{font-size:13px;color:#6B7280;line-height:1.6}
+.tip{border-radius:12px;padding:14px 16px;margin-top:10px;font-size:12px;line-height:1.5}
+.tip-green{background:#E8F5E9;border-left:4px solid #43A047;color:#1B5E20}
+.tip-orange{background:#FFF3E0;border-left:4px solid #FB8C00;color:#E65100}
+.tip-blue{background:#E3F2FD;border-left:4px solid #1E88E5;color:#0D47A1}
+.related-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:#333;margin:20px 0 10px}
+.related-row{display:flex;gap:10px}
+.rel-card{flex:1;background:#fff;border-radius:12px;padding:10px;border:1px solid #F0F0F0}
+.rel-img{height:60px;border-radius:8px;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);margin-bottom:6px}
+.rel-name{font-size:11px;font-weight:700;color:#333;margin-bottom:2px}
+.rel-chip{font-size:9px;padding:2px 6px;border-radius:50px;font-weight:600;background:#E8F5E9;color:#43A047;display:inline-block;margin-bottom:4px}
+.rel-price{font-size:12px;font-weight:800;color:#333;margin-bottom:4px}
+.rel-add{width:100%;padding:5px;border-radius:6px;background:#E8F5E9;border:none;color:#2E7D32;font-size:10px;font-weight:700;cursor:pointer}
+.bottom-nav{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid #F0F0F0;display:flex;justify-content:space-around;padding:8px 0 14px}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px 10px}
+.nav-item span{font-size:9px;font-weight:600}
+.nav-item.active span{color:#1B5E20}
+.nav-item:not(.active){opacity:.45}
+.nav-item:not(.active) span{color:#333}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="content">
+    <button class="back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Volver</button>
+    <h2>Que son los macronutrientes?</h2>
+    <div class="meta"><span class="tag">Basico</span><span class="time">· 5 min lectura</span></div>
+    <div class="section">
+      <h3 style="color:#43A047">Proteinas</h3>
+      <p>Las proteinas son macronutrientes esenciales para la reparacion y crecimiento muscular. Estan compuestas por aminoacidos, los bloques de construccion del cuerpo.</p>
+      <div class="tip tip-green">Las proteinas son esenciales para la reparacion muscular. Fuentes: pollo, pescado, huevos, legumbres.</div>
+    </div>
+    <div class="section">
+      <h3 style="color:#FB8C00">Carbohidratos</h3>
+      <p>Los carbohidratos son la principal fuente de energia del cuerpo. Se descomponen en glucosa, que alimenta tus celulas y tu cerebro.</p>
+      <div class="tip tip-orange">Los carbohidratos son la principal fuente de energia. Elige integrales para mayor saciedad.</div>
+    </div>
+    <div class="section">
+      <h3 style="color:#1E88E5">Grasas</h3>
+      <p>Las grasas saludables son vitales para la produccion hormonal, absorcion de vitaminas y proteccion de organos.</p>
+      <div class="tip tip-blue">Las grasas saludables son vitales para las hormonas. Fuentes: aguacate, frutos secos, aceite de oliva.</div>
+    </div>
+    <div class="related-title">Productos relacionados</div>
+    <div class="related-row">
+      <div class="rel-card"><div class="rel-img"></div><div class="rel-name">Pechuga de Pollo</div><span class="rel-chip">P 55g</span><div class="rel-price">$12.500</div><button class="rel-add">+ Agregar</button></div>
+      <div class="rel-card"><div class="rel-img"></div><div class="rel-name">Avena en Hojuelas</div><span class="rel-chip" style="background:#FFF3E0;color:#FB8C00">C 134g</span><div class="rel-price">$5.400</div><button class="rel-add">+ Agregar</button></div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="m3 9 9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Catalogo</span></button>
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57l1.65-7.43H5.12"/></svg><span>Carrito</span></button>
+    <button class="nav-item active"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B5E20" stroke-width="2.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg><span>Educacion</span></button>
+    <button class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+  </nav>
+</div>
+</body>
+</html>
