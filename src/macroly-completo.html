@@ -42,6 +42,7 @@ body{background:#E8E8E8;font-family:'Inter',sans-serif;min-height:100vh}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes dots{0%,100%{opacity:.3}50%{opacity:1}}
 @keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes badgePulse{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
 input[type="range"]{-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;outline:none}
 input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;margin-top:-7px;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
@@ -123,6 +124,8 @@ return <svg width={size} height={size} viewBox="0 0 24 24" fill="none">{icons[na
 }
 
 function dayName(k){return{L:"Lunes",M:"Martes",Mi:"Miercoles",J:"Jueves",V:"Viernes",S:"Sabado",D:"Domingo"}[k]||k}
+function daysText(arr){if(!arr||arr.length===0)return"";if(arr.length===7)return"todos los dias";return arr.map(dayName).join(", ")}
+function toggleDay(arr,d){return arr.includes(d)?arr.filter(x=>x!==d):[...arr,d]}
 
 const PRODUCTS=[
 {id:1,name:"Pechuga de Pollo",brand:"Pollos Bucanero",weight:"500g",img:"https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&h=400&fit=crop",price:12500,protein:55,carbs:0,fat:3,calories:247,category:"proteina",rating:4.8},
@@ -430,7 +433,7 @@ function ArticleDetail({article,onBack,addToCart,setTab,setSelProduct,compact=fa
    ══════════════════════════════════════════ */
 function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,filtered,cartTotal,alert,tab,setTab,selProduct,setSelProduct,setGoals,
   macroFilter,setMacroFilter,editingGoals,setEditingGoals,draftGoals,setDraftGoals,
-  orderHistory,setOrderHistory,recurringEnabled,setRecurringEnabled,recurringDay,setRecurringDay,recurringItems,setRecurringItems,
+  orderHistory,setOrderHistory,recurringEnabled,setRecurringEnabled,recurringDays,setRecurringDays,recurringItems,setRecurringItems,
   selectedArticle,setSelectedArticle,
   favorites,setFavorites,
   showCheckoutModal,setShowCheckoutModal,setCart,
@@ -479,13 +482,13 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
         <div style={{display:"flex",alignItems:"center",gap:8,background:C.bg,borderRadius:12,padding:"9px 16px",border:"2px solid "+C.border,width:260}}>
           <Icon name="search" size={16} color={C.muted}/><input value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} placeholder="Buscar productos..." style={{background:"transparent",border:"none",outline:"none",flex:1,fontSize:13,color:C.text,fontFamily:"'Inter',sans-serif"}}/>
         </div>
-        <button onClick={()=>setAlert({t:"ok",m:"No tienes notificaciones nuevas"})} style={{position:"relative",width:42,height:42,borderRadius:12,background:C.bg,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
+        <button onClick={()=>setAlert({t:"ok",m:"No tienes notificaciones nuevas"})} aria-label="Notificaciones" style={{position:"relative",width:42,height:42,borderRadius:12,background:C.bg,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
           <Icon name="bell" size={18} color={C.text}/>
         </button>
         <button onClick={()=>setTab("cart")} style={{position:"relative",display:"flex",alignItems:"center",gap:8,padding:"9px 18px",borderRadius:12,background:tab==="cart"?C.primary:C.bg,border:tab==="cart"?"none":"1px solid "+C.border,color:tab==="cart"?"#fff":C.text,cursor:"pointer",fontWeight:600,fontSize:13}}>
           <Icon name="cart" size={18} color={tab==="cart"?"#fff":C.text}/>
           <span>Carrito</span>
-          {cart.length>0&&<div style={{background:C.accent,color:"#fff",borderRadius:10,minWidth:20,height:20,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,padding:"0 6px"}}>{cart.reduce((a,i)=>a+i.qty,0)}</div>}
+          {cart.length>0&&<div key={cart.reduce((a,i)=>a+i.qty,0)} style={{background:C.accent,color:"#fff",borderRadius:10,minWidth:20,height:20,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,padding:"0 6px",animation:"badgePulse .3s ease"}}>{cart.reduce((a,i)=>a+i.qty,0)}</div>}
         </button>
       </div>
     </header>
@@ -493,6 +496,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
     {/* Alert */}
     {alert&&<div style={{position:"fixed",top:80,left:"50%",transform:"translateX(-50%)",zIndex:100,background:alert.t==="warn"?"#FEF3C7":"#DCFCE7",border:"1px solid "+(alert.t==="warn"?"#F59E0B":"#10B981"),borderRadius:14,padding:"14px 24px",fontSize:14,fontWeight:600,color:alert.t==="warn"?"#92400E":"#065F46",boxShadow:"0 8px 30px rgba(0,0,0,.15)",animation:"slideDown .3s ease",display:"flex",alignItems:"center",gap:10}}>
       <Icon name={alert.t==="warn"?"info":"check"} size={18} color={alert.t==="warn"?"#F59E0B":"#10B981"}/>{alert.m}
+      <button onClick={()=>setAlert(null)} style={{background:"none",border:"none",cursor:"pointer",marginLeft:8,padding:2}} aria-label="Cerrar alerta"><Icon name="x" size={14} color={alert.t==="warn"?"#92400E":"#065F46"}/></button>
     </div>}
 
     {/* ── CHECKOUT MODAL (unified: save + recurring + confirm) ── */}
@@ -517,14 +521,15 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
       {/* Recurring option */}
       <div style={{background:C.accentLight,borderRadius:14,padding:20,border:"1px solid "+C.accent+"30",marginBottom:20}}>
         <p style={{margin:"0 0 10px",fontSize:14,fontWeight:700,color:C.text}}>Repetir este pedido cada semana?</p>
-        <p style={{margin:"0 0 14px",fontSize:12,color:C.sub}}>Selecciona el dia de entrega:</p>
-        <div style={{display:"flex",gap:6,marginBottom:16}}>
-          {[{k:"L",v:"Lunes"},{k:"M",v:"Martes"},{k:"Mi",v:"Miercoles"},{k:"J",v:"Jueves"},{k:"V",v:"Viernes"},{k:"S",v:"Sabado"},{k:"D",v:"Domingo"}].map(d=>
-            <button key={d.k} onClick={()=>setRecurringDay(d.k)} style={{flex:1,height:40,borderRadius:10,background:recurringDay===d.k?C.primary:C.card,color:recurringDay===d.k?"#fff":C.sub,border:recurringDay===d.k?"none":"1px solid "+C.border,cursor:"pointer",fontSize:12,fontWeight:700,transition:"all .2s"}}>{d.k}</button>
+        <p style={{margin:"0 0 14px",fontSize:12,color:C.sub}}>Selecciona los dias de entrega:</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:6,marginBottom:16}}>
+          {["L","M","Mi","J","V","S","D"].map(d=>
+            <button key={d} onClick={()=>setRecurringDays(prev=>toggleDay(prev,d))} style={{height:40,borderRadius:10,background:recurringDays.includes(d)?C.primary:C.card,color:recurringDays.includes(d)?"#fff":C.sub,border:recurringDays.includes(d)?"none":"1px solid "+C.border,cursor:"pointer",fontSize:12,fontWeight:700,transition:"all .2s"}}>{d}</button>
           )}
         </div>
+        {recurringDays.length>0&&<p style={{margin:"0 0 12px",fontSize:12,color:C.sub}}>Entrega: {daysText(recurringDays)}</p>}
         <div style={{display:"flex",gap:10}}>
-          <button onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setRecurringDay(recurringDay);setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido recurrente activado cada "+dayName(recurringDay)})}} style={{flex:1,padding:13,borderRadius:12,background:C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+          <button disabled={recurringDays.length===0} onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido recurrente activado: "+daysText(recurringDays)})}} style={{flex:1,padding:13,borderRadius:12,background:recurringDays.length===0?"#ccc":C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:14,cursor:recurringDays.length===0?"not-allowed":"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
             <Icon name="repeat" size={16} color="#fff"/> Activar recurrencia
           </button>
           <button onClick={()=>{setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido realizado exitosamente"})}} style={{flex:1,padding:13,borderRadius:12,background:C.card,border:"2px solid "+C.border,color:C.sub,fontWeight:600,fontSize:14,cursor:"pointer"}}>Solo esta vez</button>
@@ -731,9 +736,9 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                 </div>
                 <span style={{fontSize:15,fontWeight:700,color:C.text,minWidth:80,textAlign:"right"}}>${(item.price*item.qty).toLocaleString()}</span>
                 <div style={{display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
-                  <button onClick={()=>rmFromCart(item.id)} style={{width:32,height:32,borderRadius:8,background:C.fatLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="minus" size={14} color={C.fat}/></button>
+                  <button onClick={()=>rmFromCart(item.id)} aria-label="Reducir cantidad" style={{width:32,height:32,borderRadius:8,background:C.fatLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="minus" size={14} color={C.fat}/></button>
                   <span style={{fontSize:15,fontWeight:700,minWidth:20,textAlign:"center"}}>{item.qty}</span>
-                  <button onClick={()=>addToCart(item)} style={{width:32,height:32,borderRadius:8,background:C.primaryLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="plus" size={14} color={C.primary}/></button>
+                  <button onClick={()=>addToCart(item)} aria-label="Aumentar cantidad" style={{width:32,height:32,borderRadius:8,background:C.primaryLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="plus" size={14} color={C.primary}/></button>
                 </div>
               </div>)}
               {/* Save favorite from cart */}
@@ -899,7 +904,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
                     <div style={{width:10,height:10,borderRadius:5,background:C.success}}/>
                     <span style={{fontSize:13,fontWeight:600,color:C.success}}>Activo</span>
-                    <span style={{fontSize:12,color:C.sub}}>· Cada {dayName(recurringDay)}</span>
+                    <span style={{fontSize:12,color:C.sub}}>· Cada {daysText(recurringDays)}</span>
                   </div>
                   {recurringItems.length>0&&<div style={{background:C.bg,borderRadius:12,padding:14,marginBottom:14}}>
                     <p style={{margin:"0 0 8px",fontSize:12,fontWeight:700,color:C.text}}>Productos del pedido:</p>
@@ -940,7 +945,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
    ══════════════════════════════════════════ */
 function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,filtered,cartTotal,alert,tab,setTab,selProduct,setSelProduct,setGoals,
   macroFilter,setMacroFilter,editingGoals,setEditingGoals,draftGoals,setDraftGoals,
-  orderHistory,setOrderHistory,recurringEnabled,setRecurringEnabled,recurringDay,setRecurringDay,recurringItems,setRecurringItems,
+  orderHistory,setOrderHistory,recurringEnabled,setRecurringEnabled,recurringDays,setRecurringDays,recurringItems,setRecurringItems,
   selectedArticle,setSelectedArticle,
   favorites,setFavorites,
   showCheckoutModal,setShowCheckoutModal,setCart,
@@ -973,6 +978,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
   return <div style={{width:390,height:844,margin:"0 auto",borderRadius:40,overflow:"hidden",boxShadow:"0 20px 80px rgba(0,0,0,.2), 0 0 0 1px rgba(0,0,0,.05)",background:C.bg,display:"flex",flexDirection:"column",position:"relative"}}>
     {alert&&<div style={{position:"absolute",top:14,left:16,right:16,zIndex:100,background:alert.t==="warn"?"#FEF3C7":"#DCFCE7",border:"1px solid "+(alert.t==="warn"?"#F59E0B":"#10B981"),borderRadius:14,padding:"12px 16px",fontSize:13,fontWeight:600,color:alert.t==="warn"?"#92400E":"#065F46",boxShadow:"0 6px 24px rgba(0,0,0,.12)",animation:"slideDown .3s ease",display:"flex",alignItems:"center",gap:8}}>
       <Icon name={alert.t==="warn"?"info":"check"} size={16} color={alert.t==="warn"?"#F59E0B":"#10B981"}/>{alert.m}
+      <button onClick={()=>setAlert(null)} style={{background:"none",border:"none",cursor:"pointer",marginLeft:8,padding:2}} aria-label="Cerrar alerta"><Icon name="x" size={14} color={alert.t==="warn"?"#92400E":"#065F46"}/></button>
     </div>}
 
     {/* CHECKOUT MODAL MOBILE (unified) */}
@@ -996,14 +1002,15 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       {/* Recurring */}
       <div style={{background:C.accentLight,borderRadius:12,padding:16,border:"1px solid "+C.accent+"30",marginBottom:16}}>
         <p style={{margin:"0 0 8px",fontSize:13,fontWeight:700,color:C.text}}>Repetir cada semana?</p>
-        <p style={{margin:"0 0 10px",fontSize:11,color:C.sub}}>Elige dia de entrega:</p>
-        <div style={{display:"flex",gap:4,marginBottom:14}}>
+        <p style={{margin:"0 0 10px",fontSize:11,color:C.sub}}>Elige los dias de entrega:</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4,marginBottom:14}}>
           {["L","M","Mi","J","V","S","D"].map(d=>
-            <button key={d} onClick={()=>setRecurringDay(d)} style={{flex:1,height:34,borderRadius:8,background:recurringDay===d?C.primary:C.card,color:recurringDay===d?"#fff":C.sub,border:recurringDay===d?"none":"1px solid "+C.border,cursor:"pointer",fontSize:11,fontWeight:700}}>{d}</button>
+            <button key={d} onClick={()=>setRecurringDays(prev=>toggleDay(prev,d))} style={{minWidth:0,padding:0,height:34,borderRadius:8,background:recurringDays.includes(d)?C.primary:C.card,color:recurringDays.includes(d)?"#fff":C.sub,border:recurringDays.includes(d)?"none":"1px solid "+C.border,cursor:"pointer",fontSize:10,fontWeight:700}}>{d}</button>
           )}
         </div>
+        {recurringDays.length>0&&<p style={{margin:"0 0 10px",fontSize:11,color:C.sub}}>Entrega: {daysText(recurringDays)}</p>}
         <div style={{display:"flex",gap:8}}>
-          <button onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Recurrencia activada cada "+dayName(recurringDay)})}} style={{flex:1,padding:11,borderRadius:10,background:C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:12,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}>
+          <button disabled={recurringDays.length===0} onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Recurrencia activada: "+daysText(recurringDays)})}} style={{flex:1,padding:11,borderRadius:10,background:recurringDays.length===0?"#ccc":C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:12,cursor:recurringDays.length===0?"not-allowed":"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}>
             <Icon name="repeat" size={14} color="#fff"/> Activar
           </button>
           <button onClick={()=>{setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido realizado exitosamente"})}} style={{flex:1,padding:11,borderRadius:10,background:C.card,border:"2px solid "+C.border,color:C.sub,fontWeight:600,fontSize:12,cursor:"pointer"}}>Solo esta vez</button>
@@ -1016,7 +1023,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       {tab==="home"&&<div style={{padding:"0 20px 20px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 0 20px"}}>
           <div><p style={{margin:0,fontSize:12,color:C.sub}}>Buenos dias</p><h1 style={{margin:"2px 0 0",fontSize:20,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif"}}>Tu progreso hoy</h1></div>
-          <button onClick={()=>setAlert({t:"ok",m:"No tienes notificaciones nuevas"})} style={{width:38,height:38,borderRadius:12,background:C.card,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="bell" size={18} color={C.text}/></button>
+          <button onClick={()=>setAlert({t:"ok",m:"No tienes notificaciones nuevas"})} aria-label="Notificaciones" style={{width:38,height:38,borderRadius:12,background:C.card,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="bell" size={18} color={C.text}/></button>
         </div>
         {showOnboarding && <div style={{background:C.calLight,borderRadius:16,padding:"18px 20px",marginBottom:16,border:"1px solid "+C.cal+"25",display:"flex",alignItems:"flex-start",gap:14}}>
           <div style={{width:40,height:40,borderRadius:12,background:C.cal,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="target" size={20} color="#fff"/></div>
@@ -1066,7 +1073,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
         <div style={{padding:"16px 0 12px"}}><h1 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Catalogo</h1></div>
         <div style={{background:C.card,borderRadius:12,padding:"11px 14px",display:"flex",alignItems:"center",gap:10,marginBottom:14,border:"2px solid "+C.border}}>
           <Icon name="search" size={16} color={C.muted}/><input value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} placeholder="Buscar..." style={{background:"transparent",border:"none",outline:"none",flex:1,fontSize:13,color:C.text,fontFamily:"'Inter',sans-serif"}}/>
-          <button style={{width:30,height:30,borderRadius:8,background:C.primaryLight,border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="filter" size={14} color={C.primary}/></button>
+          <button aria-label="Filtros" style={{width:30,height:30,borderRadius:8,background:C.primaryLight,border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="filter" size={14} color={C.primary}/></button>
         </div>
         {cart.length>0&&<div style={{background:C.card,borderRadius:12,padding:"10px 14px",marginBottom:12,border:"1px solid "+C.borderL}}>
           <div style={{display:"flex",gap:12}}>
@@ -1132,9 +1139,9 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
           <div style={{width:48,height:48,borderRadius:10,overflow:"hidden",flexShrink:0,background:C.primaryLight}}><img src={item.img} alt={item.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none"}}/></div>
           <div style={{flex:1,minWidth:0}}><p style={{margin:0,fontSize:12,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>{item.name}</p><span style={{fontSize:10,color:C.sub}}>P:{item.protein*item.qty}g · C:{item.carbs*item.qty}g · G:{item.fat*item.qty}g</span></div>
           <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
-            <button onClick={()=>rmFromCart(item.id)} style={{width:26,height:26,borderRadius:7,background:C.fatLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="minus" size={12} color={C.fat}/></button>
+            <button onClick={()=>rmFromCart(item.id)} aria-label="Reducir cantidad" style={{width:26,height:26,borderRadius:7,background:C.fatLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="minus" size={12} color={C.fat}/></button>
             <span style={{fontSize:13,fontWeight:700}}>{item.qty}</span>
-            <button onClick={()=>addToCart(item)} style={{width:26,height:26,borderRadius:7,background:C.primaryLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="plus" size={12} color={C.primary}/></button>
+            <button onClick={()=>addToCart(item)} aria-label="Aumentar cantidad" style={{width:26,height:26,borderRadius:7,background:C.primaryLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="plus" size={12} color={C.primary}/></button>
           </div>
         </div>)}
         {cart.length>0&&<Fragment>
@@ -1265,7 +1272,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
             {recurringEnabled?<div style={{marginTop:10}}>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
                 <div style={{width:8,height:8,borderRadius:4,background:C.success}}/>
-                <span style={{fontSize:12,fontWeight:600,color:C.success}}>Activo · Cada {dayName(recurringDay)}</span>
+                <span style={{fontSize:12,fontWeight:600,color:C.success}}>Activo · Cada {daysText(recurringDays)}</span>
               </div>
               {recurringItems.length>0&&<p style={{margin:"0 0 10px",fontSize:11,color:C.sub}}>{recurringItems.map(i=>i.name).join(", ")}</p>}
               <div style={{display:"flex",gap:6}}>
@@ -1291,7 +1298,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
         const active=tab===t.id||(tab==="detail"&&t.id==="catalog");
         return <button key={t.id} onClick={()=>{setTab(t.id);setSelProduct(null);setSelectedArticle(null);setProfileSubView(null)}} style={{background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 10px",position:"relative",opacity:active?1:.45}}>
           <Icon name={t.icon} size={19} color={active?C.primary:C.text}/><span style={{fontSize:9,fontWeight:600,color:active?C.primary:C.text}}>{t.l}</span>
-          {t.badge>0&&<div style={{position:"absolute",top:-2,right:2,minWidth:15,height:15,borderRadius:8,background:C.accent,color:"#fff",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px"}}>{t.badge}</div>}
+          {t.badge>0&&<div key={t.badge} style={{position:"absolute",top:-2,right:2,minWidth:15,height:15,borderRadius:8,background:C.accent,color:"#fff",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px",animation:"badgePulse .3s ease"}}>{t.badge}</div>}
         </button>;
       })}
     </div>
@@ -1317,7 +1324,7 @@ function App(){
   /* A5: Orders & recurring */
   const [orderHistory,setOrderHistory]=useState([]);
   const [recurringEnabled,setRecurringEnabled]=useState(false);
-  const [recurringDay,setRecurringDay]=useState("L");
+  const [recurringDays,setRecurringDays]=useState(["L"]);
   const [recurringItems,setRecurringItems]=useState([]);
   const [showCheckoutModal,setShowCheckoutModal]=useState(null);
   /* A6: Articles */
@@ -1331,7 +1338,7 @@ function App(){
   /* Onboarding */
   const [showOnboarding,setShowOnboarding]=useState(true);
 
-  useEffect(()=>{if(alert){const t=setTimeout(()=>setAlert(null),3500);return()=>clearTimeout(t)}},[alert]);
+  useEffect(()=>{if(alert){const t=setTimeout(()=>setAlert(null),5000);return()=>clearTimeout(t)}},[alert]);
 
   const cm=cart.reduce((a,i)=>({protein:a.protein+i.protein*i.qty,carbs:a.carbs+i.carbs*i.qty,fat:a.fat+i.fat*i.qty,calories:a.calories+i.calories*i.qty}),{protein:0,carbs:0,fat:0,calories:0});
   const cartTotal=cart.reduce((a,i)=>a+i.price*i.qty,0);
@@ -1361,7 +1368,7 @@ function App(){
 
   const shared={cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,filtered,cartTotal,alert,tab,setTab,selProduct,setSelProduct,setGoals,
     macroFilter,setMacroFilter,editingGoals,setEditingGoals,draftGoals,setDraftGoals,
-    orderHistory,setOrderHistory,recurringEnabled,setRecurringEnabled,recurringDay,setRecurringDay,recurringItems,setRecurringItems,
+    orderHistory,setOrderHistory,recurringEnabled,setRecurringEnabled,recurringDays,setRecurringDays,recurringItems,setRecurringItems,
     selectedArticle,setSelectedArticle,
     favorites,setFavorites:origSetFavorites,
     showCheckoutModal,setShowCheckoutModal,setCart,
