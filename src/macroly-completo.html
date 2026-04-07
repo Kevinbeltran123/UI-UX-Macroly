@@ -122,6 +122,8 @@ x:<Fragment><line {...p} x1={18} y1={6} x2={6} y2={18}/><line {...p} x1={6} y1={
 return <svg width={size} height={size} viewBox="0 0 24 24" fill="none">{icons[name]||null}</svg>;
 }
 
+function dayName(k){return{L:"Lunes",M:"Martes",Mi:"Miercoles",J:"Jueves",V:"Viernes",S:"Sabado",D:"Domingo"}[k]||k}
+
 const PRODUCTS=[
 {id:1,name:"Pechuga de Pollo",brand:"Pollos Bucanero",weight:"500g",img:"https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&h=400&fit=crop",price:12500,protein:55,carbs:0,fat:3,calories:247,category:"proteina",rating:4.8},
 {id:2,name:"Arroz Integral",brand:"Diana",weight:"1kg",img:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop",price:6800,protein:14,carbs:152,fat:5,calories:710,category:"carbohidrato",rating:4.5},
@@ -432,7 +434,9 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
   selectedArticle,setSelectedArticle,
   favorites,setFavorites,
   showCheckoutModal,setShowCheckoutModal,setCart,
-  profileSubView,setProfileSubView}){
+  profileSubView,setProfileSubView,
+  searchQuery,setSearchQuery,
+  showOnboarding,setShowOnboarding,setAlert}){
 
   const recommendations=getRecommendations(cart,goals);
   const cartSuggestions=getRecommendations(cart,goals).slice(0,3);
@@ -473,9 +477,9 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
       </div>
       <div style={{display:"flex",alignItems:"center",gap:16}}>
         <div style={{display:"flex",alignItems:"center",gap:8,background:C.bg,borderRadius:12,padding:"9px 16px",border:"2px solid "+C.border,width:260}}>
-          <Icon name="search" size={16} color={C.muted}/><span style={{fontSize:13,color:C.muted,fontFamily:"'Inter',sans-serif"}}>Buscar productos...</span>
+          <Icon name="search" size={16} color={C.muted}/><input value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} placeholder="Buscar productos..." style={{background:"transparent",border:"none",outline:"none",flex:1,fontSize:13,color:C.text,fontFamily:"'Inter',sans-serif"}}/>
         </div>
-        <button style={{position:"relative",width:42,height:42,borderRadius:12,background:C.bg,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
+        <button onClick={()=>setAlert({t:"ok",m:"No tienes notificaciones nuevas"})} style={{position:"relative",width:42,height:42,borderRadius:12,background:C.bg,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
           <Icon name="bell" size={18} color={C.text}/>
         </button>
         <button onClick={()=>setTab("cart")} style={{position:"relative",display:"flex",alignItems:"center",gap:8,padding:"9px 18px",borderRadius:12,background:tab==="cart"?C.primary:C.bg,border:tab==="cart"?"none":"1px solid "+C.border,color:tab==="cart"?"#fff":C.text,cursor:"pointer",fontWeight:600,fontSize:13}}>
@@ -491,26 +495,39 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
       <Icon name={alert.t==="warn"?"info":"check"} size={18} color={alert.t==="warn"?"#F59E0B":"#10B981"}/>{alert.m}
     </div>}
 
-    {/* ── A5: Checkout Modal ── */}
-    {showCheckoutModal&&<Overlay onClose={()=>{setShowCheckoutModal(null);setCart([])}}>
-      <div style={{textAlign:"center",marginBottom:24}}>
+    {/* ── CHECKOUT MODAL (unified: save + recurring + confirm) ── */}
+    {showCheckoutModal&&<Overlay onClose={()=>{setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido realizado exitosamente"})}}>
+      <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{width:64,height:64,borderRadius:20,background:C.primaryLight,margin:"0 auto 16px",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="check" size={32} color={C.primary}/></div>
         <h3 style={{margin:0,fontSize:22,fontWeight:900,fontFamily:"'Nunito',sans-serif",color:C.text}}>Pedido confirmado!</h3>
         <p style={{margin:"8px 0 0",fontSize:14,color:C.sub}}>{showCheckoutModal.items.reduce((a,i)=>a+i.qty,0)} productos · ${showCheckoutModal.totalPrice.toLocaleString()}</p>
       </div>
-      <div style={{background:C.bg,borderRadius:14,padding:18,marginBottom:24}}>
-        <p style={{margin:"0 0 12px",fontSize:14,fontWeight:700,color:C.text}}>Resumen de macros:</p>
-        <div style={{display:"flex",gap:12}}>
+      {/* Macro summary */}
+      <div style={{background:C.bg,borderRadius:14,padding:16,marginBottom:16}}>
+        <div style={{display:"flex",gap:12,justifyContent:"center"}}>
           <span style={{fontSize:13,fontWeight:600,color:C.protein}}>P: {showCheckoutModal.totalProtein}g</span>
           <span style={{fontSize:13,fontWeight:600,color:C.carbs}}>C: {showCheckoutModal.totalCarbs}g</span>
           <span style={{fontSize:13,fontWeight:600,color:C.fat}}>G: {showCheckoutModal.totalFat}g</span>
         </div>
       </div>
+      {/* Save as favorite */}
+      <button onClick={()=>{const combo={id:Date.now(),name:"Combo #"+(favorites.length+1),items:[...showCheckoutModal.items],date:new Date().toLocaleDateString("es-CO"),totalProtein:showCheckoutModal.totalProtein,totalCarbs:showCheckoutModal.totalCarbs,totalFat:showCheckoutModal.totalFat,totalCalories:showCheckoutModal.totalCalories,totalPrice:showCheckoutModal.totalPrice};setFavorites(prev=>[...prev,combo]);setAlert({t:"ok",m:"Combinacion guardada en favoritos"})}} style={{width:"100%",padding:14,borderRadius:14,background:C.card,border:"2px solid "+C.primaryBorder,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontSize:14,fontWeight:700,color:C.primary,marginBottom:16}}>
+        <Icon name="heart" size={18} color={C.primary}/> Guardar esta compra como favorita
+      </button>
+      {/* Recurring option */}
       <div style={{background:C.accentLight,borderRadius:14,padding:20,border:"1px solid "+C.accent+"30",marginBottom:20}}>
-        <p style={{margin:"0 0 14px",fontSize:14,fontWeight:700,color:C.text}}>Deseas que este pedido se repita semanalmente?</p>
+        <p style={{margin:"0 0 10px",fontSize:14,fontWeight:700,color:C.text}}>Repetir este pedido cada semana?</p>
+        <p style={{margin:"0 0 14px",fontSize:12,color:C.sub}}>Selecciona el dia de entrega:</p>
+        <div style={{display:"flex",gap:6,marginBottom:16}}>
+          {[{k:"L",v:"Lunes"},{k:"M",v:"Martes"},{k:"Mi",v:"Miercoles"},{k:"J",v:"Jueves"},{k:"V",v:"Viernes"},{k:"S",v:"Sabado"},{k:"D",v:"Domingo"}].map(d=>
+            <button key={d.k} onClick={()=>setRecurringDay(d.k)} style={{flex:1,height:40,borderRadius:10,background:recurringDay===d.k?C.primary:C.card,color:recurringDay===d.k?"#fff":C.sub,border:recurringDay===d.k?"none":"1px solid "+C.border,cursor:"pointer",fontSize:12,fontWeight:700,transition:"all .2s"}}>{d.k}</button>
+          )}
+        </div>
         <div style={{display:"flex",gap:10}}>
-          <button onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setShowCheckoutModal(null);setCart([])}} style={{flex:1,padding:12,borderRadius:12,background:C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer"}}>Si, repetir</button>
-          <button onClick={()=>{setShowCheckoutModal(null);setCart([])}} style={{flex:1,padding:12,borderRadius:12,background:C.card,border:"2px solid "+C.border,color:C.text,fontWeight:700,fontSize:14,cursor:"pointer"}}>No, gracias</button>
+          <button onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setRecurringDay(recurringDay);setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido recurrente activado cada "+dayName(recurringDay)})}} style={{flex:1,padding:13,borderRadius:12,background:C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+            <Icon name="repeat" size={16} color="#fff"/> Activar recurrencia
+          </button>
+          <button onClick={()=>{setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido realizado exitosamente"})}} style={{flex:1,padding:13,borderRadius:12,background:C.card,border:"2px solid "+C.border,color:C.sub,fontWeight:600,fontSize:14,cursor:"pointer"}}>Solo esta vez</button>
         </div>
       </div>
     </Overlay>}
@@ -569,8 +586,8 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
         {/* Quick links */}
         <div>
           <h3 style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12,fontFamily:"'Nunito',sans-serif"}}>Accesos rapidos</h3>
-          {[{icon:"bolt",label:"Completar macros",bg:C.accentLight},{icon:"calendar",label:"Planificador semanal",bg:C.proteinLight},{icon:"learn",label:"Centro educativo",bg:C.carbsLight}].map((a,i)=>
-            <button key={i} onClick={()=>a.label.includes("educativo")?setTab("learn"):setTab("catalog")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"12px 14px",borderRadius:12,border:"none",background:a.bg,cursor:"pointer",fontSize:13,fontWeight:600,color:C.text,marginBottom:8}}>
+          {[{icon:"bolt",label:"Completar macros",bg:C.accentLight,action:()=>setTab("catalog")},{icon:"calendar",label:"Planificador semanal",bg:C.proteinLight,action:()=>{if(recurringEnabled){setCart(recurringItems.map(i=>({...i})));setTab("cart")}else{setTab("catalog");setAlert({t:"ok",m:"Agrega productos y programa tu pedido semanal al pagar"})}}},{icon:"learn",label:"Centro educativo",bg:C.carbsLight,action:()=>setTab("learn")}].map((a,i)=>
+            <button key={i} onClick={a.action} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"12px 14px",borderRadius:12,border:"none",background:a.bg,cursor:"pointer",fontSize:13,fontWeight:600,color:C.text,marginBottom:8}}>
               <Icon name={a.icon} size={18} color={C.text}/>{a.label}
             </button>
           )}
@@ -583,6 +600,17 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
         {tab==="home"&&<Fragment>
           <h2 style={{fontSize:28,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif",marginBottom:6}}>Buenos dias</h2>
           <p style={{fontSize:14,color:C.sub,marginBottom:28,fontFamily:"'Inter',sans-serif"}}>Explora productos y completa tus macros del dia</p>
+          {showOnboarding && <div style={{background:C.calLight,borderRadius:16,padding:"18px 20px",marginBottom:16,border:"1px solid "+C.cal+"25",display:"flex",alignItems:"flex-start",gap:14}}>
+            <div style={{width:40,height:40,borderRadius:12,background:C.cal,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="target" size={20} color="#fff"/></div>
+            <div style={{flex:1}}>
+              <p style={{margin:0,fontSize:14,fontWeight:700,color:C.text,fontFamily:"'Nunito',sans-serif"}}>Personaliza tus metas</p>
+              <p style={{margin:"4px 0 10px",fontSize:12,color:C.sub}}>Configura tus macros en Mi Perfil para recibir recomendaciones personalizadas</p>
+              <div style={{display:"flex",gap:8}}>
+                <button onClick={()=>{setTab("profile");setShowOnboarding(false)}} style={{padding:"8px 16px",borderRadius:10,background:C.cal,border:"none",color:"#fff",fontWeight:700,fontSize:12,cursor:"pointer"}}>Configurar</button>
+                <button onClick={()=>setShowOnboarding(false)} style={{padding:"8px 16px",borderRadius:10,background:"transparent",border:"1px solid "+C.border,color:C.sub,fontWeight:600,fontSize:12,cursor:"pointer"}}>Ahora no</button>
+              </div>
+            </div>
+          </div>}
           <div style={{background:"linear-gradient(135deg,"+C.primaryDark+",#43A047)",borderRadius:20,padding:"32px 36px",color:"#fff",marginBottom:32,position:"relative",overflow:"hidden"}}>
             <div style={{position:"absolute",top:-40,right:-40,width:180,height:180,borderRadius:"50%",background:"rgba(255,255,255,.05)"}}/>
             <h3 style={{fontSize:22,fontWeight:900,fontFamily:"'Nunito',sans-serif",marginBottom:8}}>Completa tus macros inteligentemente</h3>
@@ -628,6 +656,11 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:18}}>
             {filtered.map(p=><ProductCardDesktop key={p.id} product={p} onAdd={()=>addToCart(p)} onTap={()=>{setSelProduct(p);setTab("detail")}}/>)}
           </div>
+          {filtered.length===0 && <div style={{textAlign:"center",padding:"40px 20px"}}>
+            <Icon name="search" size={32} color={C.muted}/>
+            <p style={{fontSize:14,color:C.sub,marginTop:12}}>No se encontraron productos con estos filtros</p>
+            <button onClick={()=>{setCatFilter("todos");setMacroFilter("todos");setSearchQuery("")}} style={{marginTop:12,padding:"10px 20px",borderRadius:12,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:13,cursor:"pointer"}}>Limpiar filtros</button>
+          </div>}
         </Fragment>}
 
         {/* ── DETAIL ── */}
@@ -703,9 +736,9 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                   <button onClick={()=>addToCart(item)} style={{width:32,height:32,borderRadius:8,background:C.primaryLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="plus" size={14} color={C.primary}/></button>
                 </div>
               </div>)}
-              {/* A7: Save favorite button */}
-              <button onClick={handleSaveFavorite} style={{width:"100%",marginTop:12,background:C.accentLight,borderRadius:14,padding:"14px 20px",border:"1px solid "+C.accent+"20",cursor:"pointer",display:"flex",alignItems:"center",gap:10,fontSize:13,color:C.accent,fontWeight:600}}>
-                <Icon name="heart" size={18} color={C.accent}/> Guardar esta combinacion como favorita
+              {/* Save favorite from cart */}
+              <button onClick={handleSaveFavorite} style={{width:"100%",marginTop:12,background:C.primaryLight,borderRadius:14,padding:"14px 20px",border:"1px solid "+C.primaryBorder,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontSize:13,color:C.primary,fontWeight:600}}>
+                <Icon name="heart" size={18} color={C.primary}/> Guardar combinacion como favorita
               </button>
               {/* A4: Cart suggestions */}
               <div style={{marginTop:24}}>
@@ -725,9 +758,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
               <div style={{background:C.card,borderRadius:18,padding:24,border:"1px solid "+C.borderL,position:"sticky",top:96}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
                   <h4 style={{margin:0,fontSize:16,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>Resumen del pedido</h4>
-                  {/* A7: Heart save icon */}
-                  <button onClick={handleSaveFavorite} style={{width:36,height:36,borderRadius:10,background:C.accentLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}} title="Guardar como favorita"><Icon name="heart" size={18} color={C.accent}/></button>
-                </div>
+                    </div>
                 <MacroBar label="Proteina" current={cm.protein} goal={goals.protein} color={C.protein} light={C.proteinLight}/>
                 <MacroBar label="Carbohidratos" current={cm.carbs} goal={goals.carbs} color={C.carbs} light={C.carbsLight}/>
                 <MacroBar label="Grasas" current={cm.fat} goal={goals.fat} color={C.fat} light={C.fatLight}/>
@@ -744,8 +775,9 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                     </button>
                   )}
                 </div>
-                {/* A5: Pay button triggers checkout */}
-                <button onClick={handlePay} style={{width:"100%",padding:16,borderRadius:14,background:"linear-gradient(135deg,"+C.accent+",#E65100)",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer",boxShadow:"0 4px 16px rgba(251,140,0,.3)"}}>Pagar ${cartTotal.toLocaleString()}</button>
+                {/* Pay button */}
+                <button onClick={handlePay} style={{width:"100%",padding:16,borderRadius:14,background:"linear-gradient(135deg,"+C.accent+",#E65100)",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer",boxShadow:"0 4px 16px rgba(251,140,0,.3)",marginBottom:10}}>Pagar ${cartTotal.toLocaleString()}</button>
+                <p style={{fontSize:11,color:C.muted,textAlign:"center",margin:0}}>Al pagar podras guardar y programar recurrencia</p>
               </div>
             </div>
           </div>}
@@ -799,7 +831,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                 <span style={{fontSize:12,fontWeight:600,color:C.fat}}>G: {order.totalFat}g</span>
                 <span style={{fontSize:12,fontWeight:600,color:C.cal}}>{order.totalCalories} kcal</span>
               </div>
-              <button onClick={()=>{setCart(order.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"10px 20px",borderRadius:10,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
+              <button onClick={()=>{if(cart.length>0&&!confirm("Esto reemplazara tu carrito actual. Continuar?")){return}setCart(order.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"10px 20px",borderRadius:10,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
                 <Icon name="repeat" size={14} color={C.primary}/> Repetir pedido
               </button>
             </div>)}
@@ -822,7 +854,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                 <span style={{fontSize:12,fontWeight:600,color:C.fat}}>G: {combo.totalFat}g</span>
               </div>
               <div style={{display:"flex",gap:8}}>
-                <button onClick={()=>{setCart(combo.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"10px 20px",borderRadius:10,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:13,cursor:"pointer"}}>Cargar al carrito</button>
+                <button onClick={()=>{if(cart.length>0&&!confirm("Esto reemplazara tu carrito actual. Continuar?")){return}setCart(combo.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"10px 20px",borderRadius:10,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:13,cursor:"pointer"}}>Cargar al carrito</button>
                 <button onClick={()=>setFavorites(prev=>prev.filter(f=>f.id!==combo.id))} style={{padding:"10px 20px",borderRadius:10,background:"#FEE2E2",border:"none",color:"#E53935",fontWeight:700,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
                   <Icon name="trash" size={14} color="#E53935"/> Eliminar
                 </button>
@@ -860,31 +892,37 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
               </div>}
             </div>
             <div style={{marginTop:24,display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
-              {/* A5: Recurring order + training days */}
+              {/* Recurring order status (view/manage only - setup happens at checkout) */}
               <div style={{background:C.card,borderRadius:18,padding:28,border:"1px solid "+C.borderL}}>
                 <h4 style={{margin:"0 0 16px",fontSize:16,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>Pedido Recurrente</h4>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
-                  <span style={{fontSize:13,color:C.text,fontWeight:500}}>Repetir pedido semanalmente</span>
-                  <button onClick={()=>setRecurringEnabled(!recurringEnabled)} style={{width:48,height:26,borderRadius:13,background:recurringEnabled?C.primary:C.border,border:"none",cursor:"pointer",position:"relative",transition:"background .2s"}}>
-                    <div style={{width:20,height:20,borderRadius:10,background:"#fff",position:"absolute",top:3,left:recurringEnabled?25:3,transition:"left .2s",boxShadow:"0 1px 4px rgba(0,0,0,.2)"}}/>
-                  </button>
-                </div>
-                {recurringEnabled&&<Fragment>
-                  <p style={{margin:"0 0 10px",fontSize:12,color:C.sub}}>Dia de entrega:</p>
-                  <div style={{display:"flex",gap:6,marginBottom:14}}>
-                    {[{k:"L",v:"Lunes"},{k:"M",v:"Martes"},{k:"Mi",v:"Miercoles"},{k:"J",v:"Jueves"},{k:"V",v:"Viernes"},{k:"S",v:"Sabado"},{k:"D",v:"Domingo"}].map(d=>
-                      <button key={d.k} onClick={()=>setRecurringDay(d.k)} style={{flex:1,height:38,borderRadius:10,background:recurringDay===d.k?C.primary:C.borderL,color:recurringDay===d.k?"#fff":C.sub,border:"none",cursor:"pointer",fontSize:12,fontWeight:700}}>{d.k}</button>
-                    )}
+                {recurringEnabled?<Fragment>
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+                    <div style={{width:10,height:10,borderRadius:5,background:C.success}}/>
+                    <span style={{fontSize:13,fontWeight:600,color:C.success}}>Activo</span>
+                    <span style={{fontSize:12,color:C.sub}}>· Cada {dayName(recurringDay)}</span>
                   </div>
-                  {recurringItems.length>0&&<div style={{background:C.bg,borderRadius:10,padding:12}}>
-                    <p style={{margin:"0 0 6px",fontSize:11,fontWeight:700,color:C.text}}>Contenido del pedido:</p>
-                    {recurringItems.map(item=><p key={item.id} style={{margin:"2px 0",fontSize:11,color:C.sub}}>{item.name} x{item.qty}</p>)}
+                  {recurringItems.length>0&&<div style={{background:C.bg,borderRadius:12,padding:14,marginBottom:14}}>
+                    <p style={{margin:"0 0 8px",fontSize:12,fontWeight:700,color:C.text}}>Productos del pedido:</p>
+                    {recurringItems.map(item=><div key={item.id} style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                      <span style={{fontSize:12,color:C.sub}}>{item.name}</span>
+                      <span style={{fontSize:12,fontWeight:600,color:C.text}}>x{item.qty}</span>
+                    </div>)}
                   </div>}
-                </Fragment>}
+                  <div style={{display:"flex",gap:8}}>
+                    <button onClick={()=>{setCart(recurringItems.map(i=>({...i})));setTab("cart")}} style={{padding:"10px 18px",borderRadius:10,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:12,cursor:"pointer",display:"flex",alignItems:"center",gap:5}}>
+                      <Icon name="cart" size={14} color={C.primary}/> Editar en carrito
+                    </button>
+                    <button onClick={()=>{setRecurringEnabled(false);setRecurringItems([])}} style={{padding:"10px 18px",borderRadius:10,background:"#FEE2E2",border:"none",color:"#E53935",fontWeight:700,fontSize:12,cursor:"pointer"}}>Desactivar</button>
+                  </div>
+                </Fragment>
+                :<div style={{textAlign:"center",padding:"16px 0"}}>
+                  <p style={{fontSize:13,color:C.sub,marginBottom:12}}>No tienes pedido recurrente activo</p>
+                  <p style={{fontSize:12,color:C.muted}}>Puedes activarlo al realizar una compra desde el carrito</p>
+                </div>}
               </div>
               <div style={{background:C.card,borderRadius:18,overflow:"hidden",border:"1px solid "+C.borderL}}>
-                {[{icon:"clock",label:"Historial de pedidos",action:()=>setProfileSubView("history")},{icon:"save",label:"Combinaciones guardadas",action:()=>setProfileSubView("favorites")},{icon:"activity",label:"Resumen semanal"},{icon:"shield",label:"Condiciones de salud"},{icon:"mail",label:"Notificaciones por correo"},{icon:"settings",label:"Configuracion"}].map((item,i)=>
-                  <div key={i} onClick={item.action||null} style={{padding:"14px 20px",display:"flex",alignItems:"center",gap:12,borderBottom:i<5?"1px solid "+C.borderL:"none",cursor:item.action?"pointer":"default"}}>
+                {[{icon:"clock",label:"Historial de pedidos",action:()=>setProfileSubView("history")},{icon:"save",label:"Combinaciones guardadas",action:()=>setProfileSubView("favorites")},{icon:"activity",label:"Resumen semanal",action:()=>setAlert({t:"ok",m:"Resumen semanal disponible pronto"})},{icon:"shield",label:"Condiciones de salud",action:()=>setAlert({t:"ok",m:"Configuracion de salud disponible pronto"})},{icon:"mail",label:"Notificaciones por correo",action:()=>setAlert({t:"ok",m:"Notificaciones configuradas"})},{icon:"settings",label:"Configuracion",action:()=>setAlert({t:"ok",m:"Configuracion disponible pronto"})}].map((item,i)=>
+                  <div key={i} onClick={item.action} style={{padding:"14px 20px",display:"flex",alignItems:"center",gap:12,borderBottom:i<5?"1px solid "+C.borderL:"none",cursor:"pointer"}}>
                     <Icon name={item.icon} size={18} color={C.sub}/><span style={{fontSize:13,fontWeight:500,color:C.text,flex:1}}>{item.label}</span><Icon name="chevron" size={15} color={C.muted}/>
                   </div>
                 )}
@@ -906,7 +944,9 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
   selectedArticle,setSelectedArticle,
   favorites,setFavorites,
   showCheckoutModal,setShowCheckoutModal,setCart,
-  profileSubView,setProfileSubView}){
+  profileSubView,setProfileSubView,
+  searchQuery,setSearchQuery,
+  showOnboarding,setShowOnboarding,setAlert}){
 
   const cartCount=cart.reduce((a,i)=>a+i.qty,0);
   const recommendations=getRecommendations(cart,goals);
@@ -935,25 +975,38 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       <Icon name={alert.t==="warn"?"info":"check"} size={16} color={alert.t==="warn"?"#F59E0B":"#10B981"}/>{alert.m}
     </div>}
 
-    {/* A5: Checkout modal mobile */}
-    {showCheckoutModal&&<Overlay onClose={()=>{setShowCheckoutModal(null);setCart([])}} mobile={true}>
-      <div style={{paddingTop:40,textAlign:"center",marginBottom:20}}>
+    {/* CHECKOUT MODAL MOBILE (unified) */}
+    {showCheckoutModal&&<Overlay onClose={()=>{setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido realizado exitosamente"})}} mobile={true}>
+      <div style={{paddingTop:40,textAlign:"center",marginBottom:16}}>
         <div style={{width:56,height:56,borderRadius:16,background:C.primaryLight,margin:"0 auto 14px",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="check" size={28} color={C.primary}/></div>
         <h3 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Pedido confirmado!</h3>
         <p style={{margin:"6px 0 0",fontSize:13,color:C.sub}}>{showCheckoutModal.items.reduce((a,i)=>a+i.qty,0)} productos · ${showCheckoutModal.totalPrice.toLocaleString()}</p>
       </div>
-      <div style={{background:C.bg,borderRadius:12,padding:14,marginBottom:20}}>
-        <div style={{display:"flex",gap:12}}>
+      <div style={{background:C.bg,borderRadius:12,padding:12,marginBottom:14}}>
+        <div style={{display:"flex",gap:12,justifyContent:"center"}}>
           <span style={{fontSize:12,fontWeight:600,color:C.protein}}>P: {showCheckoutModal.totalProtein}g</span>
           <span style={{fontSize:12,fontWeight:600,color:C.carbs}}>C: {showCheckoutModal.totalCarbs}g</span>
           <span style={{fontSize:12,fontWeight:600,color:C.fat}}>G: {showCheckoutModal.totalFat}g</span>
         </div>
       </div>
+      {/* Save favorite */}
+      <button onClick={()=>{const combo={id:Date.now(),name:"Combo #"+(favorites.length+1),items:[...showCheckoutModal.items],date:new Date().toLocaleDateString("es-CO"),totalProtein:showCheckoutModal.totalProtein,totalCarbs:showCheckoutModal.totalCarbs,totalFat:showCheckoutModal.totalFat,totalCalories:showCheckoutModal.totalCalories,totalPrice:showCheckoutModal.totalPrice};setFavorites(prev=>[...prev,combo]);setAlert({t:"ok",m:"Combinacion guardada en favoritos"})}} style={{width:"100%",padding:12,borderRadius:12,background:C.card,border:"2px solid "+C.primaryBorder,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,fontSize:13,fontWeight:700,color:C.primary,marginBottom:14}}>
+        <Icon name="heart" size={16} color={C.primary}/> Guardar como favorita
+      </button>
+      {/* Recurring */}
       <div style={{background:C.accentLight,borderRadius:12,padding:16,border:"1px solid "+C.accent+"30",marginBottom:16}}>
-        <p style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:C.text}}>Repetir semanalmente?</p>
+        <p style={{margin:"0 0 8px",fontSize:13,fontWeight:700,color:C.text}}>Repetir cada semana?</p>
+        <p style={{margin:"0 0 10px",fontSize:11,color:C.sub}}>Elige dia de entrega:</p>
+        <div style={{display:"flex",gap:4,marginBottom:14}}>
+          {["L","M","Mi","J","V","S","D"].map(d=>
+            <button key={d} onClick={()=>setRecurringDay(d)} style={{flex:1,height:34,borderRadius:8,background:recurringDay===d?C.primary:C.card,color:recurringDay===d?"#fff":C.sub,border:recurringDay===d?"none":"1px solid "+C.border,cursor:"pointer",fontSize:11,fontWeight:700}}>{d}</button>
+          )}
+        </div>
         <div style={{display:"flex",gap:8}}>
-          <button onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setShowCheckoutModal(null);setCart([])}} style={{flex:1,padding:11,borderRadius:10,background:C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer"}}>Si</button>
-          <button onClick={()=>{setShowCheckoutModal(null);setCart([])}} style={{flex:1,padding:11,borderRadius:10,background:C.card,border:"2px solid "+C.border,color:C.text,fontWeight:700,fontSize:13,cursor:"pointer"}}>No</button>
+          <button onClick={()=>{setRecurringEnabled(true);setRecurringItems(showCheckoutModal.items);setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Recurrencia activada cada "+dayName(recurringDay)})}} style={{flex:1,padding:11,borderRadius:10,background:C.primary,border:"none",color:"#fff",fontWeight:700,fontSize:12,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}>
+            <Icon name="repeat" size={14} color="#fff"/> Activar
+          </button>
+          <button onClick={()=>{setShowCheckoutModal(null);setCart([]);setAlert({t:"ok",m:"Pedido realizado exitosamente"})}} style={{flex:1,padding:11,borderRadius:10,background:C.card,border:"2px solid "+C.border,color:C.sub,fontWeight:600,fontSize:12,cursor:"pointer"}}>Solo esta vez</button>
         </div>
       </div>
     </Overlay>}
@@ -963,8 +1016,19 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       {tab==="home"&&<div style={{padding:"0 20px 20px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 0 20px"}}>
           <div><p style={{margin:0,fontSize:12,color:C.sub}}>Buenos dias</p><h1 style={{margin:"2px 0 0",fontSize:20,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif"}}>Tu progreso hoy</h1></div>
-          <button style={{width:38,height:38,borderRadius:12,background:C.card,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="bell" size={18} color={C.text}/></button>
+          <button onClick={()=>setAlert({t:"ok",m:"No tienes notificaciones nuevas"})} style={{width:38,height:38,borderRadius:12,background:C.card,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="bell" size={18} color={C.text}/></button>
         </div>
+        {showOnboarding && <div style={{background:C.calLight,borderRadius:16,padding:"18px 20px",marginBottom:16,border:"1px solid "+C.cal+"25",display:"flex",alignItems:"flex-start",gap:14}}>
+          <div style={{width:40,height:40,borderRadius:12,background:C.cal,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="target" size={20} color="#fff"/></div>
+          <div style={{flex:1}}>
+            <p style={{margin:0,fontSize:14,fontWeight:700,color:C.text,fontFamily:"'Nunito',sans-serif"}}>Personaliza tus metas</p>
+            <p style={{margin:"4px 0 10px",fontSize:12,color:C.sub}}>Configura tus macros en Mi Perfil para recibir recomendaciones personalizadas</p>
+            <div style={{display:"flex",gap:8}}>
+              <button onClick={()=>{setTab("profile");setShowOnboarding(false)}} style={{padding:"8px 16px",borderRadius:10,background:C.cal,border:"none",color:"#fff",fontWeight:700,fontSize:12,cursor:"pointer"}}>Configurar</button>
+              <button onClick={()=>setShowOnboarding(false)} style={{padding:"8px 16px",borderRadius:10,background:"transparent",border:"1px solid "+C.border,color:C.sub,fontWeight:600,fontSize:12,cursor:"pointer"}}>Ahora no</button>
+            </div>
+          </div>
+        </div>}
         <div style={{background:"linear-gradient(150deg,"+C.primaryDark+","+C.primary+")",borderRadius:20,padding:"20px 18px",color:"#fff",marginBottom:20,position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",top:-30,right:-30,width:100,height:100,borderRadius:"50%",background:"rgba(255,255,255,.06)"}}/>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
@@ -981,8 +1045,8 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
           </div>
         </div>
         <div style={{display:"flex",gap:10,marginBottom:22}}>
-          {[{icon:"bolt",label:"Completar",bg:C.accentLight},{icon:"calendar",label:"Planificar",bg:C.proteinLight},{icon:"learn",label:"Educacion",bg:C.carbsLight}].map((a,i)=>
-            <button key={i} onClick={()=>a.label==="Educacion"?setTab("learn"):setTab("catalog")} style={{flex:1,background:a.bg,border:"none",borderRadius:12,padding:"14px 8px",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
+          {[{icon:"bolt",label:"Completar",bg:C.accentLight,action:()=>setTab("catalog")},{icon:"calendar",label:"Planificar",bg:C.proteinLight,action:()=>{if(recurringEnabled){setCart(recurringItems.map(i=>({...i})));setTab("cart")}else{setTab("catalog");setAlert({t:"ok",m:"Agrega productos y programa tu pedido semanal al pagar"})}}},{icon:"learn",label:"Educacion",bg:C.carbsLight,action:()=>setTab("learn")}].map((a,i)=>
+            <button key={i} onClick={a.action} style={{flex:1,background:a.bg,border:"none",borderRadius:12,padding:"14px 8px",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
               <Icon name={a.icon} size={20} color={C.text}/><span style={{fontSize:10,fontWeight:700,color:C.text}}>{a.label}</span>
             </button>
           )}
@@ -1001,7 +1065,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       {tab==="catalog"&&<div style={{padding:"0 20px 20px"}}>
         <div style={{padding:"16px 0 12px"}}><h1 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Catalogo</h1></div>
         <div style={{background:C.card,borderRadius:12,padding:"11px 14px",display:"flex",alignItems:"center",gap:10,marginBottom:14,border:"2px solid "+C.border}}>
-          <Icon name="search" size={16} color={C.muted}/><span style={{fontSize:13,color:C.muted,flex:1}}>Buscar...</span>
+          <Icon name="search" size={16} color={C.muted}/><input value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} placeholder="Buscar..." style={{background:"transparent",border:"none",outline:"none",flex:1,fontSize:13,color:C.text,fontFamily:"'Inter',sans-serif"}}/>
           <button style={{width:30,height:30,borderRadius:8,background:C.primaryLight,border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="filter" size={14} color={C.primary}/></button>
         </div>
         {cart.length>0&&<div style={{background:C.card,borderRadius:12,padding:"10px 14px",marginBottom:12,border:"1px solid "+C.borderL}}>
@@ -1022,6 +1086,11 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
           {filtered.map(p=><ProductCardMobile key={p.id} product={p} onAdd={()=>addToCart(p)} onTap={()=>{setSelProduct(p);setTab("detail")}}/>)}
         </div>
+        {filtered.length===0 && <div style={{textAlign:"center",padding:"40px 20px"}}>
+          <Icon name="search" size={32} color={C.muted}/>
+          <p style={{fontSize:14,color:C.sub,marginTop:12}}>No se encontraron productos con estos filtros</p>
+          <button onClick={()=>{setCatFilter("todos");setMacroFilter("todos");setSearchQuery("")}} style={{marginTop:12,padding:"10px 20px",borderRadius:12,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:13,cursor:"pointer"}}>Limpiar filtros</button>
+        </div>}
       </div>}
 
       {/* ── DETAIL ── */}
@@ -1136,7 +1205,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
               <span style={{fontSize:10,fontWeight:600,color:C.carbs}}>C:{order.totalCarbs}g</span>
               <span style={{fontSize:10,fontWeight:600,color:C.fat}}>G:{order.totalFat}g</span>
             </div>
-            <button onClick={()=>{setCart(order.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"8px 16px",borderRadius:8,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:11,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
+            <button onClick={()=>{if(cart.length>0&&!confirm("Esto reemplazara tu carrito actual. Continuar?")){return}setCart(order.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"8px 16px",borderRadius:8,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:11,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
               <Icon name="repeat" size={12} color={C.primary}/> Repetir
             </button>
           </div>)}
@@ -1161,7 +1230,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
               <span style={{fontSize:10,fontWeight:600,color:C.fat}}>G:{combo.totalFat}g</span>
             </div>
             <div style={{display:"flex",gap:6}}>
-              <button onClick={()=>{setCart(combo.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"8px 14px",borderRadius:8,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:11,cursor:"pointer"}}>Cargar</button>
+              <button onClick={()=>{if(cart.length>0&&!confirm("Esto reemplazara tu carrito actual. Continuar?")){return}setCart(combo.items.map(i=>({...i})));setTab("cart");setProfileSubView(null)}} style={{padding:"8px 14px",borderRadius:8,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:11,cursor:"pointer"}}>Cargar</button>
               <button onClick={()=>setFavorites(prev=>prev.filter(f=>f.id!==combo.id))} style={{padding:"8px 14px",borderRadius:8,background:"#FEE2E2",border:"none",color:"#E53935",fontWeight:700,fontSize:11,cursor:"pointer"}}>Eliminar</button>
             </div>
           </div>)}
@@ -1190,23 +1259,25 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
               </div>
             )}
           </div>
-          {/* A5: Recurring order mobile */}
+          {/* Recurring status mobile */}
           <div style={{background:C.card,borderRadius:14,padding:16,border:"1px solid "+C.borderL,marginBottom:14}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-              <span style={{fontSize:13,fontWeight:700}}>Pedido Recurrente</span>
-              <button onClick={()=>setRecurringEnabled(!recurringEnabled)} style={{width:42,height:24,borderRadius:12,background:recurringEnabled?C.primary:C.border,border:"none",cursor:"pointer",position:"relative",transition:"background .2s"}}>
-                <div style={{width:18,height:18,borderRadius:9,background:"#fff",position:"absolute",top:3,left:recurringEnabled?21:3,transition:"left .2s",boxShadow:"0 1px 4px rgba(0,0,0,.2)"}}/>
-              </button>
+            <span style={{fontSize:13,fontWeight:700}}>Pedido Recurrente</span>
+            {recurringEnabled?<div style={{marginTop:10}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                <div style={{width:8,height:8,borderRadius:4,background:C.success}}/>
+                <span style={{fontSize:12,fontWeight:600,color:C.success}}>Activo · Cada {dayName(recurringDay)}</span>
+              </div>
+              {recurringItems.length>0&&<p style={{margin:"0 0 10px",fontSize:11,color:C.sub}}>{recurringItems.map(i=>i.name).join(", ")}</p>}
+              <div style={{display:"flex",gap:6}}>
+                <button onClick={()=>{setCart(recurringItems.map(i=>({...i})));setTab("cart")}} style={{padding:"8px 12px",borderRadius:8,background:C.primaryLight,border:"none",color:C.primary,fontWeight:700,fontSize:11,cursor:"pointer"}}>Editar</button>
+                <button onClick={()=>{setRecurringEnabled(false);setRecurringItems([])}} style={{padding:"8px 12px",borderRadius:8,background:"#FEE2E2",border:"none",color:"#E53935",fontWeight:700,fontSize:11,cursor:"pointer"}}>Desactivar</button>
+              </div>
             </div>
-            {recurringEnabled&&<div style={{display:"flex",gap:4}}>
-              {["L","M","Mi","J","V","S","D"].map(d=>
-                <button key={d} onClick={()=>setRecurringDay(d)} style={{flex:1,height:32,borderRadius:8,background:recurringDay===d?C.primary:C.borderL,color:recurringDay===d?"#fff":C.sub,border:"none",cursor:"pointer",fontSize:10,fontWeight:700}}>{d}</button>
-              )}
-            </div>}
+            :<p style={{margin:"8px 0 0",fontSize:11,color:C.muted}}>Activa al pagar desde el carrito</p>}
           </div>
           <div style={{background:C.card,borderRadius:14,overflow:"hidden",border:"1px solid "+C.borderL}}>
-            {[{icon:"clock",label:"Historial de pedidos",action:()=>setProfileSubView("history")},{icon:"save",label:"Combinaciones guardadas",action:()=>setProfileSubView("favorites")},{icon:"shield",label:"Condiciones de salud"},{icon:"settings",label:"Configuracion"}].map((item,i)=>
-              <div key={i} onClick={item.action||null} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<3?"1px solid "+C.borderL:"none",cursor:item.action?"pointer":"default"}}>
+            {[{icon:"clock",label:"Historial de pedidos",action:()=>setProfileSubView("history")},{icon:"save",label:"Combinaciones guardadas",action:()=>setProfileSubView("favorites")},{icon:"shield",label:"Condiciones de salud",action:()=>setAlert({t:"ok",m:"Configuracion de salud disponible pronto"})},{icon:"settings",label:"Configuracion",action:()=>setAlert({t:"ok",m:"Configuracion disponible pronto"})}].map((item,i)=>
+              <div key={i} onClick={item.action} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<3?"1px solid "+C.borderL:"none",cursor:"pointer"}}>
                 <Icon name={item.icon} size={17} color={C.sub}/><span style={{fontSize:13,fontWeight:500,flex:1}}>{item.label}</span><Icon name="chevron" size={14} color={C.muted}/>
               </div>
             )}
@@ -1255,6 +1326,10 @@ function App(){
   const [favorites,setFavorites]=useState([]);
   /* Profile sub-views */
   const [profileSubView,setProfileSubView]=useState(null);
+  /* Search */
+  const [searchQuery,setSearchQuery]=useState("");
+  /* Onboarding */
+  const [showOnboarding,setShowOnboarding]=useState(true);
 
   useEffect(()=>{if(alert){const t=setTimeout(()=>setAlert(null),3500);return()=>clearTimeout(t)}},[alert]);
 
@@ -1271,6 +1346,7 @@ function App(){
     else if(macroFilter==="lowCarb")list=list.filter(p=>p.carbs<20);
     else if(macroFilter==="lowFat")list=list.filter(p=>p.fat<10);
     else if(macroFilter==="bestValue")list=[...list].sort((a,b)=>(a.price/Math.max(a.protein,1))-(b.price/Math.max(b.protein,1)));
+    if(searchQuery) list=list.filter(p=>p.name.toLowerCase().includes(searchQuery.toLowerCase())||p.brand.toLowerCase().includes(searchQuery.toLowerCase()));
     return list;
   })();
 
@@ -1289,7 +1365,9 @@ function App(){
     selectedArticle,setSelectedArticle,
     favorites,setFavorites:origSetFavorites,
     showCheckoutModal,setShowCheckoutModal,setCart,
-    profileSubView,setProfileSubView};
+    profileSubView,setProfileSubView,
+    searchQuery,setSearchQuery,
+    showOnboarding,setShowOnboarding,setAlert};
 
   return <div style={{padding:"20px 24px"}}>
     {/* View Toggle */}
