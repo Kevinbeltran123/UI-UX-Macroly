@@ -4,33 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Macroly — Prototipo Desktop + Mobile</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <style>
+:root {
+  --color-primary: #2E7D32;
+  --color-primary-dark: #1B5E20;
+  --color-primary-mid: #43A047;
+  --color-primary-soft: #66BB6A;
+  --color-primary-light: #E8F5E9;
+  --color-primary-border: #C8E6C9;
+  --color-protein: #43A047;
+  --color-carbs: #FB8C00;
+  --color-fat: #1E88E5;
+  --color-accent: #FB8C00;
+  --color-bg: #F5F7F5;
+  --color-card: #FFFFFF;
+  --color-text: #333333;
+  --color-sub: #6B7280;
+  --color-border: #E0E0E0;
+  --font-display: 'Nunito', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#E8E4DC;font-family:'DM Sans',sans-serif;min-height:100vh}
-:root{--body:'DM Sans',sans-serif;--display:'Fraunces',serif;--bg:#F6F4EF;--card:#fff;--primary:#3B7A3C;--primaryLight:#E8F3E8;--primaryDark:#2A5A2B;--accent:#E8764B;--accentLight:#FFF0EB;--protein:#4A6CF7;--proteinLight:#EEF1FE;--carbs:#F5A623;--carbsLight:#FFF7E6;--fat:#E85D75;--fatLight:#FEECF0;--cal:#8B5CF6;--calLight:#F3EFFE;--text:#1A1F16;--sub:#6B7280;--muted:#9CA3AF;--border:#E5E1D8;--borderL:#F0EDE6;--success:#10B981}
+body{background:#E8E8E8;font-family:'Inter',sans-serif;min-height:100vh}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes dots{0%,100%{opacity:.3}50%{opacity:1}}
 @keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 input[type="range"]{-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;outline:none}
 input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;margin-top:-7px;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
-button{font-family:'DM Sans',sans-serif}button:active{transform:scale(.97)}
+button{font-family:'Inter',sans-serif}button:active{transform:scale(.97)}
 .product-card{transition:box-shadow .25s,transform .25s}.product-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.1);transform:translateY(-3px)}
-.view-toggle{display:flex;gap:0;background:var(--card);border-radius:14px;padding:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid var(--border)}
+.view-toggle{display:flex;gap:0;background:#FFFFFF;border-radius:14px;padding:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid #E0E0E0}
 .view-toggle button{padding:10px 28px;border:none;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
-.view-toggle button.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(59,122,60,.3)}
-.view-toggle button:not(.active){background:transparent;color:var(--sub)}
+.view-toggle button.active{background:#2E7D32;color:#fff;box-shadow:0 2px 8px rgba(46,125,50,.3)}
+.view-toggle button:not(.active){background:transparent;color:#6B7280}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,Fragment}=React;
-const C={bg:"#F6F4EF",card:"#FFFFFF",dark:"#1A1F16",primary:"#3B7A3C",primaryLight:"#E8F3E8",primaryDark:"#2A5A2B",accent:"#E8764B",accentLight:"#FFF0EB",protein:"#4A6CF7",proteinLight:"#EEF1FE",carbs:"#F5A623",carbsLight:"#FFF7E6",fat:"#E85D75",fatLight:"#FEECF0",cal:"#8B5CF6",calLight:"#F3EFFE",text:"#1A1F16",sub:"#6B7280",muted:"#9CA3AF",border:"#E5E1D8",borderL:"#F0EDE6",success:"#10B981"};
+const C={bg:"#F5F7F5",card:"#FFFFFF",dark:"#1A1F16",primary:"#2E7D32",primaryLight:"#E8F5E9",primaryDark:"#1B5E20",primaryMid:"#43A047",primarySoft:"#66BB6A",primaryBorder:"#C8E6C9",accent:"#FB8C00",accentLight:"#FFF3E0",protein:"#43A047",proteinLight:"#E8F5E9",carbs:"#FB8C00",carbsLight:"#FFF3E0",fat:"#1E88E5",fatLight:"#E3F2FD",cal:"#8B5CF6",calLight:"#F3EFFE",text:"#333333",sub:"#6B7280",muted:"#9CA3AF",border:"#E0E0E0",borderL:"#F0F0F0",success:"#10B981",darkBg:"#121A12"};
+
+/* ── SVG Logo Isotipo ── */
+function LogoIsotipo({size=36}){
+  const s=size/64;
+  return <svg width={size} height={size} viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(32, 30)">
+      <path d="M-16,2 L-11,-14 L21,-14 L18,12 L-13,12 Z" fill="none" stroke="#1B5E20" strokeWidth="3.5" strokeLinejoin="round" strokeLinecap="round"/>
+      <path d="M-23,-6 L-16,2" fill="none" stroke="#1B5E20" strokeWidth="3.5" strokeLinecap="round"/>
+      <circle cx="-8" cy="19" r="4" fill="#1B5E20"/>
+      <circle cx="13" cy="19" r="4" fill="#1B5E20"/>
+      <rect x="-7" y="-9" width="22" height="4.5" rx="2.25" fill="#C8E6C9"/>
+      <rect x="-7" y="-9" width="17" height="4.5" rx="2.25" fill="#43A047"/>
+      <rect x="-7" y="-2.5" width="22" height="4.5" rx="2.25" fill="#FFE0B2"/>
+      <rect x="-7" y="-2.5" width="13" height="4.5" rx="2.25" fill="#FB8C00"/>
+      <rect x="-7" y="4" width="22" height="4.5" rx="2.25" fill="#BBDEFB"/>
+      <rect x="-7" y="4" width="9" height="4.5" rx="2.25" fill="#1E88E5"/>
+    </g>
+  </svg>;
+}
+
+function LogoText({size=20}){
+  return <span style={{fontSize:size,fontWeight:900,letterSpacing:-.5,fontFamily:"'Nunito',sans-serif"}}>
+    <span style={{color:"#1B5E20"}}>Macro</span><span style={{color:"#43A047"}}>ly</span>
+  </span>;
+}
 
 function Icon({name,size=20,color=C.sub}){
 const p={fill:"none",stroke:color,strokeWidth:"2",strokeLinecap:"round",strokeLinejoin:"round"};
@@ -87,35 +139,43 @@ function MacroBar({label,current,goal,color,light,unit="g",compact=false}){
   const pct=Math.min((current/goal)*100,100),over=current>goal;
   return <div style={{marginBottom:compact?8:14}}>
     <div style={{display:"flex",justifyContent:"space-between",marginBottom:compact?3:5}}>
-      <span style={{fontSize:compact?11:12,fontWeight:600,color}}>{label}</span>
-      <span style={{fontSize:compact?11:12,color:over?C.fat:C.sub,fontWeight:over?700:400}}>{current}{unit} / {goal}{unit}</span>
+      <span style={{fontSize:compact?11:12,fontWeight:600,color,fontFamily:"'Inter',sans-serif"}}>{label}</span>
+      <span style={{fontSize:compact?11:12,color:over?"#E53935":C.sub,fontWeight:over?700:400,fontFamily:"'Inter',sans-serif"}}>{current}{unit} / {goal}{unit}</span>
     </div>
     <div style={{height:compact?6:8,background:light,borderRadius:4,overflow:"hidden"}}>
-      <div style={{height:"100%",width:pct+"%",background:over?C.fat:color,borderRadius:4,transition:"width 0.5s ease"}}/>
+      <div style={{height:"100%",width:pct+"%",background:over?"#E53935":color,borderRadius:4,transition:"width 0.5s ease"}}/>
     </div>
   </div>;
+}
+
+function MacroChip({label,value,color,light}){
+  return <span style={{fontSize:11,padding:"4px 12px",borderRadius:50,background:light,color:color,fontWeight:600}}>{label} {value}g</span>;
+}
+
+function MacroChipSmall({label,value,color,light}){
+  return <span style={{fontSize:9,padding:"2px 8px",borderRadius:50,background:light,color:color,fontWeight:600}}>{label} {value}g</span>;
 }
 
 function ProductCardDesktop({product,onAdd,onTap}){
   return <div className="product-card" onClick={onTap} style={{background:C.card,borderRadius:16,overflow:"hidden",cursor:"pointer",border:"1px solid "+C.borderL}}>
     <div style={{position:"relative",height:180,overflow:"hidden",background:"linear-gradient(135deg,"+C.primaryLight+","+C.borderL+")"}}>
       <img src={product.img} alt={product.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none"}}/>
-      <div style={{position:"absolute",top:12,right:12,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",borderRadius:8,padding:"5px 12px",fontSize:12,fontWeight:700,color:C.protein}}>{product.protein}g proteína</div>
-      <div style={{position:"absolute",top:12,left:12,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",borderRadius:8,padding:"5px 10px",fontSize:11,fontWeight:600,color:C.carbs,display:"flex",alignItems:"center",gap:4}}>
+      <div style={{position:"absolute",top:12,right:12,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",borderRadius:50,padding:"5px 12px",fontSize:12,fontWeight:700,color:C.protein}}>{product.protein}g proteina</div>
+      <div style={{position:"absolute",top:12,left:12,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",borderRadius:50,padding:"5px 10px",fontSize:11,fontWeight:600,color:C.carbs,display:"flex",alignItems:"center",gap:4}}>
         <Icon name="star" size={12} color={C.carbs}/> {product.rating}
       </div>
     </div>
     <div style={{padding:"16px 18px 18px"}}>
-      <p style={{fontSize:15,fontWeight:700,margin:0,color:C.text,lineHeight:1.3}}>{product.name}</p>
-      <p style={{fontSize:12,color:C.sub,margin:"4px 0 12px"}}>{product.brand} · {product.weight}</p>
+      <p style={{fontSize:15,fontWeight:700,margin:0,color:C.text,lineHeight:1.3,fontFamily:"'Nunito',sans-serif"}}>{product.name}</p>
+      <p style={{fontSize:12,color:C.sub,margin:"4px 0 12px",fontFamily:"'Inter',sans-serif"}}>{product.brand} · {product.weight}</p>
       <div style={{display:"flex",gap:6,marginBottom:14}}>
-        {[{l:"P",v:product.protein,c:C.protein},{l:"C",v:product.carbs,c:C.carbs},{l:"G",v:product.fat,c:C.fat}].map((m,i)=>
-          <span key={i} style={{fontSize:11,padding:"4px 10px",borderRadius:6,background:m.c+"12",color:m.c,fontWeight:600}}>{m.l} {m.v}g</span>
-        )}
+        <MacroChip label="P" value={product.protein} color={C.protein} light={C.proteinLight}/>
+        <MacroChip label="C" value={product.carbs} color={C.carbs} light={C.carbsLight}/>
+        <MacroChip label="G" value={product.fat} color={C.fat} light={C.fatLight}/>
       </div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <span style={{fontSize:18,fontWeight:800,color:C.text}}>${product.price.toLocaleString()}</span>
-        <button onClick={e=>{e.stopPropagation();onAdd()}} style={{background:C.primary,color:"#fff",border:"none",borderRadius:10,padding:"8px 16px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,fontWeight:600,transition:"background 0.2s"}}
+        <span style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Nunito',sans-serif"}}>${product.price.toLocaleString()}</span>
+        <button onClick={e=>{e.stopPropagation();onAdd()}} style={{background:C.primary,color:"#fff",border:"none",borderRadius:12,padding:"8px 16px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,fontWeight:600,transition:"background 0.2s"}}
           onMouseEnter={e=>e.currentTarget.style.background=C.primaryDark} onMouseLeave={e=>e.currentTarget.style.background=C.primary}>
           <Icon name="plus" size={16} color="#fff"/> Agregar
         </button>
@@ -128,19 +188,19 @@ function ProductCardMobile({product,onAdd,onTap}){
   return <div className="product-card" onClick={onTap} style={{background:C.card,borderRadius:14,overflow:"hidden",cursor:"pointer",border:"1px solid "+C.borderL}}>
     <div style={{position:"relative",height:140,overflow:"hidden",background:"linear-gradient(135deg,"+C.primaryLight+","+C.borderL+")"}}>
       <img src={product.img} alt={product.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none"}}/>
-      <div style={{position:"absolute",top:8,right:8,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",borderRadius:6,padding:"3px 8px",fontSize:10,fontWeight:700,color:C.protein}}>{product.protein}g prot</div>
+      <div style={{position:"absolute",top:8,right:8,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",borderRadius:50,padding:"3px 8px",fontSize:10,fontWeight:700,color:C.protein}}>{product.protein}g prot</div>
     </div>
     <div style={{padding:"12px 14px 14px"}}>
-      <p style={{fontSize:13,fontWeight:700,margin:0,color:C.text,lineHeight:1.3}}>{product.name}</p>
-      <p style={{fontSize:11,color:C.sub,margin:"2px 0 8px"}}>{product.brand} · {product.weight}</p>
+      <p style={{fontSize:13,fontWeight:700,margin:0,color:C.text,lineHeight:1.3,fontFamily:"'Nunito',sans-serif"}}>{product.name}</p>
+      <p style={{fontSize:11,color:C.sub,margin:"2px 0 8px",fontFamily:"'Inter',sans-serif"}}>{product.brand} · {product.weight}</p>
       <div style={{display:"flex",gap:4,marginBottom:10}}>
-        {[{l:"P",v:product.protein,c:C.protein},{l:"C",v:product.carbs,c:C.carbs},{l:"G",v:product.fat,c:C.fat}].map((m,i)=>
-          <span key={i} style={{fontSize:9,padding:"2px 6px",borderRadius:5,background:m.c+"12",color:m.c,fontWeight:600}}>{m.l} {m.v}g</span>
-        )}
+        <MacroChipSmall label="P" value={product.protein} color={C.protein} light={C.proteinLight}/>
+        <MacroChipSmall label="C" value={product.carbs} color={C.carbs} light={C.carbsLight}/>
+        <MacroChipSmall label="G" value={product.fat} color={C.fat} light={C.fatLight}/>
       </div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <span style={{fontSize:15,fontWeight:800,color:C.text}}>${product.price.toLocaleString()}</span>
-        <button onClick={e=>{e.stopPropagation();onAdd()}} style={{background:C.primary,color:"#fff",border:"none",borderRadius:8,width:30,height:30,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <span style={{fontSize:15,fontWeight:800,color:C.text,fontFamily:"'Nunito',sans-serif"}}>${product.price.toLocaleString()}</span>
+        <button onClick={e=>{e.stopPropagation();onAdd()}} style={{background:C.primary,color:"#fff",border:"none",borderRadius:12,width:30,height:30,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <Icon name="plus" size={16} color="#fff"/>
         </button>
       </div>
@@ -157,12 +217,12 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
     <header style={{background:C.card,borderBottom:"1px solid "+C.borderL,padding:"0 40px",display:"flex",alignItems:"center",justifyContent:"space-between",height:68,position:"sticky",top:0,zIndex:50}}>
       <div style={{display:"flex",alignItems:"center",gap:32}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:36,height:36,borderRadius:10,background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="target" size={18} color="#fff"/></div>
-          <span style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"var(--display)",letterSpacing:-.5}}>Macroly</span>
+          <LogoIsotipo size={36}/>
+          <LogoText size={20}/>
         </div>
         <nav style={{display:"flex",gap:4}}>
-          {[{id:"home",icon:"home",l:"Inicio"},{id:"catalog",icon:"search",l:"Catálogo"},{id:"learn",icon:"learn",l:"Aprender"},{id:"profile",icon:"user",l:"Mi Perfil"}].map(n=>
-            <button key={n.id} onClick={()=>{setTab(n.id);setSelProduct(null)}} style={{display:"flex",alignItems:"center",gap:7,padding:"8px 16px",borderRadius:10,border:"none",cursor:"pointer",fontSize:13,fontWeight:600,transition:"all .2s",background:tab===n.id||tab==="detail"&&n.id==="catalog"?C.primaryLight:"transparent",color:tab===n.id||tab==="detail"&&n.id==="catalog"?C.primary:C.sub}}>
+          {[{id:"home",icon:"home",l:"Inicio"},{id:"catalog",icon:"search",l:"Catalogo"},{id:"learn",icon:"learn",l:"Educacion"},{id:"profile",icon:"user",l:"Mi Perfil"}].map(n=>
+            <button key={n.id} onClick={()=>{setTab(n.id);setSelProduct(null)}} style={{display:"flex",alignItems:"center",gap:7,padding:"8px 16px",borderRadius:12,border:"none",cursor:"pointer",fontSize:13,fontWeight:600,transition:"all .2s",background:tab===n.id||tab==="detail"&&n.id==="catalog"?C.primaryLight:"transparent",color:tab===n.id||tab==="detail"&&n.id==="catalog"?C.primary:C.sub,fontFamily:"'Inter',sans-serif"}}>
               <Icon name={n.icon} size={17} color={tab===n.id||tab==="detail"&&n.id==="catalog"?C.primary:C.sub}/>{n.l}
             </button>
           )}
@@ -170,8 +230,8 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
       </div>
       <div style={{display:"flex",alignItems:"center",gap:16}}>
         {/* Search */}
-        <div style={{display:"flex",alignItems:"center",gap:8,background:C.bg,borderRadius:10,padding:"9px 16px",border:"1px solid "+C.border,width:260}}>
-          <Icon name="search" size={16} color={C.muted}/><span style={{fontSize:13,color:C.muted}}>Buscar productos...</span>
+        <div style={{display:"flex",alignItems:"center",gap:8,background:C.bg,borderRadius:12,padding:"9px 16px",border:"2px solid "+C.border,width:260}}>
+          <Icon name="search" size={16} color={C.muted}/><span style={{fontSize:13,color:C.muted,fontFamily:"'Inter',sans-serif"}}>Buscar productos...</span>
         </div>
         <button style={{position:"relative",width:42,height:42,borderRadius:12,background:C.bg,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
           <Icon name="bell" size={18} color={C.text}/>
@@ -196,7 +256,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
       <aside style={{width:300,flexShrink:0,borderRight:"1px solid "+C.borderL,padding:"28px 24px",overflowY:"auto",background:C.card}}>
         {/* Macro progress */}
         <div style={{marginBottom:28}}>
-          <h3 style={{fontSize:15,fontWeight:800,color:C.text,marginBottom:16,fontFamily:"var(--display)"}}>Progreso de macros</h3>
+          <h3 style={{fontSize:15,fontWeight:800,color:C.text,marginBottom:16,fontFamily:"'Nunito',sans-serif"}}>Progreso de macros</h3>
           <div style={{background:"linear-gradient(150deg,"+C.primaryDark+","+C.primary+")",borderRadius:18,padding:"20px 18px",color:"#fff",marginBottom:16}}>
             <div style={{display:"flex",justifyContent:"center",marginBottom:14}}>
               <div style={{position:"relative",width:100,height:100}}>
@@ -207,12 +267,12 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                   <circle cx={18} cy={18} r={15} fill="none" stroke={C.fat} strokeWidth={2.5} strokeDasharray={Math.min((cm.fat/goals.fat)*25,25)+" 100"} strokeDashoffset="-50" strokeLinecap="round"/>
                 </svg>
                 <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-                  <span style={{fontSize:20,fontWeight:800}}>{cm.calories}</span>
+                  <span style={{fontSize:20,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>{cm.calories}</span>
                   <span style={{fontSize:10,opacity:.6}}>/ {goals.calories} kcal</span>
                 </div>
               </div>
             </div>
-            {[{l:"Proteína",c:cm.protein,g:goals.protein,cl:C.protein},{l:"Carbos",c:cm.carbs,g:goals.carbs,cl:C.carbs},{l:"Grasas",c:cm.fat,g:goals.fat,cl:C.fat}].map((m,i)=>
+            {[{l:"Proteina",c:cm.protein,g:goals.protein,cl:C.protein},{l:"Carbos",c:cm.carbs,g:goals.carbs,cl:C.carbs},{l:"Grasas",c:cm.fat,g:goals.fat,cl:C.fat}].map((m,i)=>
               <div key={i} style={{marginBottom:i<2?8:0}}>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
                   <span style={{fontSize:11,opacity:.75}}>{m.l}</span>
@@ -227,23 +287,23 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
         </div>
         {/* Categories */}
         <div style={{marginBottom:28}}>
-          <h3 style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12}}>Categorías</h3>
-          {CATS.map(c=><button key={c.id} onClick={()=>{setCatFilter(c.id);setTab("catalog");setSelProduct(null)}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 14px",borderRadius:10,border:"none",cursor:"pointer",fontSize:13,fontWeight:600,marginBottom:4,transition:"all .2s",background:catFilter===c.id?C.primaryLight:"transparent",color:catFilter===c.id?C.primary:C.sub}}>
+          <h3 style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12,fontFamily:"'Nunito',sans-serif"}}>Categorias</h3>
+          {CATS.map(c=><button key={c.id} onClick={()=>{setCatFilter(c.id);setTab("catalog");setSelProduct(null)}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 14px",borderRadius:12,border:"none",cursor:"pointer",fontSize:13,fontWeight:600,marginBottom:4,transition:"all .2s",background:catFilter===c.id?C.primaryLight:"transparent",color:catFilter===c.id?C.primary:C.sub}}>
             {c.label}
           </button>)}
         </div>
         {/* Health filters */}
         <div style={{marginBottom:28}}>
-          <h3 style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12}}>Filtros de salud</h3>
-          {[{icon:"shield",label:"Apto para diabéticos"},{icon:"heart",label:"Apto para hipertensos"},{icon:"star",label:"Mejor precio/g proteína"}].map((f,i)=>
-            <button key={i} style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"10px 14px",borderRadius:10,border:"1px solid "+C.border,background:C.card,cursor:"pointer",fontSize:12,fontWeight:500,color:C.sub,marginBottom:6}}>
+          <h3 style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12,fontFamily:"'Nunito',sans-serif"}}>Filtros de salud</h3>
+          {[{icon:"shield",label:"Apto para diabeticos"},{icon:"heart",label:"Apto para hipertensos"},{icon:"star",label:"Mejor precio/g proteina"}].map((f,i)=>
+            <button key={i} style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"10px 14px",borderRadius:12,border:"2px solid "+C.border,background:C.card,cursor:"pointer",fontSize:12,fontWeight:500,color:C.sub,marginBottom:6}}>
               <Icon name={f.icon} size={15} color={C.sub}/>{f.label}
             </button>
           )}
         </div>
         {/* Quick links */}
         <div>
-          <h3 style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12}}>Accesos rápidos</h3>
+          <h3 style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12,fontFamily:"'Nunito',sans-serif"}}>Accesos rapidos</h3>
           {[{icon:"bolt",label:"Completar macros",bg:C.accentLight},{icon:"calendar",label:"Planificador semanal",bg:C.proteinLight},{icon:"learn",label:"Centro educativo",bg:C.carbsLight}].map((a,i)=>
             <button key={i} onClick={()=>a.label.includes("educativo")?setTab("learn"):setTab("catalog")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"12px 14px",borderRadius:12,border:"none",background:a.bg,cursor:"pointer",fontSize:13,fontWeight:600,color:C.text,marginBottom:8}}>
               <Icon name={a.icon} size={18} color={C.text}/>{a.label}
@@ -255,16 +315,16 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
       {/* Main content */}
       <main style={{flex:1,padding:"28px 36px",overflowY:"auto"}}>
         {tab==="home"&&<Fragment>
-          <h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"var(--display)",marginBottom:6}}>Buenos días</h2>
-          <p style={{fontSize:14,color:C.sub,marginBottom:28}}>Explora productos y completa tus macros del día</p>
+          <h2 style={{fontSize:28,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif",marginBottom:6}}>Buenos dias</h2>
+          <p style={{fontSize:14,color:C.sub,marginBottom:28,fontFamily:"'Inter',sans-serif"}}>Explora productos y completa tus macros del dia</p>
           {/* Featured banner */}
-          <div style={{background:"linear-gradient(135deg,"+C.primaryDark+",#4A9B4B)",borderRadius:20,padding:"32px 36px",color:"#fff",marginBottom:32,position:"relative",overflow:"hidden"}}>
+          <div style={{background:"linear-gradient(135deg,"+C.primaryDark+",#43A047)",borderRadius:20,padding:"32px 36px",color:"#fff",marginBottom:32,position:"relative",overflow:"hidden"}}>
             <div style={{position:"absolute",top:-40,right:-40,width:180,height:180,borderRadius:"50%",background:"rgba(255,255,255,.05)"}}/>
-            <h3 style={{fontSize:22,fontWeight:800,fontFamily:"var(--display)",marginBottom:8}}>Completa tus macros inteligentemente</h3>
-            <p style={{fontSize:14,opacity:.85,marginBottom:18,maxWidth:500}}>Macroly te recomienda productos que se ajustan a tus metas de proteína, carbohidratos y grasas. Agrega al carrito y mira tu progreso en tiempo real.</p>
-            <button onClick={()=>setTab("catalog")} style={{padding:"12px 24px",borderRadius:12,background:"rgba(255,255,255,.2)",border:"1px solid rgba(255,255,255,.3)",color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer"}}>Explorar catálogo</button>
+            <h3 style={{fontSize:22,fontWeight:900,fontFamily:"'Nunito',sans-serif",marginBottom:8}}>Completa tus macros inteligentemente</h3>
+            <p style={{fontSize:14,opacity:.85,marginBottom:18,maxWidth:500,fontFamily:"'Inter',sans-serif"}}>Macroly te recomienda productos que se ajustan a tus metas de proteina, carbohidratos y grasas. Agrega al carrito y mira tu progreso en tiempo real.</p>
+            <button onClick={()=>setTab("catalog")} style={{padding:"12px 24px",borderRadius:12,background:"rgba(255,255,255,.2)",border:"1px solid rgba(255,255,255,.3)",color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer"}}>Explorar catalogo</button>
           </div>
-          <h3 style={{fontSize:20,fontWeight:800,fontFamily:"var(--display)",marginBottom:18}}>Productos recomendados</h3>
+          <h3 style={{fontSize:20,fontWeight:800,fontFamily:"'Nunito',sans-serif",marginBottom:18}}>Productos recomendados</h3>
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:18}}>
             {PRODUCTS.slice(0,6).map(p=><ProductCardDesktop key={p.id} product={p} onAdd={()=>addToCart(p)} onTap={()=>{setSelProduct(p);setTab("detail")}}/>)}
           </div>
@@ -272,27 +332,27 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
           <div style={{marginTop:28,background:C.card,borderRadius:16,padding:"22px 28px",border:"1px solid "+C.borderL,display:"flex",gap:18,alignItems:"center"}}>
             <div style={{width:48,height:48,borderRadius:14,background:C.carbsLight,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="info" size={22} color={C.carbs}/></div>
             <div>
-              <p style={{margin:0,fontSize:15,fontWeight:700,color:C.text}}>Dato nutricional</p>
-              <p style={{margin:"4px 0 0",fontSize:13,color:C.sub,lineHeight:1.5}}>La proteína ayuda a sentirte satisfecho por más tiempo. Incluir al menos 25g de proteína por comida puede mejorar la saciedad y el control del apetito.</p>
+              <p style={{margin:0,fontSize:15,fontWeight:700,color:C.text,fontFamily:"'Nunito',sans-serif"}}>Dato nutricional</p>
+              <p style={{margin:"4px 0 0",fontSize:13,color:C.sub,lineHeight:1.5,fontFamily:"'Inter',sans-serif"}}>La proteina ayuda a sentirte satisfecho por mas tiempo. Incluir al menos 25g de proteina por comida puede mejorar la saciedad y el control del apetito.</p>
             </div>
           </div>
         </Fragment>}
 
         {tab==="catalog"&&<Fragment>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
-            <h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"var(--display)"}}>Catálogo</h2>
+            <h2 style={{fontSize:28,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif"}}>Catalogo</h2>
             <span style={{fontSize:13,color:C.sub}}>{filtered.length} productos</span>
           </div>
           {cart.length>0&&<div style={{background:C.card,borderRadius:14,padding:"16px 20px",marginBottom:20,border:"1px solid "+C.borderL,display:"flex",gap:24,alignItems:"center"}}>
             <span style={{fontSize:13,fontWeight:700,color:C.text,flexShrink:0}}>Tu carrito:</span>
             <div style={{flex:1,display:"flex",gap:20}}>
-              {[{l:"Proteína",c:cm.protein,g:goals.protein,cl:C.protein},{l:"Carbos",c:cm.carbs,g:goals.carbs,cl:C.carbs},{l:"Grasas",c:cm.fat,g:goals.fat,cl:C.fat}].map((m,i)=>
+              {[{l:"Proteina",c:cm.protein,g:goals.protein,cl:C.protein},{l:"Carbos",c:cm.carbs,g:goals.carbs,cl:C.carbs},{l:"Grasas",c:cm.fat,g:goals.fat,cl:C.fat}].map((m,i)=>
                 <div key={i} style={{flex:1}}>
                   <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
                     <span style={{fontSize:11,fontWeight:600,color:m.cl}}>{m.l}</span>
                     <span style={{fontSize:11,color:C.sub}}>{m.c}/{m.g}g</span>
                   </div>
-                  <div style={{height:6,background:m.cl+"15",borderRadius:3}}><div style={{height:"100%",width:Math.min((m.c/m.g)*100,100)+"%",background:m.c>m.g?C.fat:m.cl,borderRadius:3,transition:"width .4s"}}/></div>
+                  <div style={{height:6,background:m.cl+"15",borderRadius:3}}><div style={{height:"100%",width:Math.min((m.c/m.g)*100,100)+"%",background:m.c>m.g?"#E53935":m.cl,borderRadius:3,transition:"width .4s"}}/></div>
                 </div>
               )}
             </div>
@@ -304,38 +364,38 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
 
         {tab==="detail"&&selProduct&&<Fragment>
           <button onClick={()=>{setSelProduct(null);setTab("catalog")}} style={{background:"none",border:"none",cursor:"pointer",padding:"0 0 20px",display:"flex",alignItems:"center",gap:8,fontSize:14,color:C.primary,fontWeight:600}}>
-            <Icon name="arrow" size={18} color={C.primary}/> Volver al catálogo
+            <Icon name="arrow" size={18} color={C.primary}/> Volver al catalogo
           </button>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:36}}>
             <div style={{borderRadius:22,overflow:"hidden",height:380,background:C.primaryLight}}>
               <img src={selProduct.img} alt={selProduct.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none"}}/>
             </div>
             <div>
-              <h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"var(--display)",marginBottom:4}}>{selProduct.name}</h2>
-              <p style={{fontSize:14,color:C.sub,marginBottom:20}}>{selProduct.brand} · {selProduct.weight}</p>
+              <h2 style={{fontSize:28,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif",marginBottom:4}}>{selProduct.name}</h2>
+              <p style={{fontSize:14,color:C.sub,marginBottom:20,fontFamily:"'Inter',sans-serif"}}>{selProduct.brand} · {selProduct.weight}</p>
               <div style={{display:"flex",gap:10,marginBottom:24}}>
-                <span style={{background:C.primaryLight,color:C.primary,padding:"7px 16px",borderRadius:10,fontSize:13,fontWeight:600}}>${(selProduct.price/selProduct.protein).toFixed(0)}/g proteína</span>
-                <span style={{background:C.calLight,color:C.cal,padding:"7px 16px",borderRadius:10,fontSize:13,fontWeight:600}}>{selProduct.calories} kcal</span>
-                <span style={{background:C.carbsLight,color:C.carbs,padding:"7px 16px",borderRadius:10,fontSize:13,fontWeight:600,display:"flex",alignItems:"center",gap:5}}><Icon name="star" size={13} color={C.carbs}/>{selProduct.rating}</span>
+                <span style={{background:C.primaryLight,color:C.primary,padding:"7px 16px",borderRadius:50,fontSize:13,fontWeight:600}}>${(selProduct.price/selProduct.protein).toFixed(0)}/g proteina</span>
+                <span style={{background:C.calLight,color:C.cal,padding:"7px 16px",borderRadius:50,fontSize:13,fontWeight:600}}>{selProduct.calories} kcal</span>
+                <span style={{background:C.carbsLight,color:C.carbs,padding:"7px 16px",borderRadius:50,fontSize:13,fontWeight:600,display:"flex",alignItems:"center",gap:5}}><Icon name="star" size={13} color={C.carbs}/>{selProduct.rating}</span>
               </div>
               <div style={{background:C.card,borderRadius:16,padding:22,border:"1px solid "+C.borderL,marginBottom:20}}>
-                <h4 style={{margin:"0 0 16px",fontSize:15,fontWeight:700}}>Información nutricional</h4>
-                <MacroBar label="Proteína" current={selProduct.protein} goal={goals.protein} color={C.protein} light={C.proteinLight}/>
+                <h4 style={{margin:"0 0 16px",fontSize:15,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>Informacion nutricional</h4>
+                <MacroBar label="Proteina" current={selProduct.protein} goal={goals.protein} color={C.protein} light={C.proteinLight}/>
                 <MacroBar label="Carbohidratos" current={selProduct.carbs} goal={goals.carbs} color={C.carbs} light={C.carbsLight}/>
                 <MacroBar label="Grasas" current={selProduct.fat} goal={goals.fat} color={C.fat} light={C.fatLight}/>
-                <MacroBar label="Calorías" current={selProduct.calories} goal={goals.calories} color={C.cal} light={C.calLight} unit="kcal"/>
+                <MacroBar label="Calorias" current={selProduct.calories} goal={goals.calories} color={C.cal} light={C.calLight} unit="kcal"/>
               </div>
-              <div style={{background:C.primaryLight,borderRadius:14,padding:"16px 20px",border:"1px solid "+C.primary+"20",marginBottom:24}}>
+              <div style={{background:C.primaryLight,borderRadius:14,padding:"16px 20px",border:"1px solid "+C.primaryBorder,marginBottom:24}}>
                 <p style={{margin:"0 0 8px",fontSize:13,fontWeight:600,color:C.primaryDark,display:"flex",alignItems:"center",gap:8}}><Icon name="info" size={16} color={C.primary}/> Impacto en tu carrito</p>
                 <div style={{display:"flex",gap:16}}>
                   {[{l:"P",v:cm.protein+selProduct.protein,g:goals.protein,c:C.protein},{l:"C",v:cm.carbs+selProduct.carbs,g:goals.carbs,c:C.carbs},{l:"G",v:cm.fat+selProduct.fat,g:goals.fat,c:C.fat}].map((m,i)=>
-                    <span key={i} style={{fontSize:13,fontWeight:700,color:m.v>m.g?C.fat:m.c,display:"flex",alignItems:"center",gap:4}}>{m.l}: {m.v}g / {m.g}g <Icon name={m.v>m.g?"info":"check"} size={15} color={m.v>m.g?C.fat:C.success}/></span>
+                    <span key={i} style={{fontSize:13,fontWeight:700,color:m.v>m.g?"#E53935":m.c,display:"flex",alignItems:"center",gap:4}}>{m.l}: {m.v}g / {m.g}g <Icon name={m.v>m.g?"info":"check"} size={15} color={m.v>m.g?"#E53935":C.success}/></span>
                   )}
                 </div>
               </div>
               <div style={{display:"flex",gap:16,alignItems:"center"}}>
-                <span style={{fontSize:26,fontWeight:800,color:C.text}}>${selProduct.price.toLocaleString()}</span>
-                <button onClick={()=>addToCart(selProduct)} style={{flex:1,padding:"14px",borderRadius:14,background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,boxShadow:"0 4px 16px rgba(59,122,60,.3)"}}>
+                <span style={{fontSize:26,fontWeight:800,color:C.text,fontFamily:"'Nunito',sans-serif"}}>${selProduct.price.toLocaleString()}</span>
+                <button onClick={()=>addToCart(selProduct)} style={{flex:1,padding:"14px",borderRadius:14,background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,boxShadow:"0 4px 16px rgba(46,125,50,.3)"}}>
                   <Icon name="cart" size={18} color="#fff"/> Agregar al carrito
                 </button>
               </div>
@@ -344,19 +404,19 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
         </Fragment>}
 
         {tab==="cart"&&<Fragment>
-          <h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"var(--display)",marginBottom:4}}>Mi Carrito</h2>
-          <p style={{fontSize:14,color:C.sub,marginBottom:24}}>{cart.length===0?"Tu carrito está vacío":cart.reduce((a,i)=>a+i.qty,0)+" productos"}</p>
+          <h2 style={{fontSize:28,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif",marginBottom:4}}>Mi Carrito</h2>
+          <p style={{fontSize:14,color:C.sub,marginBottom:24,fontFamily:"'Inter',sans-serif"}}>{cart.length===0?"Tu carrito esta vacio":cart.reduce((a,i)=>a+i.qty,0)+" productos"}</p>
           {cart.length===0?<div style={{textAlign:"center",padding:"60px 40px"}}>
             <div style={{width:72,height:72,borderRadius:20,background:C.borderL,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="cart" size={32} color={C.muted}/></div>
             <p style={{fontSize:16,color:C.sub,marginBottom:20}}>Agrega productos para empezar a completar tus macros</p>
-            <button onClick={()=>setTab("catalog")} style={{padding:"14px 36px",borderRadius:14,background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer"}}>Ir al catálogo</button>
+            <button onClick={()=>setTab("catalog")} style={{padding:"14px 36px",borderRadius:14,background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer"}}>Ir al catalogo</button>
           </div>:
           <div style={{display:"grid",gridTemplateColumns:"1fr 380px",gap:32}}>
             <div>
               {cart.map(item=><div key={item.id} style={{background:C.card,borderRadius:14,padding:"16px 20px",marginBottom:10,border:"1px solid "+C.borderL,display:"flex",alignItems:"center",gap:16}}>
                 <div style={{width:64,height:64,borderRadius:12,overflow:"hidden",flexShrink:0,background:C.primaryLight}}><img src={item.img} alt={item.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none"}}/></div>
                 <div style={{flex:1}}>
-                  <p style={{margin:0,fontSize:14,fontWeight:700,color:C.text}}>{item.name}</p>
+                  <p style={{margin:0,fontSize:14,fontWeight:700,color:C.text,fontFamily:"'Nunito',sans-serif"}}>{item.name}</p>
                   <p style={{margin:"2px 0 0",fontSize:12,color:C.sub}}>{item.brand} · {item.weight}</p>
                   <div style={{display:"flex",gap:8,marginTop:5}}>
                     <span style={{fontSize:11,color:C.protein,fontWeight:600}}>P:{item.protein*item.qty}g</span>
@@ -374,51 +434,51 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
                 </div>
               </div>)}
               <button style={{width:"100%",marginTop:12,background:C.accentLight,borderRadius:14,padding:"14px 20px",border:"1px solid "+C.accent+"20",cursor:"pointer",display:"flex",alignItems:"center",gap:10,fontSize:13,color:C.accent,fontWeight:600}}>
-                <Icon name="save" size={18} color={C.accent}/> Guardar esta combinación como favorita
+                <Icon name="save" size={18} color={C.accent}/> Guardar esta combinacion como favorita
               </button>
             </div>
             {/* Checkout sidebar */}
             <div>
               <div style={{background:C.card,borderRadius:18,padding:24,border:"1px solid "+C.borderL,position:"sticky",top:96}}>
-                <h4 style={{margin:"0 0 18px",fontSize:16,fontWeight:700}}>Resumen del pedido</h4>
-                <MacroBar label="Proteína" current={cm.protein} goal={goals.protein} color={C.protein} light={C.proteinLight}/>
+                <h4 style={{margin:"0 0 18px",fontSize:16,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>Resumen del pedido</h4>
+                <MacroBar label="Proteina" current={cm.protein} goal={goals.protein} color={C.protein} light={C.proteinLight}/>
                 <MacroBar label="Carbohidratos" current={cm.carbs} goal={goals.carbs} color={C.carbs} light={C.carbsLight}/>
                 <MacroBar label="Grasas" current={cm.fat} goal={goals.fat} color={C.fat} light={C.fatLight}/>
                 <div style={{height:1,background:C.border,margin:"18px 0"}}/>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><span style={{fontSize:14,color:C.sub}}>Subtotal</span><span style={{fontSize:14,fontWeight:600}}>${cartTotal.toLocaleString()}</span></div>
-                <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><span style={{fontSize:14,color:C.sub}}>Envío</span><span style={{fontSize:14,fontWeight:600,color:C.success}}>Gratis</span></div>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><span style={{fontSize:14,color:C.sub}}>Envio</span><span style={{fontSize:14,fontWeight:600,color:C.success}}>Gratis</span></div>
                 <div style={{height:1,background:C.border,margin:"14px 0"}}/>
-                <div style={{display:"flex",justifyContent:"space-between",marginBottom:20}}><span style={{fontSize:18,fontWeight:800}}>Total</span><span style={{fontSize:20,fontWeight:800,color:C.primary}}>${cartTotal.toLocaleString()}</span></div>
-                <p style={{fontSize:12,fontWeight:600,color:C.sub,margin:"0 0 10px"}}>Método de pago</p>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:20}}><span style={{fontSize:18,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>Total</span><span style={{fontSize:20,fontWeight:800,color:C.primary,fontFamily:"'Nunito',sans-serif"}}>${cartTotal.toLocaleString()}</span></div>
+                <p style={{fontSize:12,fontWeight:600,color:C.sub,margin:"0 0 10px"}}>Metodo de pago</p>
                 <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
                   {[{i:"heart",l:"Nequi",s:true},{i:"shield",l:"Tarjeta"},{i:"activity",l:"PSE"},{i:"truck",l:"Contra entrega"}].map((m,i)=>
-                    <button key={i} style={{display:"flex",alignItems:"center",gap:5,fontSize:12,padding:"8px 14px",borderRadius:10,background:m.s?C.primaryLight:C.card,border:m.s?"1.5px solid "+C.primary:"1px solid "+C.border,color:m.s?C.primary:C.text,fontWeight:600,cursor:"pointer"}}>
+                    <button key={i} style={{display:"flex",alignItems:"center",gap:5,fontSize:12,padding:"8px 14px",borderRadius:12,background:m.s?C.primaryLight:C.card,border:m.s?"2px solid "+C.primary:"2px solid "+C.border,color:m.s?C.primary:C.text,fontWeight:600,cursor:"pointer"}}>
                       <Icon name={m.i} size={14} color={m.s?C.primary:C.sub}/>{m.l}
                     </button>
                   )}
                 </div>
-                <button style={{width:"100%",padding:16,borderRadius:14,background:"linear-gradient(135deg,"+C.accent+",#D4603B)",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer",boxShadow:"0 4px 16px rgba(232,118,75,.3)"}}>Pagar ${cartTotal.toLocaleString()}</button>
+                <button style={{width:"100%",padding:16,borderRadius:14,background:"linear-gradient(135deg,"+C.accent+",#E65100)",border:"none",fontSize:15,fontWeight:700,color:"#fff",cursor:"pointer",boxShadow:"0 4px 16px rgba(251,140,0,.3)"}}>Pagar ${cartTotal.toLocaleString()}</button>
               </div>
             </div>
           </div>}
         </Fragment>}
 
         {tab==="learn"&&<Fragment>
-          <h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"var(--display)",marginBottom:6}}>Centro educativo</h2>
-          <p style={{fontSize:14,color:C.sub,marginBottom:28}}>Aprende sobre nutrición y macronutrientes</p>
-          <div style={{background:"linear-gradient(150deg,"+C.primaryDark+",#4A9B4B)",borderRadius:20,padding:"32px 36px",color:"#fff",marginBottom:28,position:"relative",overflow:"hidden"}}>
+          <h2 style={{fontSize:28,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif",marginBottom:6}}>Centro educativo</h2>
+          <p style={{fontSize:14,color:C.sub,marginBottom:28,fontFamily:"'Inter',sans-serif"}}>Aprende sobre nutricion y macronutrientes</p>
+          <div style={{background:"linear-gradient(150deg,"+C.primaryDark+",#43A047)",borderRadius:20,padding:"32px 36px",color:"#fff",marginBottom:28,position:"relative",overflow:"hidden"}}>
             <div style={{position:"absolute",top:-30,right:-30,width:120,height:120,borderRadius:"50%",background:"rgba(255,255,255,.06)"}}/>
-            <span style={{fontSize:11,fontWeight:700,background:"rgba(255,255,255,.2)",padding:"5px 14px",borderRadius:6,textTransform:"uppercase",letterSpacing:1}}>Guía destacada</span>
-            <h3 style={{margin:"16px 0 8px",fontSize:22,fontWeight:800,fontFamily:"var(--display)"}}>¿Qué son los macronutrientes?</h3>
-            <p style={{margin:0,fontSize:14,opacity:.85,lineHeight:1.5,maxWidth:500}}>Aprende las bases de proteínas, carbohidratos y grasas de forma sencilla y visual.</p>
-            <button style={{marginTop:18,padding:"12px 24px",borderRadius:12,background:"rgba(255,255,255,.2)",border:"1px solid rgba(255,255,255,.3)",color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer"}}>Leer artículo</button>
+            <span style={{fontSize:11,fontWeight:700,background:"rgba(255,255,255,.2)",padding:"5px 14px",borderRadius:50,textTransform:"uppercase",letterSpacing:1}}>Guia destacada</span>
+            <h3 style={{margin:"16px 0 8px",fontSize:22,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Que son los macronutrientes?</h3>
+            <p style={{margin:0,fontSize:14,opacity:.85,lineHeight:1.5,maxWidth:500,fontFamily:"'Inter',sans-serif"}}>Aprende las bases de proteinas, carbohidratos y grasas de forma sencilla y visual.</p>
+            <button style={{marginTop:18,padding:"12px 24px",borderRadius:12,background:"rgba(255,255,255,.2)",border:"1px solid rgba(255,255,255,.3)",color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer"}}>Leer articulo</button>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
-            {[{icon:"activity",title:"Fuentes de proteína económicas en Colombia",tag:"Nutrición",time:"5 min",bg:C.proteinLight},{icon:"dumbbell",title:"Cómo ajustar macros en días de entreno",tag:"Fitness",time:"4 min",bg:C.carbsLight},{icon:"info",title:"Cómo leer una tabla nutricional",tag:"Básico",time:"3 min",bg:C.fatLight},{icon:"calendar",title:"Meal prep: planifica tu semana en 1 hora",tag:"Tips",time:"6 min",bg:C.calLight},{icon:"shield",title:"Alimentación para hipertensos",tag:"Salud",time:"5 min",bg:C.primaryLight},{icon:"heart",title:"Nutrición para control de peso",tag:"Bienestar",time:"4 min",bg:C.accentLight}].map((a,i)=>
+            {[{icon:"activity",title:"Fuentes de proteina economicas en Colombia",tag:"Nutricion",time:"5 min",bg:C.proteinLight},{icon:"dumbbell",title:"Como ajustar macros en dias de entreno",tag:"Fitness",time:"4 min",bg:C.carbsLight},{icon:"info",title:"Como leer una tabla nutricional",tag:"Basico",time:"3 min",bg:C.fatLight},{icon:"calendar",title:"Meal prep: planifica tu semana en 1 hora",tag:"Tips",time:"6 min",bg:C.calLight},{icon:"shield",title:"Alimentacion para hipertensos",tag:"Salud",time:"5 min",bg:C.primaryLight},{icon:"heart",title:"Nutricion para control de peso",tag:"Bienestar",time:"4 min",bg:C.accentLight}].map((a,i)=>
               <div key={i} style={{background:C.card,borderRadius:16,padding:"20px 22px",border:"1px solid "+C.borderL,display:"flex",alignItems:"center",gap:16,cursor:"pointer",transition:"box-shadow .2s"}} onMouseEnter={e=>e.currentTarget.style.boxShadow="0 4px 16px rgba(0,0,0,.08)"} onMouseLeave={e=>e.currentTarget.style.boxShadow="none"}>
                 <div style={{width:52,height:52,borderRadius:14,background:a.bg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={a.icon} size={24} color={C.text}/></div>
                 <div style={{flex:1}}>
-                  <p style={{margin:0,fontSize:14,fontWeight:700,color:C.text}}>{a.title}</p>
+                  <p style={{margin:0,fontSize:14,fontWeight:700,color:C.text,fontFamily:"'Nunito',sans-serif"}}>{a.title}</p>
                   <div style={{display:"flex",gap:8,marginTop:5}}><span style={{fontSize:12,color:C.primary,fontWeight:600}}>{a.tag}</span><span style={{fontSize:12,color:C.muted}}>· {a.time} lectura</span></div>
                 </div>
                 <Icon name="chevron" size={18} color={C.muted}/>
@@ -428,26 +488,26 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
         </Fragment>}
 
         {tab==="profile"&&<Fragment>
-          <h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"var(--display)",marginBottom:28}}>Mi Perfil</h2>
+          <h2 style={{fontSize:28,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif",marginBottom:28}}>Mi Perfil</h2>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
             <div style={{background:C.card,borderRadius:18,padding:28,border:"1px solid "+C.borderL,textAlign:"center"}}>
               <div style={{width:72,height:72,borderRadius:20,margin:"0 auto 16px",background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="user" size={32} color="#fff"/></div>
-              <h3 style={{margin:0,fontSize:20,fontWeight:800,fontFamily:"var(--display)"}}>Usuario Macroly</h3>
-              <p style={{margin:"6px 0 0",fontSize:14,color:C.sub}}>Modo Automático</p>
+              <h3 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Usuario Macroly</h3>
+              <p style={{margin:"6px 0 0",fontSize:14,color:C.sub}}>Modo Automatico</p>
             </div>
             <div style={{background:C.card,borderRadius:18,padding:28,border:"1px solid "+C.borderL}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
-                <h4 style={{margin:0,fontSize:16,fontWeight:700}}>Metas diarias</h4>
+                <h4 style={{margin:0,fontSize:16,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>Metas diarias</h4>
                 <button style={{background:"none",border:"none",fontSize:13,color:C.primary,fontWeight:600,cursor:"pointer"}}>Editar</button>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                {[{l:"Proteína",v:goals.protein+"g",c:C.protein,bg:C.proteinLight,k:"P"},{l:"Carbos",v:goals.carbs+"g",c:C.carbs,bg:C.carbsLight,k:"C"},{l:"Grasas",v:goals.fat+"g",c:C.fat,bg:C.fatLight,k:"G"},{l:"Calorías",v:""+goals.calories,c:C.cal,bg:C.calLight,k:"K"}].map((m,i)=>
+                {[{l:"Proteina",v:goals.protein+"g",c:C.protein,bg:C.proteinLight,k:"P"},{l:"Carbos",v:goals.carbs+"g",c:C.carbs,bg:C.carbsLight,k:"C"},{l:"Grasas",v:goals.fat+"g",c:C.fat,bg:C.fatLight,k:"G"},{l:"Calorias",v:""+goals.calories,c:C.cal,bg:C.calLight,k:"K"}].map((m,i)=>
                   <div key={i} style={{background:m.bg,borderRadius:12,padding:"12px 14px",border:"1px solid "+m.c+"18"}}>
                     <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:4}}>
                       <div style={{width:22,height:22,borderRadius:6,background:m.c,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:10,fontWeight:800}}>{m.k}</span></div>
                       <span style={{fontSize:11,color:C.sub}}>{m.l}</span>
                     </div>
-                    <span style={{fontSize:18,fontWeight:800,color:m.c}}>{m.v}</span>
+                    <span style={{fontSize:18,fontWeight:800,color:m.c,fontFamily:"'Nunito',sans-serif"}}>{m.v}</span>
                   </div>
                 )}
               </div>
@@ -455,14 +515,14 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
           </div>
           <div style={{marginTop:24,display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
             <div style={{background:C.card,borderRadius:18,padding:28,border:"1px solid "+C.borderL}}>
-              <h4 style={{margin:"0 0 16px",fontSize:16,fontWeight:700}}>Días de entrenamiento</h4>
+              <h4 style={{margin:"0 0 16px",fontSize:16,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>Dias de entrenamiento</h4>
               <div style={{display:"flex",gap:8}}>
                 {["L","M","Mi","J","V","S","D"].map((d,i)=><div key={i} style={{flex:1,height:46,borderRadius:12,background:[0,2,4].includes(i)?C.primary:C.borderL,color:[0,2,4].includes(i)?"#fff":C.sub,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700}}>{d}</div>)}
               </div>
-              <p style={{margin:"14px 0 0",fontSize:12,color:C.sub}}>Los macros se ajustan automáticamente según tu tipo de día</p>
+              <p style={{margin:"14px 0 0",fontSize:12,color:C.sub}}>Los macros se ajustan automaticamente segun tu tipo de dia</p>
             </div>
             <div style={{background:C.card,borderRadius:18,overflow:"hidden",border:"1px solid "+C.borderL}}>
-              {[{icon:"clock",label:"Historial de pedidos"},{icon:"save",label:"Combinaciones guardadas"},{icon:"activity",label:"Resumen semanal"},{icon:"shield",label:"Condiciones de salud"},{icon:"mail",label:"Notificaciones por correo"},{icon:"settings",label:"Configuración"}].map((item,i)=>
+              {[{icon:"clock",label:"Historial de pedidos"},{icon:"save",label:"Combinaciones guardadas"},{icon:"activity",label:"Resumen semanal"},{icon:"shield",label:"Condiciones de salud"},{icon:"mail",label:"Notificaciones por correo"},{icon:"settings",label:"Configuracion"}].map((item,i)=>
                 <div key={i} style={{padding:"14px 20px",display:"flex",alignItems:"center",gap:12,borderBottom:i<5?"1px solid "+C.borderL:"none",cursor:"pointer"}}>
                   <Icon name={item.icon} size={18} color={C.sub}/><span style={{fontSize:13,fontWeight:500,color:C.text,flex:1}}>{item.label}</span><Icon name="chevron" size={15} color={C.muted}/>
                 </div>
@@ -476,7 +536,7 @@ function DesktopView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,
 }
 
 /* ══════════════════════════════════════════
-   MOBILE VIEW (same as before but embedded)
+   MOBILE VIEW
    ══════════════════════════════════════════ */
 function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,filtered,cartTotal,alert,tab,setTab,selProduct,setSelProduct}){
   const cartCount=cart.reduce((a,i)=>a+i.qty,0);
@@ -488,7 +548,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       {/* Home */}
       {tab==="home"&&<div style={{padding:"0 20px 20px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 0 20px"}}>
-          <div><p style={{margin:0,fontSize:12,color:C.sub}}>Buenos días</p><h1 style={{margin:"2px 0 0",fontSize:20,fontWeight:800,color:C.text,fontFamily:"var(--display)"}}>Tu progreso hoy</h1></div>
+          <div><p style={{margin:0,fontSize:12,color:C.sub}}>Buenos dias</p><h1 style={{margin:"2px 0 0",fontSize:20,fontWeight:900,color:C.text,fontFamily:"'Nunito',sans-serif"}}>Tu progreso hoy</h1></div>
           <button style={{width:38,height:38,borderRadius:12,background:C.card,border:"1px solid "+C.border,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="bell" size={18} color={C.text}/></button>
         </div>
         <div style={{background:"linear-gradient(150deg,"+C.primaryDark+","+C.primary+")",borderRadius:20,padding:"20px 18px",color:"#fff",marginBottom:20,position:"relative",overflow:"hidden"}}>
@@ -498,7 +558,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
             <span style={{fontSize:11,background:"rgba(255,255,255,.15)",padding:"4px 10px",borderRadius:8,fontWeight:600}}>{Math.round((cm.calories/goals.calories)*100)}%</span>
           </div>
           <div style={{display:"flex",gap:12}}>
-            {[{l:"Proteína",c:cm.protein,g:goals.protein,cl:C.protein},{l:"Carbos",c:cm.carbs,g:goals.carbs,cl:C.carbs},{l:"Grasas",c:cm.fat,g:goals.fat,cl:C.fat}].map((m,i)=>
+            {[{l:"Proteina",c:cm.protein,g:goals.protein,cl:C.protein},{l:"Carbos",c:cm.carbs,g:goals.carbs,cl:C.carbs},{l:"Grasas",c:cm.fat,g:goals.fat,cl:C.fat}].map((m,i)=>
               <div key={i} style={{flex:1}}>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:10,opacity:.7}}>{m.l}</span><span style={{fontSize:10,fontWeight:700}}>{m.c}g</span></div>
                 <div style={{height:4,background:"rgba(255,255,255,.15)",borderRadius:2}}><div style={{height:"100%",width:Math.min((m.c/m.g)*100,100)+"%",background:m.cl,borderRadius:2,transition:"width .5s"}}/></div>
@@ -507,14 +567,14 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
           </div>
         </div>
         <div style={{display:"flex",gap:10,marginBottom:22}}>
-          {[{icon:"bolt",label:"Completar",bg:C.accentLight},{icon:"calendar",label:"Planificar",bg:C.proteinLight},{icon:"learn",label:"Aprender",bg:C.carbsLight}].map((a,i)=>
-            <button key={i} onClick={()=>a.label==="Aprender"?setTab("learn"):setTab("catalog")} style={{flex:1,background:a.bg,border:"none",borderRadius:12,padding:"14px 8px",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
+          {[{icon:"bolt",label:"Completar",bg:C.accentLight},{icon:"calendar",label:"Planificar",bg:C.proteinLight},{icon:"learn",label:"Educacion",bg:C.carbsLight}].map((a,i)=>
+            <button key={i} onClick={()=>a.label==="Educacion"?setTab("learn"):setTab("catalog")} style={{flex:1,background:a.bg,border:"none",borderRadius:12,padding:"14px 8px",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
               <Icon name={a.icon} size={20} color={C.text}/><span style={{fontSize:10,fontWeight:700,color:C.text}}>{a.label}</span>
             </button>
           )}
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-          <h3 style={{margin:0,fontSize:16,fontWeight:800,fontFamily:"var(--display)"}}>Recomendados</h3>
+          <h3 style={{margin:0,fontSize:16,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>Recomendados</h3>
           <button onClick={()=>setTab("catalog")} style={{background:"none",border:"none",fontSize:12,color:C.primary,fontWeight:600,cursor:"pointer"}}>Ver todo</button>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
@@ -523,8 +583,8 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       </div>}
       {/* Catalog */}
       {tab==="catalog"&&<div style={{padding:"0 20px 20px"}}>
-        <div style={{padding:"16px 0 12px"}}><h1 style={{margin:0,fontSize:20,fontWeight:800,fontFamily:"var(--display)"}}>Catálogo</h1></div>
-        <div style={{background:C.card,borderRadius:12,padding:"11px 14px",display:"flex",alignItems:"center",gap:10,marginBottom:14,border:"1px solid "+C.border}}>
+        <div style={{padding:"16px 0 12px"}}><h1 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Catalogo</h1></div>
+        <div style={{background:C.card,borderRadius:12,padding:"11px 14px",display:"flex",alignItems:"center",gap:10,marginBottom:14,border:"2px solid "+C.border}}>
           <Icon name="search" size={16} color={C.muted}/><span style={{fontSize:13,color:C.muted,flex:1}}>Buscar...</span>
           <button style={{width:30,height:30,borderRadius:8,background:C.primaryLight,border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="filter" size={14} color={C.primary}/></button>
         </div>
@@ -533,13 +593,13 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
             {[{l:"P",c:cm.protein,g:goals.protein,cl:C.protein},{l:"C",c:cm.carbs,g:goals.carbs,cl:C.carbs},{l:"G",c:cm.fat,g:goals.fat,cl:C.fat}].map((m,i)=>
               <div key={i} style={{flex:1}}>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><span style={{fontSize:9,fontWeight:700,color:m.cl}}>{m.l}</span><span style={{fontSize:9,color:C.sub}}>{m.c}/{m.g}g</span></div>
-                <div style={{height:4,background:m.cl+"15",borderRadius:2}}><div style={{height:"100%",width:Math.min((m.c/m.g)*100,100)+"%",background:m.c>m.g?C.fat:m.cl,borderRadius:2,transition:"width .4s"}}/></div>
+                <div style={{height:4,background:m.cl+"15",borderRadius:2}}><div style={{height:"100%",width:Math.min((m.c/m.g)*100,100)+"%",background:m.c>m.g?"#E53935":m.cl,borderRadius:2,transition:"width .4s"}}/></div>
               </div>
             )}
           </div>
         </div>}
         <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:12}}>
-          {CATS.map(c=><button key={c.id} onClick={()=>setCatFilter(c.id)} style={{background:catFilter===c.id?C.primary:C.card,color:catFilter===c.id?"#fff":C.text,border:catFilter===c.id?"none":"1px solid "+C.border,borderRadius:10,padding:"7px 14px",cursor:"pointer",whiteSpace:"nowrap",fontSize:11,fontWeight:600}}>{c.label}</button>)}
+          {CATS.map(c=><button key={c.id} onClick={()=>setCatFilter(c.id)} style={{background:catFilter===c.id?C.primary:C.card,color:catFilter===c.id?"#fff":C.text,border:catFilter===c.id?"none":"1px solid "+C.border,borderRadius:50,padding:"7px 14px",cursor:"pointer",whiteSpace:"nowrap",fontSize:11,fontWeight:600}}>{c.label}</button>)}
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
           {filtered.map(p=><ProductCardMobile key={p.id} product={p} onAdd={()=>addToCart(p)} onTap={()=>{setSelProduct(p);setTab("detail")}}/>)}
@@ -551,16 +611,16 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
           <Icon name="arrow" size={16} color={C.primary}/> Volver
         </button>
         <div style={{height:180,borderRadius:16,overflow:"hidden",marginBottom:16,background:C.primaryLight}}><img src={selProduct.img} alt={selProduct.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none"}}/></div>
-        <h2 style={{margin:0,fontSize:20,fontWeight:800,fontFamily:"var(--display)"}}>{selProduct.name}</h2>
+        <h2 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>{selProduct.name}</h2>
         <p style={{margin:"4px 0 14px",fontSize:13,color:C.sub}}>{selProduct.brand} · {selProduct.weight}</p>
         <div style={{background:C.card,borderRadius:14,padding:18,border:"1px solid "+C.borderL,marginBottom:16}}>
-          <MacroBar label="Proteína" current={selProduct.protein} goal={goals.protein} color={C.protein} light={C.proteinLight} compact/>
+          <MacroBar label="Proteina" current={selProduct.protein} goal={goals.protein} color={C.protein} light={C.proteinLight} compact/>
           <MacroBar label="Carbohidratos" current={selProduct.carbs} goal={goals.carbs} color={C.carbs} light={C.carbsLight} compact/>
           <MacroBar label="Grasas" current={selProduct.fat} goal={goals.fat} color={C.fat} light={C.fatLight} compact/>
-          <MacroBar label="Calorías" current={selProduct.calories} goal={goals.calories} color={C.cal} light={C.calLight} unit="kcal" compact/>
+          <MacroBar label="Calorias" current={selProduct.calories} goal={goals.calories} color={C.cal} light={C.calLight} unit="kcal" compact/>
         </div>
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
-          <span style={{fontSize:20,fontWeight:800}}>${selProduct.price.toLocaleString()}</span>
+          <span style={{fontSize:20,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>${selProduct.price.toLocaleString()}</span>
           <button onClick={()=>addToCart(selProduct)} style={{flex:1,padding:"13px",borderRadius:12,background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",border:"none",fontSize:14,fontWeight:700,color:"#fff",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
             <Icon name="cart" size={16} color="#fff"/> Agregar
           </button>
@@ -568,20 +628,20 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
       </div>}
       {/* Cart */}
       {tab==="cart"&&<div style={{padding:"0 20px 20px"}}>
-        <div style={{padding:"16px 0 18px"}}><h1 style={{margin:0,fontSize:20,fontWeight:800,fontFamily:"var(--display)"}}>Mi Carrito</h1></div>
+        <div style={{padding:"16px 0 18px"}}><h1 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Mi Carrito</h1></div>
         <div style={{background:C.card,borderRadius:14,padding:18,border:"1px solid "+C.borderL,marginBottom:16}}>
-          <MacroBar label="Proteína" current={cm.protein} goal={goals.protein} color={C.protein} light={C.proteinLight} compact/>
+          <MacroBar label="Proteina" current={cm.protein} goal={goals.protein} color={C.protein} light={C.proteinLight} compact/>
           <MacroBar label="Carbohidratos" current={cm.carbs} goal={goals.carbs} color={C.carbs} light={C.carbsLight} compact/>
           <MacroBar label="Grasas" current={cm.fat} goal={goals.fat} color={C.fat} light={C.fatLight} compact/>
         </div>
         {cart.length===0&&<div style={{textAlign:"center",padding:"40px 20px"}}>
           <div style={{width:56,height:56,borderRadius:16,background:C.borderL,margin:"0 auto 14px",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="cart" size={24} color={C.muted}/></div>
-          <p style={{fontSize:14,color:C.sub,marginBottom:14}}>Agrega productos del catálogo</p>
-          <button onClick={()=>setTab("catalog")} style={{padding:"10px 28px",borderRadius:12,background:C.primary,color:"#fff",border:"none",fontWeight:700,fontSize:13,cursor:"pointer"}}>Ir al catálogo</button>
+          <p style={{fontSize:14,color:C.sub,marginBottom:14}}>Agrega productos del catalogo</p>
+          <button onClick={()=>setTab("catalog")} style={{padding:"10px 28px",borderRadius:12,background:C.primary,color:"#fff",border:"none",fontWeight:700,fontSize:13,cursor:"pointer"}}>Ir al catalogo</button>
         </div>}
         {cart.map(item=><div key={item.id} style={{background:C.card,borderRadius:12,padding:"12px 14px",marginBottom:8,border:"1px solid "+C.borderL,display:"flex",alignItems:"center",gap:10}}>
           <div style={{width:48,height:48,borderRadius:10,overflow:"hidden",flexShrink:0,background:C.primaryLight}}><img src={item.img} alt={item.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none"}}/></div>
-          <div style={{flex:1,minWidth:0}}><p style={{margin:0,fontSize:12,fontWeight:700}}>{item.name}</p><span style={{fontSize:10,color:C.sub}}>P:{item.protein*item.qty}g · C:{item.carbs*item.qty}g · G:{item.fat*item.qty}g</span></div>
+          <div style={{flex:1,minWidth:0}}><p style={{margin:0,fontSize:12,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>{item.name}</p><span style={{fontSize:10,color:C.sub}}>P:{item.protein*item.qty}g · C:{item.carbs*item.qty}g · G:{item.fat*item.qty}g</span></div>
           <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
             <button onClick={()=>rmFromCart(item.id)} style={{width:26,height:26,borderRadius:7,background:C.fatLight,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="minus" size={12} color={C.fat}/></button>
             <span style={{fontSize:13,fontWeight:700}}>{item.qty}</span>
@@ -589,43 +649,43 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
           </div>
         </div>)}
         {cart.length>0&&<div style={{marginTop:14,background:C.card,borderRadius:14,padding:18,border:"1px solid "+C.borderL}}>
-          <div style={{display:"flex",justifyContent:"space-between",marginBottom:14}}><span style={{fontSize:16,fontWeight:800}}>Total</span><span style={{fontSize:18,fontWeight:800,color:C.primary}}>${cartTotal.toLocaleString()}</span></div>
-          <button style={{width:"100%",padding:14,borderRadius:12,background:"linear-gradient(135deg,"+C.accent+",#D4603B)",border:"none",fontSize:14,fontWeight:700,color:"#fff",cursor:"pointer"}}>Pagar</button>
+          <div style={{display:"flex",justifyContent:"space-between",marginBottom:14}}><span style={{fontSize:16,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>Total</span><span style={{fontSize:18,fontWeight:800,color:C.primary,fontFamily:"'Nunito',sans-serif"}}>${cartTotal.toLocaleString()}</span></div>
+          <button style={{width:"100%",padding:14,borderRadius:12,background:"linear-gradient(135deg,"+C.accent+",#E65100)",border:"none",fontSize:14,fontWeight:700,color:"#fff",cursor:"pointer"}}>Pagar</button>
         </div>}
       </div>}
-      {/* Learn */}
+      {/* Learn / Educacion */}
       {tab==="learn"&&<div style={{padding:"0 20px 20px"}}>
-        <div style={{padding:"16px 0 18px"}}><h1 style={{margin:0,fontSize:20,fontWeight:800,fontFamily:"var(--display)"}}>Aprende</h1></div>
-        <div style={{background:"linear-gradient(150deg,"+C.primaryDark+",#4A9B4B)",borderRadius:16,padding:"20px 18px",color:"#fff",marginBottom:18}}>
-          <span style={{fontSize:9,fontWeight:700,background:"rgba(255,255,255,.2)",padding:"4px 10px",borderRadius:5,textTransform:"uppercase",letterSpacing:1}}>Guía destacada</span>
-          <h3 style={{margin:"10px 0 4px",fontSize:17,fontWeight:800,fontFamily:"var(--display)"}}>¿Qué son los macronutrientes?</h3>
-          <p style={{margin:0,fontSize:12,opacity:.85}}>Bases de proteínas, carbohidratos y grasas.</p>
+        <div style={{padding:"16px 0 18px"}}><h1 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Educacion</h1></div>
+        <div style={{background:"linear-gradient(150deg,"+C.primaryDark+",#43A047)",borderRadius:16,padding:"20px 18px",color:"#fff",marginBottom:18}}>
+          <span style={{fontSize:9,fontWeight:700,background:"rgba(255,255,255,.2)",padding:"4px 10px",borderRadius:50,textTransform:"uppercase",letterSpacing:1}}>Guia destacada</span>
+          <h3 style={{margin:"10px 0 4px",fontSize:17,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Que son los macronutrientes?</h3>
+          <p style={{margin:0,fontSize:12,opacity:.85}}>Bases de proteinas, carbohidratos y grasas.</p>
         </div>
-        {[{icon:"activity",title:"Proteína económica en Colombia",tag:"Nutrición",bg:C.proteinLight},{icon:"dumbbell",title:"Macros en días de entreno",tag:"Fitness",bg:C.carbsLight},{icon:"info",title:"Cómo leer tablas nutricionales",tag:"Básico",bg:C.fatLight},{icon:"shield",title:"Alimentación para hipertensos",tag:"Salud",bg:C.primaryLight}].map((a,i)=>
+        {[{icon:"activity",title:"Proteina economica en Colombia",tag:"Nutricion",bg:C.proteinLight},{icon:"dumbbell",title:"Macros en dias de entreno",tag:"Fitness",bg:C.carbsLight},{icon:"info",title:"Como leer tablas nutricionales",tag:"Basico",bg:C.fatLight},{icon:"shield",title:"Alimentacion para hipertensos",tag:"Salud",bg:C.primaryLight}].map((a,i)=>
           <div key={i} style={{background:C.card,borderRadius:12,padding:"14px 16px",marginBottom:8,border:"1px solid "+C.borderL,display:"flex",alignItems:"center",gap:12,cursor:"pointer"}}>
             <div style={{width:40,height:40,borderRadius:10,background:a.bg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={a.icon} size={18} color={C.text}/></div>
-            <div style={{flex:1}}><p style={{margin:0,fontSize:12,fontWeight:700}}>{a.title}</p><span style={{fontSize:10,color:C.primary,fontWeight:600}}>{a.tag}</span></div>
+            <div style={{flex:1}}><p style={{margin:0,fontSize:12,fontWeight:700,fontFamily:"'Nunito',sans-serif"}}>{a.title}</p><span style={{fontSize:10,color:C.primary,fontWeight:600}}>{a.tag}</span></div>
             <Icon name="chevron" size={14} color={C.muted}/>
           </div>
         )}
       </div>}
       {/* Profile */}
       {tab==="profile"&&<div style={{padding:"0 20px 20px"}}>
-        <div style={{padding:"16px 0 18px"}}><h1 style={{margin:0,fontSize:20,fontWeight:800,fontFamily:"var(--display)"}}>Mi Perfil</h1></div>
+        <div style={{padding:"16px 0 18px"}}><h1 style={{margin:0,fontSize:20,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Mi Perfil</h1></div>
         <div style={{background:C.card,borderRadius:14,padding:22,border:"1px solid "+C.borderL,textAlign:"center",marginBottom:14}}>
           <div style={{width:56,height:56,borderRadius:16,margin:"0 auto 10px",background:"linear-gradient(135deg,"+C.primary+","+C.primaryDark+")",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="user" size={26} color="#fff"/></div>
-          <h3 style={{margin:0,fontSize:17,fontWeight:800,fontFamily:"var(--display)"}}>Usuario Macroly</h3>
+          <h3 style={{margin:0,fontSize:17,fontWeight:900,fontFamily:"'Nunito',sans-serif"}}>Usuario Macroly</h3>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
-          {[{l:"Proteína",v:goals.protein+"g",c:C.protein,bg:C.proteinLight,k:"P"},{l:"Carbos",v:goals.carbs+"g",c:C.carbs,bg:C.carbsLight,k:"C"},{l:"Grasas",v:goals.fat+"g",c:C.fat,bg:C.fatLight,k:"G"},{l:"Calorías",v:""+goals.calories,c:C.cal,bg:C.calLight,k:"K"}].map((m,i)=>
-            <div key={i} style={{background:m.bg,borderRadius:10,padding:"12px 14px",border:"1px solid "+m.c+"18"}}>
+          {[{l:"Proteina",v:goals.protein+"g",c:C.protein,bg:C.proteinLight,k:"P"},{l:"Carbos",v:goals.carbs+"g",c:C.carbs,bg:C.carbsLight,k:"C"},{l:"Grasas",v:goals.fat+"g",c:C.fat,bg:C.fatLight,k:"G"},{l:"Calorias",v:""+goals.calories,c:C.cal,bg:C.calLight,k:"K"}].map((m,i)=>
+            <div key={i} style={{background:m.bg,borderRadius:12,padding:"12px 14px",border:"1px solid "+m.c+"18"}}>
               <span style={{fontSize:10,color:C.sub}}>{m.l}</span><br/>
-              <span style={{fontSize:18,fontWeight:800,color:m.c}}>{m.v}</span>
+              <span style={{fontSize:18,fontWeight:800,color:m.c,fontFamily:"'Nunito',sans-serif"}}>{m.v}</span>
             </div>
           )}
         </div>
         <div style={{background:C.card,borderRadius:14,overflow:"hidden",border:"1px solid "+C.borderL}}>
-          {[{icon:"clock",label:"Historial de pedidos"},{icon:"save",label:"Combinaciones guardadas"},{icon:"shield",label:"Condiciones de salud"},{icon:"settings",label:"Configuración"}].map((item,i)=>
+          {[{icon:"clock",label:"Historial de pedidos"},{icon:"save",label:"Combinaciones guardadas"},{icon:"shield",label:"Condiciones de salud"},{icon:"settings",label:"Configuracion"}].map((item,i)=>
             <div key={i} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<3?"1px solid "+C.borderL:"none",cursor:"pointer"}}>
               <Icon name={item.icon} size={17} color={C.sub}/><span style={{fontSize:13,fontWeight:500,flex:1}}>{item.label}</span><Icon name="chevron" size={14} color={C.muted}/>
             </div>
@@ -635,7 +695,7 @@ function MobileView({cart,cm,goals,catFilter,setCatFilter,addToCart,rmFromCart,f
     </div>
     {/* Mobile nav */}
     <div style={{position:"absolute",bottom:0,left:0,right:0,background:"rgba(255,255,255,.94)",backdropFilter:"blur(14px)",borderTop:"1px solid "+C.borderL,display:"flex",justifyContent:"space-around",padding:"8px 0 14px"}}>
-      {[{id:"home",icon:"home",l:"Inicio"},{id:"catalog",icon:"search",l:"Catálogo"},{id:"cart",icon:"cart",l:"Carrito",badge:cartCount},{id:"learn",icon:"learn",l:"Aprender"},{id:"profile",icon:"user",l:"Perfil"}].map(t=>{
+      {[{id:"home",icon:"home",l:"Inicio"},{id:"catalog",icon:"search",l:"Catalogo"},{id:"cart",icon:"cart",l:"Carrito",badge:cartCount},{id:"learn",icon:"learn",l:"Educacion"},{id:"profile",icon:"user",l:"Perfil"}].map(t=>{
         const active=tab===t.id||(tab==="detail"&&t.id==="catalog");
         return <button key={t.id} onClick={()=>{setTab(t.id);setSelProduct(null)}} style={{background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"4px 10px",position:"relative",opacity:active?1:.45}}>
           <Icon name={t.icon} size={19} color={active?C.primary:C.text}/><span style={{fontSize:9,fontWeight:600,color:active?C.primary:C.text}}>{t.l}</span>
@@ -663,7 +723,7 @@ function App(){
   const cm=cart.reduce((a,i)=>({protein:a.protein+i.protein*i.qty,carbs:a.carbs+i.carbs*i.qty,fat:a.fat+i.fat*i.qty,calories:a.calories+i.calories*i.qty}),{protein:0,carbs:0,fat:0,calories:0});
   const cartTotal=cart.reduce((a,i)=>a+i.price*i.qty,0);
 
-  function addToCart(p){setCart(prev=>{const ex=prev.find(i=>i.id===p.id);const nc=ex?prev.map(i=>i.id===p.id?{...i,qty:i.qty+1}:i):[...prev,{...p,qty:1}];const nm=nc.reduce((a,i)=>({protein:a.protein+i.protein*i.qty,carbs:a.carbs+i.carbs*i.qty,fat:a.fat+i.fat*i.qty,calories:a.calories+i.calories*i.qty}),{protein:0,carbs:0,fat:0,calories:0});if(nm.fat>goals.fat)setAlert({t:"warn",m:"Has superado tu límite de grasas ("+nm.fat+"g / "+goals.fat+"g)"});else if(nm.protein>=goals.protein*.9&&cm.protein<goals.protein*.9)setAlert({t:"ok",m:"¡Casi alcanzas tu meta de proteína!"});return nc})}
+  function addToCart(p){setCart(prev=>{const ex=prev.find(i=>i.id===p.id);const nc=ex?prev.map(i=>i.id===p.id?{...i,qty:i.qty+1}:i):[...prev,{...p,qty:1}];const nm=nc.reduce((a,i)=>({protein:a.protein+i.protein*i.qty,carbs:a.carbs+i.carbs*i.qty,fat:a.fat+i.fat*i.qty,calories:a.calories+i.calories*i.qty}),{protein:0,carbs:0,fat:0,calories:0});if(nm.fat>goals.fat)setAlert({t:"warn",m:"Has superado tu limite de grasas ("+nm.fat+"g / "+goals.fat+"g)"});else if(nm.protein>=goals.protein*.9&&cm.protein<goals.protein*.9)setAlert({t:"ok",m:"Casi alcanzas tu meta de proteina!"});return nc})}
   function rmFromCart(id){setCart(prev=>{const i=prev.find(x=>x.id===id);if(i?.qty>1)return prev.map(x=>x.id===id?{...x,qty:x.qty-1}:x);return prev.filter(x=>x.id!==id)})}
   const filtered=catFilter==="todos"?PRODUCTS:PRODUCTS.filter(p=>p.category===catFilter);
 
@@ -672,14 +732,18 @@ function App(){
   return <div style={{padding:"20px 24px"}}>
     {/* View Toggle */}
     <div style={{display:"flex",justifyContent:"center",marginBottom:24,gap:16,alignItems:"center"}}>
-      <h2 style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"var(--display)",margin:0}}>Macroly — Prototipo Interactivo</h2>
+      <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <LogoIsotipo size={32}/>
+        <LogoText size={18}/>
+      </div>
+      <span style={{fontSize:14,color:C.sub,fontFamily:"'Inter',sans-serif"}}>Prototipo Interactivo</span>
       <div className="view-toggle">
         <button className={view==="desktop"?"active":""} onClick={()=>setView("desktop")}><Icon name="monitor" size={16} color={view==="desktop"?"#fff":C.sub}/> Desktop</button>
         <button className={view==="mobile"?"active":""} onClick={()=>setView("mobile")}><Icon name="phone" size={16} color={view==="mobile"?"#fff":C.sub}/> Mobile</button>
       </div>
     </div>
     {view==="desktop"?<DesktopView {...shared}/>:<MobileView {...shared}/>}
-    <p style={{textAlign:"center",fontSize:12,color:C.muted,marginTop:20}}>Macroly · Proyecto UI/UX · Universidad de Ibagué · 2026</p>
+    <p style={{textAlign:"center",fontSize:12,color:C.muted,marginTop:20,fontFamily:"'Inter',sans-serif"}}>Macroly · Proyecto UI/UX · Universidad de Ibague · 2026</p>
   </div>;
 }
 
