@@ -10,9 +10,8 @@ import { computeCartTotals } from "@/domain/cart/cart-summary";
 type CartState = {
   items: CartItem[];
   totals: CartTotals;
-
-  add: (product: Product, portion?: number) => void;
-  remove: (productId: string, portion?: number) => void;
+  add: (product: Product) => void;
+  remove: (productId: string) => void;
   clear: () => void;
   loadItems: (items: CartItem[]) => void;
 };
@@ -27,15 +26,9 @@ export const useCartStore = create<CartState>()(
     (set) => ({
       items: [],
       totals: computeCartTotals([]),
-
-      add: (product, portion = 1) =>
-        set((state) => recalc(addToCart(state.items, product, portion))),
-
-      remove: (productId, portion) =>
-        set((state) => recalc(removeFromCart(state.items, productId, portion))),
-
+      add: (product) => set((state) => recalc(addToCart(state.items, product))),
+      remove: (productId) => set((state) => recalc(removeFromCart(state.items, productId))),
       clear: () => set(recalc(clearCart())),
-
       loadItems: (items) => set(recalc(items)),
     }),
     { name: "macroly-cart" },

@@ -8,9 +8,18 @@ type Props = { params: Promise<{ id: string }> };
 export default async function ProductDetailPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data } = await supabase.from("products").select("*").eq("id", id).single();
+
+  const [{ data }, { data: allData }] = await Promise.all([
+    supabase.from("products").select("*").eq("id", id).single(),
+    supabase.from("products").select("*").order("name"),
+  ]);
 
   if (!data) notFound();
 
-  return <ProductDetailClient product={mapProduct(data)} />;
+  return (
+    <ProductDetailClient
+      product={mapProduct(data)}
+      allProducts={(allData ?? []).map(mapProduct)}
+    />
+  );
 }

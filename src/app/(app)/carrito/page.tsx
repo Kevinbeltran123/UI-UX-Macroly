@@ -114,30 +114,26 @@ export default function CarritoPage() {
       )}
 
       {/* Cart items */}
-      {items.map((item) => {
-        const p = item.portion ?? 1;
-        const pLabel = p < 1 ? ` (${p === 0.75 ? "3/4" : p === 0.5 ? "1/2" : "1/4"})` : "";
-        return (
-        <div key={`${item.id}-${p}`} className="bg-card rounded-xl p-3 mb-2 border border-border-l flex items-center gap-2.5">
+      {items.map((item) => (
+        <div key={item.id} className="bg-card rounded-xl p-3 mb-2 border border-border-l flex items-center gap-2.5">
           <div className="w-12 h-12 rounded-[10px] overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary-light to-primary-border relative">
             {item.imageUrl && <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="48px" unoptimized />}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-display font-bold text-xs text-text">{item.name}{pLabel}</p>
-            <span className="text-[10px] text-sub">P:{Math.round(item.protein * item.qty * p)}g · C:{Math.round(item.carbs * item.qty * p)}g · G:{Math.round(item.fat * item.qty * p)}g</span>
+            <p className="font-display font-bold text-xs text-text">{item.name}</p>
+            <span className="text-[10px] text-sub">P:{item.protein * item.qty}g · C:{item.carbs * item.qty}g · G:{item.fat * item.qty}g</span>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <button onClick={() => remove(item.id, p)} className="w-[26px] h-[26px] rounded-lg bg-fat-light flex items-center justify-center" aria-label="Reducir cantidad">
+            <button onClick={() => remove(item.id)} className="w-[26px] h-[26px] rounded-lg bg-fat-light flex items-center justify-center" aria-label="Reducir cantidad">
               <Minus size={12} className="text-fat" />
             </button>
             <span className="text-sm font-bold w-5 text-center">{item.qty}</span>
-            <button onClick={() => add(item, p)} className="w-[26px] h-[26px] rounded-lg bg-primary-light flex items-center justify-center" aria-label="Aumentar cantidad">
+            <button onClick={() => add(item)} className="w-[26px] h-[26px] rounded-lg bg-primary-light flex items-center justify-center" aria-label="Aumentar cantidad">
               <Plus size={12} className="text-primary" />
             </button>
           </div>
         </div>
-        );
-      })}
+      ))}
 
       {/* Footer */}
       {items.length > 0 && !showCheckout && (

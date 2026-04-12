@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/product/product-card";
 import { useCart } from "@/hooks/use-cart";
 import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { recommend } from "@/domain/recommendation/recommendation-engine";
+import { checkCompatibility } from "@/domain/catalog/compatibility";
 import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/domain/catalog/product";
 
@@ -125,6 +126,7 @@ export const InicioClient = ({ allProducts }: Props) => {
             <ProductCard
               product={p}
               badge={BADGE_BY_CATEGORY[p.categoryId ?? ""] ?? p.reason}
+              compatibility={checkCompatibility(p, totals, goals)}
               onAdd={() => handleAdd(p)}
             />
           </Link>

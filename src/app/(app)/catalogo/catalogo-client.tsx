@@ -10,6 +10,7 @@ import { MacroBar } from "@/components/nutrition/macro-bar";
 import { useCart } from "@/hooks/use-cart";
 import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { applyFilters, type CategoryId, type MacroFilter, type CatalogFilters } from "@/domain/catalog/filters";
+import { checkCompatibility } from "@/domain/catalog/compatibility";
 import type { Product } from "@/domain/catalog/product";
 
 type Props = {
@@ -115,7 +116,7 @@ export const CatalogoClient = ({ products, categories }: Props) => {
         <div className="grid grid-cols-2 gap-2.5">
           {filtered.map((p) => (
             <Link key={p.id} href={`/catalogo/${p.id}`} className="no-underline">
-              <ProductCard product={p} onAdd={() => addToCart(p)} />
+              <ProductCard product={p} compatibility={checkCompatibility(p, totals, goals)} onAdd={() => addToCart(p)} />
             </Link>
           ))}
         </div>

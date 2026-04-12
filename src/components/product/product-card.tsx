@@ -5,15 +5,24 @@ import Image from "next/image";
 import { Plus, Star, ShoppingBag } from "lucide-react";
 import { MacroChip } from "@/components/nutrition/macro-chip";
 import type { Product } from "@/domain/catalog/product";
+import type { Compatibility } from "@/domain/catalog/compatibility";
+
+const COMPAT_STYLES: Record<Compatibility, { dot: string; title: string }> = {
+  fits: { dot: "bg-success", title: "Cabe en tus macros" },
+  tight: { dot: "bg-warning", title: "Casi al limite" },
+  exceeds: { dot: "bg-error", title: "Excede tus macros" },
+};
 
 type ProductCardProps = {
   product: Product;
   badge?: string;
+  compatibility?: Compatibility;
   onAdd?: () => void;
 };
 
-export const ProductCard = ({ product, badge, onAdd }: ProductCardProps) => {
+export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCardProps) => {
   const [imgError, setImgError] = useState(false);
+  const compat = compatibility ? COMPAT_STYLES[compatibility] : null;
 
   return (
     <div className="bg-card rounded-[14px] overflow-hidden border border-border-l hover:shadow-card-hover hover:-translate-y-0.5 transition-all cursor-pointer relative">
@@ -46,7 +55,12 @@ export const ProductCard = ({ product, badge, onAdd }: ProductCardProps) => {
         </span>
       </div>
       <div className="p-3">
-        <p className="font-display font-bold text-xs text-text leading-tight">{product.name}</p>
+        <div className="flex items-center gap-1.5 mb-0.5">
+          {compat && (
+            <span className={`w-2 h-2 rounded-full ${compat.dot} flex-shrink-0`} title={compat.title} />
+          )}
+          <p className="font-display font-bold text-xs text-text leading-tight">{product.name}</p>
+        </div>
         <p className="text-[10px] text-sub mt-0.5 mb-2">{product.brand} · {product.weight}</p>
         <div className="flex gap-1 mb-2">
           <MacroChip type="protein" value={product.protein} compact />
