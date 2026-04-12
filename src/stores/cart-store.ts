@@ -11,8 +11,8 @@ type CartState = {
   items: CartItem[];
   totals: CartTotals;
 
-  add: (product: Product) => void;
-  remove: (productId: string) => void;
+  add: (product: Product, portion?: number) => void;
+  remove: (productId: string, portion?: number) => void;
   clear: () => void;
   loadItems: (items: CartItem[]) => void;
 };
@@ -28,11 +28,11 @@ export const useCartStore = create<CartState>()(
       items: [],
       totals: computeCartTotals([]),
 
-      add: (product) =>
-        set((state) => recalc(addToCart(state.items, product))),
+      add: (product, portion = 1) =>
+        set((state) => recalc(addToCart(state.items, product, portion))),
 
-      remove: (productId) =>
-        set((state) => recalc(removeFromCart(state.items, productId))),
+      remove: (productId, portion) =>
+        set((state) => recalc(removeFromCart(state.items, productId, portion))),
 
       clear: () => set(recalc(clearCart())),
 

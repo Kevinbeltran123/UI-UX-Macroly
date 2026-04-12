@@ -8,6 +8,7 @@ import { ProductCard } from "@/components/product/product-card";
 import { MacroFilterChips } from "@/components/product/macro-filter-chips";
 import { MacroBar } from "@/components/nutrition/macro-bar";
 import { useCart } from "@/hooks/use-cart";
+import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { applyFilters, type CategoryId, type MacroFilter, type CatalogFilters } from "@/domain/catalog/filters";
 import type { Product } from "@/domain/catalog/product";
 
@@ -20,7 +21,8 @@ export const CatalogoClient = ({ products, categories }: Props) => {
   const [category, setCategory] = useState<CategoryId>("todos");
   const [macroFilter, setMacroFilter] = useState<MacroFilter>("todos");
   const [search, setSearch] = useState("");
-  const { add, totals, goals } = useCart();
+  const { totals, goals } = useCart();
+  const addToCart = useAddToCart();
 
   const filters: CatalogFilters = { category, macro: macroFilter, search };
   const filtered = applyFilters(products, filters);
@@ -113,7 +115,7 @@ export const CatalogoClient = ({ products, categories }: Props) => {
         <div className="grid grid-cols-2 gap-2.5">
           {filtered.map((p) => (
             <Link key={p.id} href={`/catalogo/${p.id}`} className="no-underline">
-              <ProductCard product={p} onAdd={() => add(p)} />
+              <ProductCard product={p} onAdd={() => addToCart(p)} />
             </Link>
           ))}
         </div>

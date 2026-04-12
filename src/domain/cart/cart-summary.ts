@@ -1,7 +1,7 @@
 import type { Product } from "@/domain/catalog/product";
 import type { MacroGoals } from "@/domain/nutrition/macro-goals";
 
-export type CartItem = Product & { qty: number };
+export type CartItem = Product & { qty: number; portion: number };
 
 export type CartTotals = {
   protein: number;
@@ -27,14 +27,17 @@ const ZERO: CartTotals = {
  */
 export const computeCartTotals = (items: readonly CartItem[]): CartTotals =>
   items.reduce<CartTotals>(
-    (acc, item) => ({
-      protein: acc.protein + item.protein * item.qty,
-      carbs: acc.carbs + item.carbs * item.qty,
-      fat: acc.fat + item.fat * item.qty,
-      calories: acc.calories + item.calories * item.qty,
-      price: acc.price + item.price * item.qty,
-      itemCount: acc.itemCount + item.qty,
-    }),
+    (acc, item) => {
+      const p = item.portion ?? 1;
+      return {
+        protein: acc.protein + item.protein * item.qty * p,
+        carbs: acc.carbs + item.carbs * item.qty * p,
+        fat: acc.fat + item.fat * item.qty * p,
+        calories: acc.calories + item.calories * item.qty * p,
+        price: acc.price + Math.round(item.price * item.qty * p),
+        itemCount: acc.itemCount + item.qty,
+      };
+    },
     ZERO,
   );
 

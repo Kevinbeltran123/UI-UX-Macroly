@@ -5,7 +5,7 @@ import { Bell, Zap, Calendar, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { ProductCard } from "@/components/product/product-card";
 import { useCart } from "@/hooks/use-cart";
-import { useToastStore } from "@/stores/toast-store";
+import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { recommend } from "@/domain/recommendation/recommendation-engine";
 import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/domain/catalog/product";
@@ -24,8 +24,8 @@ type Props = {
 };
 
 export const InicioClient = ({ allProducts }: Props) => {
-  const { items, totals, goals, add } = useCart();
-  const toast = useToastStore((s) => s.add);
+  const { totals, goals } = useCart();
+  const addToCart = useAddToCart();
   const [firstName, setFirstName] = useState("Usuario");
 
   useEffect(() => {
@@ -49,10 +49,7 @@ export const InicioClient = ({ allProducts }: Props) => {
     { label: "Grasas", value: `${totals.fat}g`, color: "#1E88E5", pct: Math.min((totals.fat / goals.fat) * 100, 100) },
   ];
 
-  const handleAdd = (p: Product) => {
-    add(p);
-    toast(`${p.name} agregado al carrito`, "success");
-  };
+  const handleAdd = (p: Product) => addToCart(p);
 
   return (
     <div className="px-5 pt-4 pb-4 animate-[fadeUp_0.3s_ease]">
