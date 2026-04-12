@@ -5,10 +5,12 @@ import Link from "next/link";
 import { ArrowLeft, ShoppingCart, Info, Check } from "lucide-react";
 import { MacroBar } from "@/components/nutrition/macro-bar";
 import { useCart } from "@/hooks/use-cart";
+import { useToastStore } from "@/stores/toast-store";
 import type { Product } from "@/domain/catalog/product";
 
 export const ProductDetailClient = ({ product }: { product: Product }) => {
-  const { add, totals, goals } = useCart();
+  const { add, totals, goals, overages } = useCart();
+  const toast = useToastStore((s) => s.add);
 
   const impact = {
     protein: totals.protein + product.protein,
@@ -18,6 +20,11 @@ export const ProductDetailClient = ({ product }: { product: Product }) => {
 
   const handleAdd = () => {
     add(product);
+    if (impact.fat > goals.fat) {
+      toast(`Has superado tu limite de grasas (${impact.fat}g / ${goals.fat}g)`, "warning");
+    } else {
+      toast(`${product.name} agregado al carrito`, "success");
+    }
   };
 
   return (

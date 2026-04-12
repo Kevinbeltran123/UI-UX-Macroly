@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Nunito, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,23 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Macroly — Nutricion inteligente",
   description: "Compra inteligente con macros en tiempo real",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Macroly",
+  },
+  icons: {
+    icon: "/icons/icon-192.svg",
+    apple: "/icons/icon-192.svg",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1B5E20",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

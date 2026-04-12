@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Minus, Plus, ShoppingCart, Heart, Check, RotateCw, X } from "lucide-react";
 import Link from "next/link";
+import { useToastStore } from "@/stores/toast-store";
 import Image from "next/image";
 import { MacroBar } from "@/components/nutrition/macro-bar";
 import { useCart } from "@/hooks/use-cart";
@@ -12,6 +13,7 @@ import { nextComboName } from "@/domain/favorites/favorite-combo";
 
 export default function CarritoPage() {
   const { items, totals, goals, add, remove, clear } = useCart();
+  const toast = useToastStore((s) => s.add);
   const [showCheckout, setShowCheckout] = useState(false);
   const [recurDays, setRecurDays] = useState<DayCode[]>(["L"]);
   const [saving, setSaving] = useState(false);
@@ -36,6 +38,7 @@ export default function CarritoPage() {
     });
 
     setSaving(false);
+    toast("Pedido confirmado!", "success");
     setShowCheckout(true);
   };
 
@@ -59,6 +62,7 @@ export default function CarritoPage() {
       total_calories: totals.calories,
       total_price: totals.price,
     });
+    toast("Combinacion guardada en favoritos", "success");
   };
 
   const handleRecurring = async () => {
@@ -74,11 +78,13 @@ export default function CarritoPage() {
       active: true,
     });
 
+    toast("Recurrencia activada: " + daysText(recurDays), "success");
     clear();
     setShowCheckout(false);
   };
 
   const handleSkipRecurring = () => {
+    toast("Pedido realizado exitosamente", "success");
     clear();
     setShowCheckout(false);
   };

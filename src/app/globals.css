@@ -91,4 +91,24 @@ h1, h2, h3, h4 {
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 
 button:active { transform: scale(0.97); }
-button { font-family: inherit; }
+button { font-family: inherit; transition: transform 0.1s ease; }
+
+/* Focus visible ring for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Hide scrollbar on filter chips */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Stagger animation for lists */
+@keyframes staggerIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Smooth image loading */
+img { transition: opacity 0.3s ease; }
