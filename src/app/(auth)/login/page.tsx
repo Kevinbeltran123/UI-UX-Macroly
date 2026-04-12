@@ -24,7 +24,8 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      setError("Correo o contrasena incorrectos");
+      console.error("Login error:", error.message, error.status);
+      setError(error.message);
       setLoading(false);
       return;
     }

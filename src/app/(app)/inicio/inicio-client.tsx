@@ -1,12 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Bell, Zap, Calendar, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { ProductCard } from "@/components/product/product-card";
 import { useCart } from "@/hooks/use-cart";
 import { useToastStore } from "@/stores/toast-store";
 import { recommend } from "@/domain/recommendation/recommendation-engine";
-import { computeCartTotals } from "@/domain/cart/cart-summary";
+import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/domain/catalog/product";
 
 const BADGE_BY_CATEGORY: Record<string, string> = {
@@ -19,13 +20,25 @@ const BADGE_BY_CATEGORY: Record<string, string> = {
 };
 
 type Props = {
-  firstName: string;
   allProducts: Product[];
 };
 
-export const InicioClient = ({ firstName, allProducts }: Props) => {
+export const InicioClient = ({ allProducts }: Props) => {
   const { items, totals, goals, add } = useCart();
   const toast = useToastStore((s) => s.add);
+  const [firstName, setFirstName] = useState("Usuario");
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const meta = user.user_metadata ?? {};
+      const name = meta.full_name ?? meta.name ?? meta.display_name ?? "";
+      if (name) setFirstName(name.split(" ")[0]);
+    };
+    loadUser();
+  }, []);
 
   const recommended = recommend(allProducts, totals, goals, 6);
   const calPct = goals.calories > 0 ? Math.round((totals.calories / goals.calories) * 100) : 0;
