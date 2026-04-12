@@ -21,17 +21,33 @@ export default function RegistroPage() {
     setError("");
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: name } },
+      options: {
+        data: { full_name: name },
+        emailRedirectTo: `${window.location.origin}/callback?next=/onboarding`,
+      },
     });
 
-    if (error) {
-      setError(error.message);
+    if (signUpError) {
+      setError(signUpError.message);
       setLoading(false);
       return;
     }
+
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (loginError) {
+      setError("Cuenta creada. " + loginError.message);
+      setLoading(false);
+      return;
+    }
+
     router.push("/onboarding");
     router.refresh();
   };
