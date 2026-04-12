@@ -38,8 +38,12 @@ export const ProductDetailClient = ({ product }: { product: Product }) => {
 
       {/* Product image */}
       <div className="h-[180px] rounded-2xl overflow-hidden mb-4 bg-gradient-to-br from-primary-light to-primary-border relative">
-        {product.imageUrl && (
-          <Image src={product.imageUrl} alt={product.name} fill className="object-cover" sizes="400px" />
+        {product.imageUrl ? (
+          <Image src={product.imageUrl} alt={product.name} fill className="object-cover" sizes="400px" unoptimized />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <ShoppingCart size={40} className="text-primary-border" />
+          </div>
         )}
       </div>
 
