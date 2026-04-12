@@ -120,6 +120,7 @@ npm run build
 npm start
 ```
 
-## Autor
+## Autores
 
-Kevin Beltran — Universidad de Ibague, Semestre IX, 2026
+- Kevin Beltran — Universidad de Ibague, Semestre IX, 2026
+- Juan Perea — Universidad de Ibague, Semestre IX, 2026
