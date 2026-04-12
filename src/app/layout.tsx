@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Nunito, Inter } from "next/font/google";
+import { PWARegister } from "@/components/pwa-register";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -18,24 +19,47 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Macroly — Nutricion inteligente",
-  description: "Compra inteligente con macros en tiempo real",
+  description: "Compra inteligente con tus macronutrientes en tiempo real",
+  applicationName: "Macroly",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Macroly",
   },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
-    icon: "/icons/icon-192.svg",
-    apple: "/icons/icon-192.svg",
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180" },
+      { url: "/icons/apple-touch-icon-167.png", sizes: "167x167" },
+      { url: "/icons/apple-touch-icon-152.png", sizes: "152x152" },
+      { url: "/icons/apple-touch-icon-120.png", sizes: "120x120" },
+    ],
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "Macroly",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1B5E20",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#1B5E20" },
+    { media: "(prefers-color-scheme: dark)", color: "#1B5E20" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: "cover",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -45,7 +69,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${nunito.variable} ${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <PWARegister />
+        {children}
+      </body>
     </html>
   );
 }

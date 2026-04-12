@@ -17,7 +17,11 @@ export const BottomNav = ({ cartCount = 0 }: { cartCount?: number }) => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-border-l flex justify-around py-2 pb-5 z-50">
+    <nav
+      aria-label="Navegacion principal"
+      className="fixed bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-border-l flex justify-around pt-2 z-50"
+      style={{ paddingBottom: "calc(0.625rem + env(safe-area-inset-bottom, 0px))" }}
+    >
       {tabs.map(({ href, icon: Icon, label }) => {
         const active = pathname.startsWith(href);
         return (
