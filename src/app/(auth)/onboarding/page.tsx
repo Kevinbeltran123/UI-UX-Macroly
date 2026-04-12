@@ -53,30 +53,35 @@ export default function OnboardingPage() {
 
         {/* Sliders */}
         <div className="flex-1 flex flex-col gap-6">
-          {sliders.map((s) => (
-            <div key={s.label}>
-              <div className="flex justify-between items-center mb-2.5">
-                <span className="text-sm font-bold" style={{ color: s.color }}>{s.label}</span>
-                <span className="font-display font-extrabold text-base" style={{ color: s.color }}>{s.value}g</span>
+          {sliders.map((s) => {
+            const sliderId = `slider-${s.label.toLowerCase()}`;
+            return (
+              <div key={s.label}>
+                <div className="flex justify-between items-center mb-2.5">
+                  <label htmlFor={sliderId} className="text-sm font-bold" style={{ color: s.color }}>{s.label}</label>
+                  <span className="font-display font-extrabold text-base" style={{ color: s.color }} aria-hidden="true">{s.value}g</span>
+                </div>
+                <input
+                  id={sliderId}
+                  type="range"
+                  min={s.min}
+                  max={s.max}
+                  value={s.value}
+                  onChange={(e) => s.set(Number(e.target.value))}
+                  aria-valuetext={`${s.value} gramos de ${s.label.toLowerCase()}`}
+                  className="w-full h-2 rounded-full appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  style={{
+                    background: `linear-gradient(to right, ${s.color} ${((s.value - s.min) / (s.max - s.min)) * 100}%, ${s.light} ${((s.value - s.min) / (s.max - s.min)) * 100}%)`,
+                    accentColor: s.color,
+                  }}
+                />
+                <div className="flex justify-between mt-1">
+                  <span className="text-[11px] text-muted">{s.min}g</span>
+                  <span className="text-[11px] text-muted">{s.max}g</span>
+                </div>
               </div>
-              <input
-                type="range"
-                min={s.min}
-                max={s.max}
-                value={s.value}
-                onChange={(e) => s.set(Number(e.target.value))}
-                className="w-full h-2 rounded-full appearance-none cursor-pointer"
-                style={{
-                  background: `linear-gradient(to right, ${s.color} ${((s.value - s.min) / (s.max - s.min)) * 100}%, ${s.light} ${((s.value - s.min) / (s.max - s.min)) * 100}%)`,
-                  accentColor: s.color,
-                }}
-              />
-              <div className="flex justify-between mt-1">
-                <span className="text-[11px] text-muted">{s.min}g</span>
-                <span className="text-[11px] text-muted">{s.max}g</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Calories auto-calc */}

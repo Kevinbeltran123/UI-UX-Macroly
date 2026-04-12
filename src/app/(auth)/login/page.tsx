@@ -69,14 +69,16 @@ export default function LoginPage() {
         </div>
 
         {error && (
-          <p className="text-error text-sm font-semibold mb-4 text-center">{error}</p>
+          <p role="alert" className="text-error text-sm font-semibold mb-4 text-center">{error}</p>
         )}
 
-        <label className="text-xs font-semibold text-sub mb-1.5">Correo electronico</label>
+        <label htmlFor="login-email" className="text-xs font-semibold text-sub mb-1.5">Correo electronico</label>
         <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-4 focus-within:border-primary transition-colors">
-          <Mail size={16} className="text-muted" />
+          <Mail size={16} className="text-muted" aria-hidden="true" />
           <input
+            id="login-email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@email.com"
@@ -85,19 +87,26 @@ export default function LoginPage() {
           />
         </div>
 
-        <label className="text-xs font-semibold text-sub mb-1.5">Contrasena</label>
+        <label htmlFor="login-password" className="text-xs font-semibold text-sub mb-1.5">Contrasena</label>
         <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-6 focus-within:border-primary transition-colors">
-          <Lock size={16} className="text-muted" />
+          <Lock size={16} className="text-muted" aria-hidden="true" />
           <input
+            id="login-password"
             type={showPw ? "text" : "password"}
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="********"
             required
             className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
           />
-          <button type="button" onClick={() => setShowPw(!showPw)} className="text-muted">
-            {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+          <button
+            type="button"
+            onClick={() => setShowPw(!showPw)}
+            className="text-muted focus-visible:ring-2 focus-visible:ring-primary rounded"
+            aria-label={showPw ? "Ocultar contrasena" : "Mostrar contrasena"}
+          >
+            {showPw ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
           </button>
         </div>
 

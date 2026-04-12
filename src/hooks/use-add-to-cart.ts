@@ -17,15 +17,18 @@ export const useAddToCart = () => {
     const newFat = totals.fat + product.fat;
     const newProtein = totals.protein + product.protein;
     const newCarbs = totals.carbs + product.carbs;
+    const newCount = totals.itemCount + 1;
+    const newPrice = totals.price + product.price;
+    const cartCtx = `Carrito: ${newCount} producto${newCount === 1 ? "" : "s"}, ${newPrice.toLocaleString()} pesos.`;
 
     if (newFat > goals.fat) {
-      toast(`Grasas superadas (${newFat}g / ${goals.fat}g)`, "warning");
+      toast(`${product.name} agregado. Grasas superadas (${newFat}g de ${goals.fat}g). ${cartCtx}`, "warning");
     } else if (newProtein > goals.protein) {
-      toast(`Proteina superada (${newProtein}g / ${goals.protein}g)`, "warning");
+      toast(`${product.name} agregado. Proteina superada (${newProtein}g de ${goals.protein}g). ${cartCtx}`, "warning");
     } else if (newCarbs > goals.carbs) {
-      toast(`Carbos superados (${newCarbs}g / ${goals.carbs}g)`, "warning");
+      toast(`${product.name} agregado. Carbos superados (${newCarbs}g de ${goals.carbs}g). ${cartCtx}`, "warning");
     } else {
-      toast(`${product.name} agregado al carrito`, "success");
+      toast(`${product.name} agregado al carrito. ${cartCtx}`, "success");
     }
   };
 };

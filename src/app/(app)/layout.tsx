@@ -9,8 +9,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-bg pb-20">
+      <a href="#main-content" className="skip-link">
+        Saltar al contenido
+      </a>
       <ToastProvider />
-      {children}
+      <main id="main-content">{children}</main>
       <BottomNav cartCount={itemCount} />
     </div>
   );
