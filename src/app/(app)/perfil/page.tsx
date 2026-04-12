@@ -30,7 +30,7 @@ export default async function PerfilPage() {
   const dayNames: Record<string, string> = { L: "Lunes", M: "Martes", Mi: "Miercoles", J: "Jueves", V: "Viernes", S: "Sabado", D: "Domingo" };
 
   return (
-    <div className="px-5 pt-4 pb-4">
+    <div className="px-5 pt-4 pb-4 animate-[fadeUp_0.3s_ease]">
       <h1 className="font-display font-black text-xl text-text mb-3.5">Mi Perfil</h1>
 
       {/* User card */}
