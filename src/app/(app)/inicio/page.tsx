@@ -1,23 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
+import { mapProduct } from "@/lib/supabase/mappers";
 import { Bell, Zap, Calendar, BookOpen } from "lucide-react";
 import { ProductCard } from "@/components/product/product-card";
-import type { Product } from "@/domain/catalog/product";
 import Link from "next/link";
-
-const mapProduct = (row: Record<string, unknown>): Product => ({
-  id: row.id as string,
-  name: row.name as string,
-  brand: row.brand as string | null,
-  weight: row.weight as string | null,
-  imageUrl: row.image_url as string | null,
-  price: row.price as number,
-  protein: row.protein as number,
-  carbs: row.carbs as number,
-  fat: row.fat as number,
-  calories: row.calories as number,
-  categoryId: row.category_id as string | null,
-  rating: row.rating as number | null,
-});
 
 export default async function InicioPage() {
   const supabase = await createClient();
