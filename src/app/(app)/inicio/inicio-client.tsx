@@ -12,7 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/domain/catalog/product";
 
 const BADGE_BY_CATEGORY: Record<string, string> = {
-  proteina: "Alto en proteina",
+  proteina: "Alto en proteína",
   carbohidrato: "Buena fuente de energia",
   grasa: "Grasas saludables",
   lacteo: "Rico en calcio",
@@ -45,7 +45,7 @@ export const InicioClient = ({ allProducts }: Props) => {
   const calPct = goals.calories > 0 ? Math.round((totals.calories / goals.calories) * 100) : 0;
 
   const macros = [
-    { label: "Proteina", value: `${totals.protein}g`, color: "#43A047", pct: Math.min((totals.protein / goals.protein) * 100, 100) },
+    { label: "Proteína", value: `${totals.protein}g`, color: "#43A047", pct: Math.min((totals.protein / goals.protein) * 100, 100) },
     { label: "Carbos", value: `${totals.carbs}g`, color: "#FB8C00", pct: Math.min((totals.carbs / goals.carbs) * 100, 100) },
     { label: "Grasas", value: `${totals.fat}g`, color: "#1E88E5", pct: Math.min((totals.fat / goals.fat) * 100, 100) },
   ];
@@ -57,7 +57,7 @@ export const InicioClient = ({ allProducts }: Props) => {
       {/* Top bar */}
       <div className="flex justify-between items-center mb-5">
         <div>
-          <p className="text-xs text-sub">Buenos dias</p>
+          <p className="text-xs text-sub">Buenos días</p>
           <h1 className="font-display font-black text-xl text-text mt-0.5">
             Hola, {firstName}
           </h1>
@@ -100,7 +100,7 @@ export const InicioClient = ({ allProducts }: Props) => {
         {[
           { icon: Zap, label: "Completar", bg: "bg-accent-light", href: "/catalogo" },
           { icon: Calendar, label: "Planificar", bg: "bg-protein-light", href: "/catalogo" },
-          { icon: BookOpen, label: "Educacion", bg: "bg-carbs-light", href: "/educacion" },
+          { icon: BookOpen, label: "Educación", bg: "bg-carbs-light", href: "/educacion" },
         ].map(({ icon: Icon, label, bg, href }) => (
           <Link
             key={label}

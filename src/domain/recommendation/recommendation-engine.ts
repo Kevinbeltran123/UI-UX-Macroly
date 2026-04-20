@@ -10,9 +10,9 @@ export type RecommendedProduct = Product & {
 type Macro = "protein" | "carbs" | "fat";
 
 const REASON_BY_MACRO: Record<Macro, string> = {
-  protein: "Te falta proteina",
+  protein: "Te falta proteína",
   carbs: "Completa tus carbos",
-  fat: "Anade grasas saludables",
+  fat: "Añade grasas saludables",
 };
 
 /**

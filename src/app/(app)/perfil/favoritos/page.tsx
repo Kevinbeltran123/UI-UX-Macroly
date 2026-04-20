@@ -42,7 +42,7 @@ export default function FavoritosPage() {
   }, []);
 
   const handleLoad = (combo: Combo) => {
-    if (cartItems.length > 0 && !confirm("Esto reemplazara tu carrito actual. Continuar?")) return;
+    if (cartItems.length > 0 && !confirm("Esto reemplazará tu carrito actual. ¿Continuar?")) return;
     loadItems(combo.items);
     router.push("/carrito");
   };

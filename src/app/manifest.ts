@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "Macroly - Nutricion inteligente",
+    name: "Macroly - Nutrición inteligente",
     short_name: "Macroly",
     description: "Compra inteligente con tus macronutrientes en tiempo real",
     start_url: "/inicio",
@@ -24,8 +24,8 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: "Catalogo",
-        short_name: "Catalogo",
+        name: "Catálogo",
+        short_name: "Catálogo",
         description: "Explorar productos",
         url: "/catalogo",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
@@ -38,9 +38,9 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
       {
-        name: "Educacion",
+        name: "Educación",
         short_name: "Aprender",
-        description: "Articulos de nutricion",
+        description: "Artículos de nutrición",
         url: "/educacion",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },

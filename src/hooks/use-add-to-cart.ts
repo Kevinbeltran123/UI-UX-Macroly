@@ -24,7 +24,7 @@ export const useAddToCart = () => {
     if (newFat > goals.fat) {
       toast(`${product.name} agregado. Grasas superadas (${newFat}g de ${goals.fat}g). ${cartCtx}`, "warning");
     } else if (newProtein > goals.protein) {
-      toast(`${product.name} agregado. Proteina superada (${newProtein}g de ${goals.protein}g). ${cartCtx}`, "warning");
+      toast(`${product.name} agregado. Proteína superada (${newProtein}g de ${goals.protein}g). ${cartCtx}`, "warning");
     } else if (newCarbs > goals.carbs) {
       toast(`${product.name} agregado. Carbos superados (${newCarbs}g de ${goals.carbs}g). ${cartCtx}`, "warning");
     } else {

@@ -23,7 +23,7 @@ const COMPAT_META: Record<Compatibility, {
     Icon: AlertTriangle,
     iconClass: "text-warning",
     bg: "bg-warning/15",
-    label: "Casi al limite de macros",
+    label: "Casi al límite de macros",
   },
   exceeds: {
     Icon: AlertCircle,
@@ -44,7 +44,7 @@ export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCar
   const [imgError, setImgError] = useState(false);
   const compat = compatibility ? COMPAT_META[compatibility] : null;
 
-  const altText = `${product.name}${product.brand ? `, ${product.brand}` : ""}. ${product.protein} gramos de proteina, ${product.carbs} gramos de carbohidratos, ${product.fat} gramos de grasa. ${product.price.toLocaleString()} pesos.`;
+  const altText = `${product.name}${product.brand ? `, ${product.brand}` : ""}. ${product.protein} gramos de proteína, ${product.carbs} gramos de carbohidratos, ${product.fat} gramos de grasa. ${product.price.toLocaleString()} pesos.`;
 
   return (
     <article

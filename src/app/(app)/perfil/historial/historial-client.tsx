@@ -25,7 +25,7 @@ export const HistorialClient = ({ orders }: { orders: Order[] }) => {
   const router = useRouter();
 
   const handleRepeat = (order: Order) => {
-    if (cartItems.length > 0 && !confirm("Esto reemplazara tu carrito actual. Continuar?")) return;
+    if (cartItems.length > 0 && !confirm("Esto reemplazará tu carrito actual. ¿Continuar?")) return;
     loadItems(order.items);
     toast("Pedido cargado al carrito", "success");
     router.push("/carrito");
@@ -44,9 +44,9 @@ export const HistorialClient = ({ orders }: { orders: Order[] }) => {
             <ShoppingCart size={24} className="text-muted" />
           </div>
           <p className="text-sm text-sub mb-1">Sin pedidos anteriores</p>
-          <p className="text-xs text-muted mb-4">Tus pedidos apareceran aqui</p>
+          <p className="text-xs text-muted mb-4">Tus pedidos aparecerán aquí</p>
           <Link href="/catalogo" className="inline-block px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-sm no-underline">
-            Ir al catalogo
+            Ir al catálogo
           </Link>
         </div>
       ) : (

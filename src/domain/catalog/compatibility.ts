@@ -33,7 +33,7 @@ export const exceededMacros = (
   goals: MacroGoals,
 ): string[] => {
   const exceeded: string[] = [];
-  if (totals.protein + product.protein > goals.protein) exceeded.push("proteina");
+  if (totals.protein + product.protein > goals.protein) exceeded.push("proteína");
   if (totals.carbs + product.carbs > goals.carbs) exceeded.push("carbos");
   if (totals.fat + product.fat > goals.fat) exceeded.push("grasas");
   return exceeded;

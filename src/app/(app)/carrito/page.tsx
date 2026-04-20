@@ -38,7 +38,7 @@ export default function CarritoPage() {
     });
 
     setSaving(false);
-    toast("Pedido confirmado!", "success");
+    toast("¡Pedido confirmado!", "success");
     setShowCheckout(true);
   };
 
@@ -62,7 +62,7 @@ export default function CarritoPage() {
       total_calories: totals.calories,
       total_price: totals.price,
     });
-    toast("Combinacion guardada en favoritos", "success");
+    toast("Combinación guardada en favoritos", "success");
   };
 
   const handleRecurring = async () => {
@@ -95,7 +95,7 @@ export default function CarritoPage() {
 
       {/* Macro progress */}
       <div className="bg-card rounded-[14px] p-4 border border-border-l mb-4">
-        <MacroBar label="Proteina" current={totals.protein} goal={goals.protein} color="var(--color-protein)" lightColor="var(--color-protein-light)" compact />
+        <MacroBar label="Proteína" current={totals.protein} goal={goals.protein} color="var(--color-protein)" lightColor="var(--color-protein-light)" compact />
         <MacroBar label="Carbohidratos" current={totals.carbs} goal={goals.carbs} color="var(--color-carbs)" lightColor="var(--color-carbs-light)" compact />
         <MacroBar label="Grasas" current={totals.fat} goal={goals.fat} color="var(--color-fat)" lightColor="var(--color-fat-light)" compact />
       </div>
@@ -106,9 +106,9 @@ export default function CarritoPage() {
           <div className="w-14 h-14 rounded-2xl bg-border-l mx-auto mb-3.5 flex items-center justify-center">
             <ShoppingCart size={24} className="text-muted" />
           </div>
-          <p className="text-sm text-sub mb-3.5">Agrega productos del catalogo</p>
+          <p className="text-sm text-sub mb-3.5">Agrega productos del catálogo</p>
           <Link href="/catalogo" className="inline-block px-7 py-2.5 rounded-xl bg-primary text-white font-bold text-sm no-underline">
-            Ir al catalogo
+            Ir al catálogo
           </Link>
         </div>
       )}
@@ -139,7 +139,7 @@ export default function CarritoPage() {
       {items.length > 0 && !showCheckout && (
         <>
           <button onClick={handleSaveFavorite} className="w-full mt-2 bg-primary-light rounded-xl py-3 border border-primary-border flex items-center justify-center gap-2 text-xs text-primary font-semibold">
-            <Heart size={16} /> Guardar combinacion como favorita
+            <Heart size={16} /> Guardar combinación como favorita
           </button>
           <div className="mt-4 bg-card rounded-[14px] p-4 border border-border-l">
             <div className="flex justify-between mb-3.5">
@@ -149,7 +149,7 @@ export default function CarritoPage() {
             <button onClick={handlePay} disabled={saving} className="w-full py-3.5 rounded-xl bg-gradient-to-r from-accent to-[#E65100] text-white font-bold text-sm disabled:opacity-50">
               {saving ? "Procesando..." : `Pagar $${totals.price.toLocaleString()}`}
             </button>
-            <p className="text-[11px] text-muted text-center mt-1.5">Al pagar podras guardar y programar recurrencia</p>
+            <p className="text-[11px] text-muted text-center mt-1.5">Al pagar podrás guardar y programar recurrencia</p>
           </div>
         </>
       )}
@@ -166,7 +166,7 @@ export default function CarritoPage() {
               <div className="w-14 h-14 rounded-2xl bg-primary-light mx-auto mb-3.5 flex items-center justify-center">
                 <Check size={28} className="text-primary" />
               </div>
-              <h3 className="font-display font-black text-xl text-text">Pedido confirmado!</h3>
+              <h3 className="font-display font-black text-xl text-text">¡Pedido confirmado!</h3>
               <p className="text-sm text-sub mt-1">{totals.itemCount} productos · ${totals.price.toLocaleString()}</p>
             </div>
 
@@ -184,8 +184,8 @@ export default function CarritoPage() {
 
             {/* Recurring */}
             <div className="bg-accent-light rounded-xl p-4 border border-accent/20">
-              <p className="text-sm font-bold text-text mb-2">Repetir cada semana?</p>
-              <p className="text-[11px] text-sub mb-2.5">Elige los dias de entrega:</p>
+              <p className="text-sm font-bold text-text mb-2">¿Repetir cada semana?</p>
+              <p className="text-[11px] text-sub mb-2.5">Elige los días de entrega:</p>
               <div className="grid grid-cols-7 gap-1 mb-2">
                 {DAY_CODES.map((d) => (
                   <button

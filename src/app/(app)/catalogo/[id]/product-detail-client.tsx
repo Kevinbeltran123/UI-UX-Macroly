@@ -55,11 +55,11 @@ export const ProductDetailClient = ({ product, allProducts }: Props) => {
 
       {/* Nutritional info */}
       <div className="bg-card rounded-[14px] p-4 border border-border-l mb-4">
-        <h4 className="font-display font-bold text-sm mb-3">Informacion nutricional</h4>
-        <MacroBar label="Proteina" current={product.protein} goal={goals.protein} color="var(--color-protein)" lightColor="var(--color-protein-light)" compact />
+        <h4 className="font-display font-bold text-sm mb-3">Información nutricional</h4>
+        <MacroBar label="Proteína" current={product.protein} goal={goals.protein} color="var(--color-protein)" lightColor="var(--color-protein-light)" compact />
         <MacroBar label="Carbohidratos" current={product.carbs} goal={goals.carbs} color="var(--color-carbs)" lightColor="var(--color-carbs-light)" compact />
         <MacroBar label="Grasas" current={product.fat} goal={goals.fat} color="var(--color-fat)" lightColor="var(--color-fat-light)" compact />
-        <MacroBar label="Calorias" current={product.calories} goal={goals.calories} color="var(--color-cal)" lightColor="var(--color-cal-light)" unit="kcal" compact />
+        <MacroBar label="Calorías" current={product.calories} goal={goals.calories} color="var(--color-cal)" lightColor="var(--color-cal-light)" unit="kcal" compact />
       </div>
 
       {/* Cart impact preview */}
@@ -68,7 +68,7 @@ export const ProductDetailClient = ({ product, allProducts }: Props) => {
       }`}>
         <p className="flex items-center gap-2 text-xs font-semibold mb-2.5" style={{ color: compat === "exceeds" ? "var(--color-error)" : "var(--color-primary-dark)" }}>
           <Info size={14} />
-          {compat === "exceeds" ? `Excede tu limite de ${exceeded.join(", ")}` : "Impacto en tu carrito"}
+          {compat === "exceeds" ? `Excede tu límite de ${exceeded.join(", ")}` : "Impacto en tu carrito"}
         </p>
         <div className="flex gap-4">
           {[

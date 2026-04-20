@@ -6,8 +6,8 @@ import { User, Clock, Save, Shield, Settings, ChevronRight, LogOut } from "lucid
 import { createClient } from "@/lib/supabase/client";
 
 const DAY_NAMES: Record<string, string> = {
-  L: "Lunes", M: "Martes", Mi: "Miercoles", J: "Jueves",
-  V: "Viernes", S: "Sabado", D: "Domingo",
+  L: "Lunes", M: "Martes", Mi: "Miércoles", J: "Jueves",
+  V: "Viernes", S: "Sábado", D: "Domingo",
 };
 
 type Props = {
@@ -28,10 +28,10 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
   };
 
   const goalCards = [
-    { label: "Proteina", value: `${goals?.protein ?? 150}g`, color: "text-protein", bg: "bg-protein-light", k: "P" },
+    { label: "Proteína", value: `${goals?.protein ?? 150}g`, color: "text-protein", bg: "bg-protein-light", k: "P" },
     { label: "Carbos", value: `${goals?.carbs ?? 250}g`, color: "text-carbs", bg: "bg-carbs-light", k: "C" },
     { label: "Grasas", value: `${goals?.fat ?? 65}g`, color: "text-fat", bg: "bg-fat-light", k: "G" },
-    { label: "Calorias", value: `${goals?.calories ?? 2185}`, color: "text-cal", bg: "bg-cal-light", k: "K" },
+    { label: "Calorías", value: `${goals?.calories ?? 2185}`, color: "text-cal", bg: "bg-cal-light", k: "K" },
   ];
 
   return (
@@ -91,7 +91,7 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
           { icon: Clock, label: "Historial de pedidos", href: "/perfil/historial" },
           { icon: Save, label: "Combinaciones guardadas", href: "/perfil/favoritos" },
           { icon: Shield, label: "Condiciones de salud", href: "#" },
-          { icon: Settings, label: "Configuracion", href: "#" },
+          { icon: Settings, label: "Configuración", href: "#" },
         ].map((item, i) => (
           <Link
             key={i}
@@ -110,7 +110,7 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
         onClick={handleLogout}
         className="w-full py-3.5 rounded-[14px] border-2 border-error/20 bg-error/5 text-error font-bold text-sm flex items-center justify-center gap-2"
       >
-        <LogOut size={16} /> Cerrar sesion
+        <LogOut size={16} /> Cerrar sesión
       </button>
     </div>
   );

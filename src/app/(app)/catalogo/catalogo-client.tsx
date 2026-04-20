@@ -30,7 +30,7 @@ export const CatalogoClient = ({ products, categories }: Props) => {
 
   return (
     <div className="px-5 pt-4 pb-4 animate-[fadeUp_0.3s_ease]">
-      <h1 className="font-display font-black text-xl text-text mb-3">Catalogo</h1>
+      <h1 className="font-display font-black text-xl text-text mb-3">Catálogo</h1>
 
       {/* Search */}
       <div className="flex items-center gap-2.5 bg-card rounded-xl px-3.5 py-3 mb-3 border-2 border-border focus-within:border-primary transition-colors">

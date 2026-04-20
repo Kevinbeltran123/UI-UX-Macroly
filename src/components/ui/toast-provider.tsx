@@ -32,7 +32,7 @@ export const ToastProvider = () => {
             <button
               onClick={() => remove(toast.id)}
               className={`${s.text} opacity-70 hover:opacity-100 focus-visible:ring-2 focus-visible:ring-current rounded`}
-              aria-label="Cerrar notificacion"
+              aria-label="Cerrar notificación"
             >
               <X size={14} aria-hidden="true" />
             </button>

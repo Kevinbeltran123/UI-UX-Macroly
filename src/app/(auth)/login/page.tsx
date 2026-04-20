@@ -50,7 +50,7 @@ export default function LoginPage() {
           Macro<span className="text-primary-border">ly</span>
         </h1>
         <p className="text-white/60 text-xs tracking-[3px] uppercase">
-          Nutricion inteligente
+          Nutrición inteligente
         </p>
       </div>
 
@@ -58,7 +58,7 @@ export default function LoginPage() {
       <form onSubmit={handleLogin} className="flex-1 px-7 pt-8 flex flex-col">
         <div className="flex border-b-2 border-border-l mb-7">
           <div className="flex-1 text-center pb-3 text-sm font-semibold text-primary border-b-[3px] border-primary -mb-[2px]">
-            Iniciar sesion
+            Iniciar sesión
           </div>
           <Link
             href="/registro"
@@ -72,7 +72,7 @@ export default function LoginPage() {
           <p role="alert" className="text-error text-sm font-semibold mb-4 text-center">{error}</p>
         )}
 
-        <label htmlFor="login-email" className="text-xs font-semibold text-sub mb-1.5">Correo electronico</label>
+        <label htmlFor="login-email" className="text-xs font-semibold text-sub mb-1.5">Correo electrónico</label>
         <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-4 focus-within:border-primary transition-colors">
           <Mail size={16} className="text-muted" aria-hidden="true" />
           <input
@@ -87,7 +87,7 @@ export default function LoginPage() {
           />
         </div>
 
-        <label htmlFor="login-password" className="text-xs font-semibold text-sub mb-1.5">Contrasena</label>
+        <label htmlFor="login-password" className="text-xs font-semibold text-sub mb-1.5">Contraseña</label>
         <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-6 focus-within:border-primary transition-colors">
           <Lock size={16} className="text-muted" aria-hidden="true" />
           <input
@@ -104,7 +104,7 @@ export default function LoginPage() {
             type="button"
             onClick={() => setShowPw(!showPw)}
             className="text-muted focus-visible:ring-2 focus-visible:ring-primary rounded"
-            aria-label={showPw ? "Ocultar contrasena" : "Mostrar contrasena"}
+            aria-label={showPw ? "Ocultar contraseña" : "Mostrar contraseña"}
           >
             {showPw ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
           </button>
@@ -115,7 +115,7 @@ export default function LoginPage() {
           disabled={loading}
           className="w-full py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-display font-bold text-[15px] rounded-xl shadow-[0_4px_16px_rgba(46,125,50,.3)] disabled:opacity-50 transition-opacity"
         >
-          {loading ? "Ingresando..." : "Iniciar sesion"}
+          {loading ? "Ingresando..." : "Iniciar sesión"}
         </button>
 
         <div className="flex items-center gap-4 my-6">
@@ -136,7 +136,7 @@ export default function LoginPage() {
         </button>
 
         <p className="text-center mt-5 text-sm text-primary-mid font-semibold">
-          Olvidaste tu contrasena?
+          ¿Olvidaste tu contraseña?
         </p>
       </form>
     </div>

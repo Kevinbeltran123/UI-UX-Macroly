@@ -7,9 +7,9 @@ import { cn } from "@/lib/cn";
 
 const tabs = [
   { href: "/inicio", icon: Home, label: "Inicio" },
-  { href: "/catalogo", icon: Search, label: "Catalogo" },
+  { href: "/catalogo", icon: Search, label: "Catálogo" },
   { href: "/carrito", icon: ShoppingCart, label: "Carrito" },
-  { href: "/educacion", icon: BookOpen, label: "Educacion" },
+  { href: "/educacion", icon: BookOpen, label: "Educación" },
   { href: "/perfil", icon: User, label: "Perfil" },
 ] as const;
 
@@ -18,7 +18,7 @@ export const BottomNav = ({ cartCount = 0 }: { cartCount?: number }) => {
 
   return (
     <nav
-      aria-label="Navegacion principal"
+      aria-label="Navegación principal"
       className="fixed bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-border-l flex justify-around pt-2 z-50"
       style={{ paddingBottom: "calc(0.625rem + env(safe-area-inset-bottom, 0px))" }}
     >

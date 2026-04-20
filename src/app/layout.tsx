@@ -18,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Macroly — Nutricion inteligente",
+  title: "Macroly — Nutrición inteligente",
   description: "Compra inteligente con tus macronutrientes en tiempo real",
   applicationName: "Macroly",
   appleWebApp: {

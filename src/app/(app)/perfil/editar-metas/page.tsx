@@ -43,7 +43,7 @@ export default function EditarMetasPage() {
   };
 
   const sliders = [
-    { label: "Proteina", value: protein, set: setProtein, min: 50, max: 300, color: "#43A047", light: "#E8F5E9" },
+    { label: "Proteína", value: protein, set: setProtein, min: 50, max: 300, color: "#43A047", light: "#E8F5E9" },
     { label: "Carbohidratos", value: carbs, set: setCarbs, min: 100, max: 500, color: "#FB8C00", light: "#FFF3E0" },
     { label: "Grasas", value: fat, set: setFat, min: 20, max: 150, color: "#1E88E5", light: "#E3F2FD" },
   ];
@@ -86,8 +86,8 @@ export default function EditarMetasPage() {
           <BarChart3 size={20} className="text-white" />
         </div>
         <div>
-          <p className="font-display font-black text-xl text-cal">= {calories.toLocaleString()} kcal/dia</p>
-          <p className="text-[11px] text-muted mt-0.5">Calculado automaticamente</p>
+          <p className="font-display font-black text-xl text-cal">= {calories.toLocaleString()} kcal/día</p>
+          <p className="text-[11px] text-muted mt-0.5">Calculado automáticamente</p>
         </div>
       </div>
 

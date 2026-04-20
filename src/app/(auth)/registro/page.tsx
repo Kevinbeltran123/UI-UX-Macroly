@@ -68,7 +68,7 @@ export default function RegistroPage() {
           Macro<span className="text-primary-border">ly</span>
         </h1>
         <p className="text-white/60 text-xs tracking-[3px] uppercase">
-          Nutricion inteligente
+          Nutrición inteligente
         </p>
       </div>
 
@@ -78,7 +78,7 @@ export default function RegistroPage() {
             href="/login"
             className="flex-1 text-center pb-3 text-sm font-semibold text-muted no-underline"
           >
-            Iniciar sesion
+            Iniciar sesión
           </Link>
           <div className="flex-1 text-center pb-3 text-sm font-semibold text-primary border-b-[3px] border-primary -mb-[2px]">
             Registrarse
@@ -102,7 +102,7 @@ export default function RegistroPage() {
           />
         </div>
 
-        <label className="text-xs font-semibold text-sub mb-1.5">Correo electronico</label>
+        <label className="text-xs font-semibold text-sub mb-1.5">Correo electrónico</label>
         <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-4 focus-within:border-primary transition-colors">
           <Mail size={16} className="text-muted" />
           <input
@@ -115,14 +115,14 @@ export default function RegistroPage() {
           />
         </div>
 
-        <label className="text-xs font-semibold text-sub mb-1.5">Contrasena</label>
+        <label className="text-xs font-semibold text-sub mb-1.5">Contraseña</label>
         <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-6 focus-within:border-primary transition-colors">
           <Lock size={16} className="text-muted" />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Minimo 6 caracteres"
+            placeholder="Mínimo 6 caracteres"
             required
             minLength={6}
             className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"

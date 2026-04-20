@@ -5,7 +5,7 @@ import type { MacroFilter } from "@/domain/catalog/filters";
 
 const FILTERS: Array<{ id: MacroFilter; label: string }> = [
   { id: "todos", label: "Todos" },
-  { id: "highProtein", label: "Alto en proteina" },
+  { id: "highProtein", label: "Alto en proteína" },
   { id: "lowCarb", label: "Bajo en carbos" },
   { id: "lowFat", label: "Bajo en grasa" },
   { id: "bestValue", label: "Mejor precio/g" },

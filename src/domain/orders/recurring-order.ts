@@ -10,10 +10,10 @@ export type DayCode = (typeof DAY_CODES)[number];
 const DAY_NAMES: Record<DayCode, string> = {
   L: "Lunes",
   M: "Martes",
-  Mi: "Miercoles",
+  Mi: "Miércoles",
   J: "Jueves",
   V: "Viernes",
-  S: "Sabado",
+  S: "Sábado",
   D: "Domingo",
 };
 
@@ -25,7 +25,7 @@ export const dayName = (code: DayCode): string => DAY_NAMES[code];
  */
 export const daysText = (days: readonly DayCode[]): string => {
   if (days.length === 0) return "";
-  if (days.length === 7) return "todos los dias";
+  if (days.length === 7) return "todos los días";
   return days.map(dayName).join(", ");
 };
 
