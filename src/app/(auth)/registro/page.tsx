@@ -1,19 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LogoIsotipo } from "@/components/layout/logo";
-import { Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User, MailCheck } from "lucide-react";
 import Link from "next/link";
 
+const mapSignupError = (raw: string): string => {
+  const msg = raw.toLowerCase();
+  if (msg.includes("password") && msg.includes("6")) return "La contraseña debe tener al menos 6 caracteres.";
+  if (msg.includes("password")) return "La contraseña no cumple con los requisitos mínimos.";
+  if (msg.includes("invalid") && msg.includes("email")) return "El correo no tiene un formato válido.";
+  if (msg.includes("rate limit") || msg.includes("security purposes")) return "Demasiados intentos. Espera unos segundos e inténtalo de nuevo.";
+  if (msg.includes("network") || msg.includes("fetch")) return "Error de conexión. Verifica tu internet e inténtalo de nuevo.";
+  return "No pudimos crear tu cuenta. Inténtalo de nuevo en unos momentos.";
+};
+
 export default function RegistroPage() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [verificationSent, setVerificationSent] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +31,7 @@ export default function RegistroPage() {
 
     const supabase = createClient();
 
-    const { error: signUpError } = await supabase.auth.signUp({
+    const { data, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -32,24 +41,37 @@ export default function RegistroPage() {
     });
 
     if (signUpError) {
-      setError(signUpError.message);
+      setError(mapSignupError(signUpError.message));
       setLoading(false);
       return;
     }
 
-    const { error: loginError } = await supabase.auth.signInWithPassword({
+    // When email confirmation is enabled, Supabase returns a user with an empty
+    // identities array if the email was already registered (soft failure — avoids email enumeration).
+    const alreadyRegistered = data.user && data.user.identities?.length === 0;
+    if (alreadyRegistered) {
+      setError("Este correo ya está registrado. Intenta iniciar sesión.");
+      setLoading(false);
+      return;
+    }
+
+    setVerificationSent(true);
+    setLoading(false);
+  };
+
+  const handleResend = async () => {
+    setLoading(true);
+    setError("");
+    const supabase = createClient();
+    const { error: resendError } = await supabase.auth.resend({
+      type: "signup",
       email,
-      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/callback?next=/onboarding`,
+      },
     });
-
-    if (loginError) {
-      setError("Cuenta creada. " + loginError.message);
-      setLoading(false);
-      return;
-    }
-
-    router.push("/onboarding");
-    router.refresh();
+    if (resendError) setError(resendError.message);
+    setLoading(false);
   };
 
   const handleGoogle = async () => {
@@ -59,6 +81,56 @@ export default function RegistroPage() {
       options: { redirectTo: `${window.location.origin}/callback?next=/onboarding` },
     });
   };
+
+  if (verificationSent) {
+    return (
+      <div className="min-h-screen flex flex-col bg-card">
+        <div className="bg-gradient-to-br from-primary-dark via-primary to-primary-mid rounded-b-[40px] px-8 pt-16 pb-10 flex flex-col items-center gap-3">
+          <LogoIsotipo size={56} />
+          <h1 className="font-display font-black text-3xl text-white">
+            Macro<span className="text-primary-border">ly</span>
+          </h1>
+          <p className="text-white/60 text-xs tracking-[3px] uppercase">
+            Nutrición inteligente
+          </p>
+        </div>
+
+        <div className="flex-1 px-7 pt-10 flex flex-col items-center text-center">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-5">
+            <MailCheck size={40} className="text-primary" />
+          </div>
+          <h2 className="font-display font-bold text-2xl text-text mb-3">
+            Revisa tu correo
+          </h2>
+          <p className="text-sm text-sub leading-relaxed mb-2">
+            Enviamos un enlace de confirmación a
+          </p>
+          <p className="text-sm font-semibold text-text mb-8 break-all">{email}</p>
+          <p className="text-xs text-muted leading-relaxed mb-8 max-w-sm">
+            Abre el correo desde este mismo dispositivo y haz clic en el enlace para activar tu cuenta.
+            Si no lo ves, revisa tu carpeta de spam.
+          </p>
+
+          {error && (
+            <p className="text-error text-sm font-semibold mb-4">{error}</p>
+          )}
+
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={loading}
+            className="text-primary font-semibold text-sm mb-4 disabled:opacity-50"
+          >
+            {loading ? "Reenviando..." : "Reenviar correo"}
+          </button>
+
+          <Link href="/login" className="text-muted text-sm no-underline">
+            Volver a iniciar sesión
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-card">

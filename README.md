@@ -8,7 +8,34 @@ App web de compra de productos alimenticios con tracking de macronutrientes en t
 - **Backend:** Supabase (Postgres + Auth + RLS)
 - **State:** Zustand (carrito con persistencia localStorage)
 - **Icons:** Lucide React
-- **PWA:** Manifest + iconos SVG, instalable en mobile
+- **PWA:** Service worker + iconos PNG, instalable en iOS y Android
+
+## PWA
+
+La app es instalable como Progressive Web App en móvil y escritorio.
+
+| Característica | Detalle |
+|----------------|---------|
+| Service worker | Network-first para navegación, cache-first para assets estáticos |
+| Iconos iOS | `apple-touch-icon` en 4 tamaños (120/152/167/180 px) |
+| Iconos Android | `icon-192.png`, `icon-512.png`, `icon-maskable.png` |
+| Safe area iOS | `env(safe-area-inset-bottom)` en BottomNav y layout — sin cortes por notch/home indicator |
+| Shortcuts | 3 atajos desde el ícono: Catálogo, Carrito, Educación |
+| Cache dinámico | Supabase API excluido del cache para garantizar datos frescos |
+
+El service worker se registra automáticamente solo en `production` via el componente `PWARegister`.
+
+## Accesibilidad (WCAG 2.1 AA)
+
+| Criterio | Implementación |
+|----------|---------------|
+| No solo color | `ProductCard` muestra compatibilidad con ícono + texto + color |
+| Navegación por teclado | Skip link "Saltar al contenido", `focus-visible` en botones y sliders |
+| Movimiento reducido | `@media prefers-reduced-motion` desactiva animaciones y transforms |
+| Labels de formulario | `htmlFor`/`id` asociados, `autoComplete` en email/password |
+| Sliders | `aria-valuetext` con texto legible (`"150 gramos de proteína"`) |
+| Toasts | `role="status"` (info/success), `role="alert"` (error), `aria-live` |
+| Anuncios de carrito | Incluyen nombre del producto, estado del macro y resumen del carrito |
 
 ## Acciones de usuario
 
@@ -96,6 +123,7 @@ src/
 supabase/
   migrations/        # SQL schema + seeds
 prototipo-legacy/    # Prototipo original HTML (referencia)
+pantallas-dibujo.html  # Wireframes de las 12 pantallas (para sketch/impresion)
 docs/                # Documentos del avance 1 y 2
 ```
 
