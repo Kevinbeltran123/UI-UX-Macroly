@@ -10,9 +10,16 @@ import { useCart } from "@/hooks/use-cart";
 import { createClient } from "@/lib/supabase/client";
 import { DAY_CODES, toggleDay, daysText, type DayCode } from "@/domain/orders/recurring-order";
 import { nextComboName } from "@/domain/favorites/favorite-combo";
+import { useGoalsStore } from "@/stores/goals-store";
+import { PurchasePeriodSelector } from "@/components/period/purchase-period-selector";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { FavoriteCombo } from "@/domain/favorites/favorite-combo";
 
 export default function CarritoPage() {
-  const { items, totals, goals, add, remove, clear } = useCart();
+  const { goals: storeGoals, loading: goalsLoading } = useGoalsStore();
+  const { items, totals, goals, add, remove, clear, purchaseDays } = useCart(storeGoals);
+  // goals is now period-scaled (storeGoals × purchaseDays) — pass unchanged to MacroBar, etc.
+  // storeGoals is unscaled daily goals — needed for PERIOD-08 coverage formula only
   const toast = useToastStore((s) => s.add);
   const [showCheckout, setShowCheckout] = useState(false);
   const [recurDays, setRecurDays] = useState<DayCode[]>(["L"]);
@@ -54,7 +61,7 @@ export default function CarritoPage() {
 
     await supabase.from("favorite_combos").insert({
       user_id: user.id,
-      name: `Combo #${(existing?.length ?? 0) + 1}`,
+      name: nextComboName((existing ?? []) as unknown as readonly FavoriteCombo[]),
       items: showCheckout ? items : items,
       total_protein: totals.protein,
       total_carbs: totals.carbs,
@@ -94,11 +101,20 @@ export default function CarritoPage() {
       <h1 className="font-display font-black text-xl text-text mb-4">Mi Carrito</h1>
 
       {/* Macro progress */}
-      <div className="bg-card rounded-[14px] p-4 border border-border-l mb-4">
-        <MacroBar label="Proteína" current={totals.protein} goal={goals.protein} color="var(--color-protein)" lightColor="var(--color-protein-light)" compact />
-        <MacroBar label="Carbohidratos" current={totals.carbs} goal={goals.carbs} color="var(--color-carbs)" lightColor="var(--color-carbs-light)" compact />
-        <MacroBar label="Grasas" current={totals.fat} goal={goals.fat} color="var(--color-fat)" lightColor="var(--color-fat-light)" compact />
-      </div>
+      {goalsLoading ? (
+        <Skeleton className="h-[88px] w-full rounded-xl mb-4" />
+      ) : (
+        <div className="bg-card rounded-[14px] p-4 border border-border-l mb-0">
+          <MacroBar label="Proteína" current={totals.protein} goal={goals.protein} color="var(--color-protein)" lightColor="var(--color-protein-light)" compact />
+          <MacroBar label="Carbohidratos" current={totals.carbs} goal={goals.carbs} color="var(--color-carbs)" lightColor="var(--color-carbs-light)" compact />
+          <MacroBar label="Grasas" current={totals.fat} goal={goals.fat} color="var(--color-fat)" lightColor="var(--color-fat-light)" compact />
+        </div>
+      )}
+
+      {/* D-02: Period selector placed below macro progress section */}
+      <PurchasePeriodSelector />
+
+      <div className="mb-4" />
 
       {/* Empty state */}
       {items.length === 0 && !showCheckout && (
@@ -185,6 +201,16 @@ export default function CarritoPage() {
             {/* Recurring */}
             <div className="bg-accent-light rounded-xl p-4 border border-accent/20">
               <p className="text-sm font-bold text-text mb-2">¿Repetir cada semana?</p>
+              {/* PERIOD-08: Days of macro coverage this cart provides */}
+              {items.length > 0 && (
+                <p className="text-[11px] text-sub mb-2">
+                  ~{Math.max(0, Math.floor(Math.min(
+                    totals.protein / (storeGoals.protein || 1),
+                    totals.carbs / (storeGoals.carbs || 1),
+                    totals.fat / (storeGoals.fat || 1),
+                  )))} día(s) de cobertura
+                </p>
+              )}
               <p className="text-[11px] text-sub mb-2.5">Elige los días de entrega:</p>
               <div className="grid grid-cols-7 gap-1 mb-2">
                 {DAY_CODES.map((d) => (
