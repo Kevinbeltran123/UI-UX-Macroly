@@ -9,6 +9,7 @@ import { MacroFilterChips } from "@/components/product/macro-filter-chips";
 import { MacroBar } from "@/components/nutrition/macro-bar";
 import { useCart } from "@/hooks/use-cart";
 import { useAddToCart } from "@/hooks/use-add-to-cart";
+import { useGoalsStore } from "@/stores/goals-store";
 import { applyFilters, type CategoryId, type MacroFilter, type CatalogFilters } from "@/domain/catalog/filters";
 import { checkCompatibility } from "@/domain/catalog/compatibility";
 import type { Product } from "@/domain/catalog/product";
@@ -22,7 +23,9 @@ export const CatalogoClient = ({ products, categories }: Props) => {
   const [category, setCategory] = useState<CategoryId>("todos");
   const [macroFilter, setMacroFilter] = useState<MacroFilter>("todos");
   const [search, setSearch] = useState("");
-  const { totals, goals } = useCart();
+  const { goals: storeGoals } = useGoalsStore();
+  const { totals, goals } = useCart(storeGoals);
+  // goals is now period-scaled — checkCompatibility(p, totals, goals) unchanged
   const addToCart = useAddToCart();
 
   const filters: CatalogFilters = { category, macro: macroFilter, search };

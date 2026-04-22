@@ -7,6 +7,7 @@ import { MacroBar } from "@/components/nutrition/macro-bar";
 import { MacroChip } from "@/components/nutrition/macro-chip";
 import { useCart } from "@/hooks/use-cart";
 import { useAddToCart } from "@/hooks/use-add-to-cart";
+import { useGoalsStore } from "@/stores/goals-store";
 import { checkCompatibility, exceededMacros, findAlternatives } from "@/domain/catalog/compatibility";
 import type { Product } from "@/domain/catalog/product";
 
@@ -16,7 +17,9 @@ type Props = {
 };
 
 export const ProductDetailClient = ({ product, allProducts }: Props) => {
-  const { totals, goals } = useCart();
+  const { goals: storeGoals } = useGoalsStore();
+  const { totals, goals } = useCart(storeGoals);
+  // goals is period-scaled — checkCompatibility, exceededMacros, findAlternatives, MacroBar all unchanged
   const addToCart = useAddToCart();
 
   const compat = checkCompatibility(product, totals, goals);
