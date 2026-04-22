@@ -9,6 +9,9 @@ import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { recommend } from "@/domain/recommendation/recommendation-engine";
 import { checkCompatibility } from "@/domain/catalog/compatibility";
 import { createClient } from "@/lib/supabase/client";
+import { useGoalsStore } from "@/stores/goals-store";
+import { PurchasePeriodSelector } from "@/components/period/purchase-period-selector";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { Product } from "@/domain/catalog/product";
 
 const BADGE_BY_CATEGORY: Record<string, string> = {
@@ -25,7 +28,9 @@ type Props = {
 };
 
 export const InicioClient = ({ allProducts }: Props) => {
-  const { totals, goals } = useCart();
+  const { goals: storeGoals, loading: goalsLoading } = useGoalsStore();
+  const { totals, goals, purchaseDays } = useCart(storeGoals);
+  // goals is now period-scaled — pass unchanged to recommend() and checkCompatibility()
   const addToCart = useAddToCart();
   const [firstName, setFirstName] = useState("Usuario");
 
@@ -71,29 +76,36 @@ export const InicioClient = ({ allProducts }: Props) => {
       </div>
 
       {/* Macro progress — real data from cart store */}
-      <div className="bg-gradient-to-br from-primary-dark to-primary rounded-xl p-5 text-white mb-5 relative overflow-hidden">
-        <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-white/5" />
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-[13px] font-semibold opacity-90">Macros del carrito</span>
-          <span className="text-[11px] bg-white/15 px-2.5 py-1 rounded-lg font-semibold">{calPct}%</span>
-        </div>
-        <div className="flex gap-3">
-          {macros.map((m) => (
-            <div key={m.label} className="flex-1">
-              <div className="flex justify-between mb-1">
-                <span className="text-[10px] opacity-70">{m.label}</span>
-                <span className="text-[10px] font-bold">{m.value}</span>
+      {goalsLoading ? (
+        <Skeleton className="h-[88px] w-full rounded-xl mb-5" />
+      ) : (
+        <div className="bg-gradient-to-br from-primary-dark to-primary rounded-xl p-5 text-white mb-3 relative overflow-hidden">
+          <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-white/5" />
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[13px] font-semibold opacity-90">Macros del carrito</span>
+            <span className="text-[11px] bg-white/15 px-2.5 py-1 rounded-lg font-semibold">{calPct}%</span>
+          </div>
+          <div className="flex gap-3">
+            {macros.map((m) => (
+              <div key={m.label} className="flex-1">
+                <div className="flex justify-between mb-1">
+                  <span className="text-[10px] opacity-70">{m.label}</span>
+                  <span className="text-[10px] font-bold">{m.value}</span>
+                </div>
+                <div className="h-1 bg-white/15 rounded-full">
+                  <div
+                    className="h-full rounded-full transition-[width] duration-500"
+                    style={{ width: `${m.pct}%`, background: m.color }}
+                  />
+                </div>
               </div>
-              <div className="h-1 bg-white/15 rounded-full">
-                <div
-                  className="h-full rounded-full transition-[width] duration-500"
-                  style={{ width: `${m.pct}%`, background: m.color }}
-                />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* D-02, PERIOD-02: Period selector placed below macro progress section (same position as carrito view) */}
+      <PurchasePeriodSelector />
 
       {/* Quick actions */}
       <div className="flex gap-2.5 mb-5">
