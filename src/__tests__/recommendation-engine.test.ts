@@ -14,6 +14,7 @@ const makeProduct = (
   fat: number,
   price = 5000,
   dietaryTags: string[] = [],
+  mealContext: 'any' | 'breakfast' | 'lunch' | 'dinner' = 'any',
 ): Product => ({
   id,
   name: `Product ${id}`,
@@ -28,6 +29,7 @@ const makeProduct = (
   categoryId: null,
   rating: null,
   dietaryTags,
+  mealContext,
 });
 
 const emptyTotals: CartTotals = {

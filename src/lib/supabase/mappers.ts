@@ -17,6 +17,7 @@ export const mapProduct = (row: any): Product => ({
   categoryId: row.category_id,
   rating: row.rating ? Number(row.rating) : null,
   dietaryTags: row.dietary_tags ?? [], // Phase 2 (DIET-03) — null-safe; guards pre-migration rows
+  mealContext: row.meal_context ?? 'any', // Phase 4 (MEAL-03) — null-safe; guards pre-migration rows
 });
 
 export const mapArticle = (row: any): Article => ({
