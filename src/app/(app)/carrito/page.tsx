@@ -30,8 +30,9 @@ export default function CarritoPage() {
     setSaving(true);
 
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data?.user) { setSaving(false); return; }
+    const user = data.user;
 
     await supabase.from("orders").insert({
       user_id: user.id,
@@ -51,8 +52,9 @@ export default function CarritoPage() {
 
   const handleSaveFavorite = async () => {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data?.user) return;
+    const user = data.user;
 
     const { data: existing } = await supabase
       .from("favorite_combos")
@@ -62,7 +64,7 @@ export default function CarritoPage() {
     await supabase.from("favorite_combos").insert({
       user_id: user.id,
       name: nextComboName((existing ?? []) as unknown as readonly FavoriteCombo[]),
-      items: showCheckout ? items : items,
+      items: items,
       total_protein: totals.protein,
       total_carbs: totals.carbs,
       total_fat: totals.fat,
@@ -75,8 +77,9 @@ export default function CarritoPage() {
   const handleRecurring = async () => {
     if (recurDays.length === 0) return;
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data?.user) return;
+    const user = data.user;
 
     await supabase.from("recurring_orders").upsert({
       user_id: user.id,

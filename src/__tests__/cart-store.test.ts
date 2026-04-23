@@ -63,31 +63,19 @@ describe("useCartStore", () => {
 
   describe("onRehydrateStorage TTL (FIX-01)", () => {
     it("clears cart when lastUpdated is a past date", () => {
-      // Simulate stored state from yesterday
       const storedState = {
         ...useCartStore.getState(),
         lastUpdated: "Mon Apr 21 2026",  // past date
         items: [makeItem("p1")],
         purchaseDays: 5,
       };
-      // Invoke the inner callback directly (simulates post-hydration)
-      const handler = (useCartStore as any)._persist?.onRehydrateStorage?.();
-      if (handler) {
-        // Apply stored state to the store first
-        useCartStore.setState(storedState);
-        handler(useCartStore.getState(), undefined);
-        expect(useCartStore.getState().items).toEqual([]);
-      } else {
-        // Fallback: verify the behavior through setState simulation
-        useCartStore.setState(storedState);
-        const state = useCartStore.getState();
-        if (state.lastUpdated !== new Date().toDateString()) {
-          state.clear();
-          state.setLastUpdated(new Date().toDateString());
-        }
-        expect(useCartStore.getState().items).toEqual([]);
-        expect(useCartStore.getState().purchaseDays).toBe(5);
-      }
+      useCartStore.setState(storedState);
+      // Invoke the inner callback via Zustand v5 persist API (replaces broken _persist access)
+      const { onRehydrateStorage } = useCartStore.persist.getOptions();
+      const callback = onRehydrateStorage?.();
+      callback?.(useCartStore.getState(), undefined);
+      expect(useCartStore.getState().items).toEqual([]);
+      expect(useCartStore.getState().purchaseDays).toBe(5);
     });
 
     it("preserves purchaseDays after TTL clear (D-11)", () => {
