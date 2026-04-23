@@ -21,6 +21,7 @@ const makeProduct = (protein: number, carbs: number, fat: number): Product => ({
   categoryId: null,
   rating: null,
   dietaryTags: [],
+  mealContext: 'any',
 });
 
 const makeTotals = (protein: number, carbs: number, fat: number): CartTotals => ({

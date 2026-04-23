@@ -19,6 +19,7 @@ const makeItem = (id: string): CartItem => ({
   categoryId: null,
   rating: null,
   dietaryTags: [],
+  mealContext: 'any',
   qty: 1,
 });
 
