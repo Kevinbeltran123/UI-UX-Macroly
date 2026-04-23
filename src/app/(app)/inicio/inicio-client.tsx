@@ -66,10 +66,13 @@ export const InicioClient = ({ allProducts }: Props) => {
   );
   const calPct = goals.calories > 0 ? Math.round((totals.calories / goals.calories) * 100) : 0;
 
+  const safePct = (current: number, goal: number) =>
+    goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
+
   const macros = [
-    { label: "Proteína", value: `${totals.protein}g`, color: "#43A047", pct: Math.min((totals.protein / goals.protein) * 100, 100) },
-    { label: "Carbos", value: `${totals.carbs}g`, color: "#FB8C00", pct: Math.min((totals.carbs / goals.carbs) * 100, 100) },
-    { label: "Grasas", value: `${totals.fat}g`, color: "#1E88E5", pct: Math.min((totals.fat / goals.fat) * 100, 100) },
+    { label: "Proteína", value: `${totals.protein}g`, color: "#43A047", pct: safePct(totals.protein, goals.protein) },
+    { label: "Carbos", value: `${totals.carbs}g`, color: "#FB8C00", pct: safePct(totals.carbs, goals.carbs) },
+    { label: "Grasas", value: `${totals.fat}g`, color: "#1E88E5", pct: safePct(totals.fat, goals.fat) },
   ];
 
   const handleAdd = (p: Product) => addToCart(p);
