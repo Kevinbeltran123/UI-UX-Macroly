@@ -179,4 +179,68 @@ describe("recommend() — period-scaled goals (PERIOD-06)", () => {
       expect(withZeroBudget[0].reason).not.toBe("Mejor relación proteína/precio");
     });
   });
+
+  describe("recommend() — MEAL-05 meal context filter", () => {
+    it("with mealContext='breakfast', filters out non-breakfast products", () => {
+      // lunch and dinner products should be excluded; breakfast product survives
+      const breakfast = makeProduct("b", 30, 10, 5, 5000, [], 'breakfast');
+      const lunch = makeProduct("l", 40, 10, 5, 5000, [], 'lunch');
+      const dinner = makeProduct("d", 35, 10, 5, 5000, [], 'dinner');
+      const result = recommend([breakfast, lunch, dinner], emptyTotals, standardGoals, 6, [], undefined, 'breakfast');
+      expect(result.map((p) => p.id)).toContain("b");
+      expect(result.map((p) => p.id)).not.toContain("l");
+      expect(result.map((p) => p.id)).not.toContain("d");
+    });
+
+    it("products tagged 'any' always pass the meal filter (D-06 pass-through)", () => {
+      // 'any' products appear in all meal contexts
+      const anyProduct = makeProduct("any", 30, 10, 5, 5000, [], 'any');
+      const lunch = makeProduct("l", 40, 10, 5, 5000, [], 'lunch');
+      const result = recommend([anyProduct, lunch], emptyTotals, standardGoals, 6, [], undefined, 'breakfast');
+      expect(result.map((p) => p.id)).toContain("any");
+      expect(result.map((p) => p.id)).not.toContain("l");
+    });
+
+    it("mealContext=undefined returns all products (no filter — backward compat)", () => {
+      const breakfast = makeProduct("b", 30, 10, 5, 5000, [], 'breakfast');
+      const lunch = makeProduct("l", 40, 10, 5, 5000, [], 'lunch');
+      const result = recommend([breakfast, lunch], emptyTotals, standardGoals, 6, [], undefined, undefined);
+      expect(result).toHaveLength(2);
+    });
+
+    it("mealContext='any' returns all products (same as no filter — D-05)", () => {
+      const breakfast = makeProduct("b", 30, 10, 5, 5000, [], 'breakfast');
+      const lunch = makeProduct("l", 40, 10, 5, 5000, [], 'lunch');
+      const result = recommend([breakfast, lunch], emptyTotals, standardGoals, 6, [], undefined, 'any');
+      expect(result).toHaveLength(2);
+    });
+
+    it("returns empty array when no products match the meal filter", () => {
+      const lunch = makeProduct("l", 40, 10, 5, 5000, [], 'lunch');
+      const dinner = makeProduct("d", 35, 10, 5, 5000, [], 'dinner');
+      const result = recommend([lunch, dinner], emptyTotals, standardGoals, 6, [], undefined, 'breakfast');
+      expect(result).toEqual([]);
+    });
+
+    it("meal filter stacks with restrictions filter (both applied independently)", () => {
+      // Product must pass restrictions AND meal context to survive
+      const ok = makeProduct("ok", 30, 10, 5, 5000, ["vegano"], 'breakfast');
+      const wrongMeal = makeProduct("wm", 30, 10, 5, 5000, ["vegano"], 'lunch');
+      const wrongTag = makeProduct("wt", 30, 10, 5, 5000, [], 'breakfast');
+      const result = recommend([ok, wrongMeal, wrongTag], emptyTotals, standardGoals, 6, ["vegano"], undefined, 'breakfast');
+      expect(result.map((p) => p.id)).toEqual(["ok"]);
+    });
+
+    it("meal filter stacks with budget filter (both applied independently)", () => {
+      // maxBudget=20000, totals.price=0 → remaining=20000
+      // p_ok: price=10000, mealContext='breakfast' → passes both filters
+      // p_expensive: price=25000, mealContext='breakfast' → fails budget filter
+      // p_wrong_meal: price=10000, mealContext='lunch' → fails meal filter
+      const p_ok = makeProduct("ok", 30, 10, 5, 10000, [], 'breakfast');
+      const p_expensive = makeProduct("exp", 35, 10, 5, 25000, [], 'breakfast');
+      const p_wrong_meal = makeProduct("wm", 40, 10, 5, 10000, [], 'lunch');
+      const result = recommend([p_ok, p_expensive, p_wrong_meal], emptyTotals, standardGoals, 6, [], 20000, 'breakfast');
+      expect(result.map((p) => p.id)).toEqual(["ok"]);
+    });
+  });
 });
