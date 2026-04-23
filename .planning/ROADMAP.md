@@ -20,8 +20,8 @@ progress:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Schema migration + goals store budget field + /perfil/presupuesto page + perfil menu item
-- [ ] 03-02-PLAN.md — recommend() engine extension (budget filter + blend score + badge) + tests
+- [x] 03-01-PLAN.md — Schema migration + goals store budget field + /perfil/presupuesto page + perfil menu item
+- [x] 03-02-PLAN.md — recommend() engine extension (budget filter + blend score + badge) + tests
 - [ ] 03-03-PLAN.md — [BLOCKING] supabase db push + inicio-client wiring + carrito session budget widget
 
 ---
