@@ -15,4 +15,5 @@ export type Product = {
   categoryId: string | null;
   rating: number | null;
   dietaryTags: string[]; // Phase 2 (DIET-02) — maps to DB column dietary_tags text[]
+  mealContext: 'any' | 'breakfast' | 'lunch' | 'dinner'; // Phase 4 (MEAL-02) — maps to DB column meal_context text
 };
