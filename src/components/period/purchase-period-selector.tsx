@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Check } from "lucide-react";
+import { ChevronDown, Check, Calendar } from "lucide-react";
 import { useCartStore } from "@/stores/cart-store";
 
 // D-01: Period options as ordered list (not chip row / stepper)
@@ -65,12 +65,18 @@ export function PurchasePeriodSelector() {
       {/* D-02: Trigger button placed below MacroBar by the parent component */}
       <button
         onClick={handleTrigger}
-        className="w-full mt-3 flex items-center justify-between px-4 py-3 rounded-xl bg-card border border-border text-sm font-semibold text-text"
+        className="w-full mt-3 mb-4 flex items-center justify-between px-4 py-3.5 rounded-2xl bg-card shadow-card text-sm"
         aria-haspopup="listbox"
         aria-expanded={open}
       >
-        <span>Comprando para: {periodLabel}</span>
-        <ChevronDown size={16} className="text-sub" />
+        <div className="flex items-center gap-2 text-sub">
+          <Calendar size={15} />
+          <span className="font-medium">Comprando para</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="font-bold text-text">{periodLabel}</span>
+          <ChevronDown size={15} className="text-sub" />
+        </div>
       </button>
 
       {/* Bottom sheet overlay — closes on backdrop tap (D-01) */}
