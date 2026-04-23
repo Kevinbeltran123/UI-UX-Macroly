@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Zap, Calendar, BookOpen, AlertCircle, Wallet } from "lucide-react";
+import { Bell, Zap, Calendar, BookOpen, AlertCircle, Wallet, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
 import { ProductCard } from "@/components/product/product-card";
 import { useCart } from "@/hooks/use-cart";
@@ -25,6 +25,13 @@ const BADGE_BY_CATEGORY: Record<string, string> = {
   suplemento: "Suplemento premium",
 };
 
+const MEAL_CHIPS = [
+  { value: 'any',       label: 'Todo' },
+  { value: 'breakfast', label: 'Desayuno' },
+  { value: 'lunch',     label: 'Almuerzo' },
+  { value: 'dinner',    label: 'Cena' },
+] as const;
+
 type Props = {
   allProducts: Product[];
 };
@@ -38,6 +45,7 @@ export const InicioClient = ({ allProducts }: Props) => {
   // goals is now period-scaled — pass unchanged to recommend() and checkCompatibility()
   const addToCart = useAddToCart();
   const [firstName, setFirstName] = useState("Usuario");
+  const [mealContext, setMealContext] = useState<'any' | 'breakfast' | 'lunch' | 'dinner'>('any');
 
   useEffect(() => {
     const loadUser = async () => {
@@ -53,7 +61,8 @@ export const InicioClient = ({ allProducts }: Props) => {
 
   const recommended = recommend(
     allProducts, totals, goals, 6, restrictions,
-    budget && budget > 0 ? budget : undefined  // T-3-02: 0 and null → undefined (budget mode off)
+    budget && budget > 0 ? budget : undefined, // T-3-02: 0 and null → undefined (budget mode off)
+    mealContext  // Phase 4 (MEAL-06) — 'any' = no filter; engine handles guard internally
   );
   const calPct = goals.calories > 0 ? Math.round((totals.calories / goals.calories) * 100) : 0;
 
@@ -133,6 +142,29 @@ export const InicioClient = ({ allProducts }: Props) => {
         ))}
       </div>
 
+      {/* Meal context filter chips — MEAL-04 */}
+      <div role="group" aria-label="Filtrar recomendaciones por momento">
+        <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide">
+          {MEAL_CHIPS.map((chip) => (
+            <button
+              key={chip.value}
+              onClick={() => setMealContext(chip.value)}
+              role="radio"
+              aria-checked={mealContext === chip.value}
+              aria-label={chip.label}
+              className={[
+                "px-4 py-3 rounded-full text-sm font-bold whitespace-nowrap border transition-all min-h-[44px]",
+                mealContext === chip.value
+                  ? "bg-primary-light border-primary-border text-primary"
+                  : "bg-card border-border text-sub",
+              ].join(" ")}
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Smart recommendations from domain engine */}
       <div className="flex justify-between items-center mb-3">
         <h3 className="font-display font-extrabold text-base">Recomendados</h3>
@@ -142,6 +174,16 @@ export const InicioClient = ({ allProducts }: Props) => {
       </div>
       {recommended.length === 0 ? (
         (() => {
+          if (mealContext !== 'any') {
+            return (
+              <EmptyState
+                icon={UtensilsCrossed}
+                title="No hay productos para este momento."
+                actionLabel="Ver todos los productos"
+                actionHref="/catalogo"
+              />
+            );
+          }
           const hasBudget = budget !== null && budget > 0;
           const hasRestrictions = restrictions.length > 0;
           if (hasBudget && hasRestrictions) {
