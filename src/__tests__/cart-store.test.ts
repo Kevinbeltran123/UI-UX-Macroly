@@ -18,6 +18,7 @@ const makeItem = (id: string): CartItem => ({
   calories: 245,
   categoryId: null,
   rating: null,
+  dietaryTags: [],
   qty: 1,
 });
 

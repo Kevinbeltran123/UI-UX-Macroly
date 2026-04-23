@@ -14,4 +14,5 @@ export type Product = {
   calories: number;
   categoryId: string | null;
   rating: number | null;
+  dietaryTags: string[]; // Phase 2 (DIET-02) — maps to DB column dietary_tags text[]
 };
