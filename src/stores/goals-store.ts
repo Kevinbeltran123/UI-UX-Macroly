@@ -7,6 +7,7 @@ import { DEFAULT_GOALS, buildGoals } from "@/domain/nutrition/macro-goals";
 type GoalsState = {
   goals: MacroGoals;
   restrictions: string[]; // Phase 2 (DIET-06) — dietary restrictions loaded with goals
+  budget: number | null;  // Phase 3 (PRICE-02) — null = no budget active (D-06)
   loading: boolean;
   fetchGoals: () => Promise<void>;
 };
@@ -14,6 +15,7 @@ type GoalsState = {
 export const useGoalsStore = create<GoalsState>((set) => ({
   goals: DEFAULT_GOALS,
   restrictions: [], // Phase 2 (DIET-06) — empty until fetchGoals() loads from profiles
+  budget: null,  // Phase 3 (PRICE-02) — empty until fetchGoals() loads from profiles
   loading: false,
   fetchGoals: async () => {
     set({ loading: true });
@@ -35,7 +37,7 @@ export const useGoalsStore = create<GoalsState>((set) => ({
           .single(),
         supabase
           .from("profiles")
-          .select("dietary_restrictions")
+          .select("dietary_restrictions, max_budget")  // extended — D-06, avoids second round-trip
           .eq("id", user.id)
           .single(),
       ]);
@@ -51,6 +53,10 @@ export const useGoalsStore = create<GoalsState>((set) => ({
           profileResult.status === "fulfilled"
             ? (profileResult.value.data?.dietary_restrictions ?? [])
             : [],
+        budget:
+          profileResult.status === "fulfilled"
+            ? (profileResult.value.data?.max_budget ?? null)
+            : null,
       });
     } catch {
       // silently degrade to DEFAULT_GOALS
