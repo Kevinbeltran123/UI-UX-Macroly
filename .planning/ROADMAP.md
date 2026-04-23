@@ -32,9 +32,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Schema migration (007_meal_context.sql) + Product type extension + mapProduct() mapper update
-- [ ] 04-02-PLAN.md — recommend() engine extension (mealContext 7th param + Step 3 hard filter) + MEAL-05 tests
-- [ ] 04-03-PLAN.md — [BLOCKING] supabase db push + inicio-client MealFilterChips UI + mealContext wiring + EmptyState
+- [x] 04-01-PLAN.md — Schema migration (007_meal_context.sql) + Product type extension + mapProduct() mapper update
+- [x] 04-02-PLAN.md — recommend() engine extension (mealContext 7th param + Step 3 hard filter) + MEAL-05 tests
+- [x] 04-03-PLAN.md — [BLOCKING] supabase db push + inicio-client MealFilterChips UI + mealContext wiring + EmptyState
 
 ---
 
