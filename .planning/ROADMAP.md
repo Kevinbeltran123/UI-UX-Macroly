@@ -22,7 +22,19 @@ progress:
 Plans:
 - [x] 03-01-PLAN.md — Schema migration + goals store budget field + /perfil/presupuesto page + perfil menu item
 - [x] 03-02-PLAN.md — recommend() engine extension (budget filter + blend score + badge) + tests
-- [ ] 03-03-PLAN.md — [BLOCKING] supabase db push + inicio-client wiring + carrito session budget widget
+- [x] 03-03-PLAN.md — [BLOCKING] supabase db push + inicio-client wiring + carrito session budget widget
+
+### Phase 4: meal-context
+
+**Goal:** Add `meal_context` to the product catalog and expose a real-time meal moment filter (Todo / Desayuno / Almuerzo / Cena) on the inicio view. Tapping a chip updates recommendations in-place to show only products appropriate for that meal moment (matching `mealContext` or tagged `'any'`). No navigation change — filter lives on inicio.
+**Requirements**: MEAL-01, MEAL-02, MEAL-03, MEAL-04, MEAL-05, MEAL-06
+**Depends on:** Phase 3
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Schema migration (007_meal_context.sql) + Product type extension + mapProduct() mapper update
+- [ ] 04-02-PLAN.md — recommend() engine extension (mealContext 7th param + Step 3 hard filter) + MEAL-05 tests
+- [ ] 04-03-PLAN.md — [BLOCKING] supabase db push + inicio-client MealFilterChips UI + mealContext wiring + EmptyState
 
 ---
 
