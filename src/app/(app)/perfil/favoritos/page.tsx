@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 type Combo = {
   id: string;
   name: string;
-  items: Array<{ id: string; name: string; qty: number; protein: number; carbs: number; fat: number; price: number; imageUrl: string | null; brand: string | null; weight: string | null; calories: number; categoryId: string | null; rating: number | null }>;
+  items: Array<{ id: string; name: string; qty: number; protein: number; carbs: number; fat: number; price: number; imageUrl: string | null; brand: string | null; weight: string | null; calories: number; categoryId: string | null; rating: number | null; dietaryTags: string[] }>;
   total_protein: number;
   total_carbs: number;
   total_fat: number;

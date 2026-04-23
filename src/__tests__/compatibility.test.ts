@@ -20,6 +20,7 @@ const makeProduct = (protein: number, carbs: number, fat: number): Product => ({
   calories: protein * 4 + carbs * 4 + fat * 9,
   categoryId: null,
   rating: null,
+  dietaryTags: [],
 });
 
 const makeTotals = (protein: number, carbs: number, fat: number): CartTotals => ({
