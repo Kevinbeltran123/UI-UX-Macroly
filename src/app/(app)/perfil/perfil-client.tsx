@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { User, Clock, Save, Shield, Settings, ChevronRight, LogOut } from "lucide-react";
+import { User, Clock, Save, Shield, Settings, Wallet, ChevronRight, LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const DAY_NAMES: Record<string, string> = {
@@ -91,6 +91,7 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
           { icon: Clock, label: "Historial de pedidos", href: "/perfil/historial" },
           { icon: Save, label: "Combinaciones guardadas", href: "/perfil/favoritos" },
           { icon: Shield, label: "Condiciones de salud", href: "/perfil/condiciones" },
+          { icon: Wallet, label: "Presupuesto", href: "/perfil/presupuesto" },  // Phase 3 (D-01, PRICE-01)
           { icon: Settings, label: "Configuración", href: "#" },
         ].map((item, i) => (
           <Link
