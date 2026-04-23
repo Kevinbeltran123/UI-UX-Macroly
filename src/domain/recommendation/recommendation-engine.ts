@@ -56,7 +56,9 @@ const scoreProduct = (product: Product, totals: CartTotals, goals: MacroGoals): 
  *
  * If cart is empty, recommends balanced products (highest combined macros).
  * If cart has items, scores products by how well they fill the biggest macro gap.
+ * Pre-filters by dietary restrictions before scoring — hard exclusion for allergen safety.
  *
+ * Signature is additive: Phase 3 appends maxBudget?, Phase 4 appends mealContext?
  * Migrated from prototipo `getRecommendations(cart, goals)`.
  */
 export const recommend = (
@@ -64,11 +66,19 @@ export const recommend = (
   totals: CartTotals,
   goals: MacroGoals,
   limit = 6,
+  restrictions: string[] = [], // Phase 2 (DIET-08) — defaults [] for backward compat
 ): RecommendedProduct[] => {
+  // Pre-filter BEFORE scoring — hard exclusion for allergen safety (DIET-07)
+  // Short-circuit when no restrictions to avoid unnecessary iteration
+  const compatible =
+    restrictions.length === 0
+      ? products
+      : products.filter((p) => restrictions.every((r) => p.dietaryTags.includes(r)));
+
   const dominant = findBiggestGap(totals, goals);
   const reason = dominant.gap > 0.1 ? REASON_BY_MACRO[dominant.macro] : "Recomendado para ti";
 
-  return [...products]
+  return [...compatible]
     .map((p) => ({
       ...p,
       reason,
