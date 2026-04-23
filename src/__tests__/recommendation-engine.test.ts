@@ -116,4 +116,65 @@ describe("recommend() — period-scaled goals (PERIOD-06)", () => {
       expect(result.map((p) => p.id)).toEqual(["hp"]);
     });
   });
+
+  describe("recommend() — PRICE-03/04/05 budget mode", () => {
+    it("hard filter: removes products where price > (maxBudget - totals.price)", () => {
+      // maxBudget=100000, totals.price=15000 → remaining=85000
+      // p_cheap: price=20000 → 20000 <= 85000 → passes
+      // p_expensive: price=90000 → 90000 > 85000 → filtered out
+      const p_cheap = makeProduct("cheap", 40, 10, 5, 20000);
+      const p_expensive = makeProduct("expensive", 50, 12, 6, 90000);
+      const partialCart: CartTotals = { protein: 0, carbs: 0, fat: 0, calories: 0, price: 15000, itemCount: 1 };
+      const result = recommend([p_cheap, p_expensive], partialCart, standardGoals, 6, [], 100000);
+      expect(result.map((p) => p.id)).toContain("cheap");
+      expect(result.map((p) => p.id)).not.toContain("expensive");
+    });
+
+    it("blend score: cheaper product with similar macros ranks above pricier one", () => {
+      // Both have the same protein/carbs/fat — macroScores are equal
+      // p_cheap: price=10000 → blend = macroScore * (1 - 10000/100000) = macroScore * 0.9
+      // p_pricey: price=50000 → blend = macroScore * (1 - 50000/100000) = macroScore * 0.5
+      const p_cheap = makeProduct("cheap", 30, 10, 5, 10000);
+      const p_pricey = makeProduct("pricey", 30, 10, 5, 50000);
+      const result = recommend([p_cheap, p_pricey], emptyTotals, standardGoals, 6, [], 100000);
+      expect(result[0].id).toBe("cheap");
+    });
+
+    it("budget inactive (undefined): scores identical to non-budget call", () => {
+      const p1 = makeProduct("p1", 50, 20, 10, 5000);
+      const p2 = makeProduct("p2", 10, 5, 2, 3000);
+      const withBudget = recommend([p1, p2], emptyTotals, standardGoals, 6, [], undefined);
+      const withoutBudget = recommend([p1, p2], emptyTotals, standardGoals, 6, []);
+      expect(withBudget.map((p) => p.id)).toEqual(withoutBudget.map((p) => p.id));
+      expect(withBudget[0].score).toBe(withoutBudget[0].score);
+    });
+
+    it("top-1 badge: result[0].reason === 'Mejor relación proteína/precio' when budget active", () => {
+      const p1 = makeProduct("p1", 50, 20, 10, 10000);
+      const p2 = makeProduct("p2", 30, 10, 5, 5000);
+      const result = recommend([p1, p2], emptyTotals, standardGoals, 6, [], 100000);
+      expect(result.length).toBeGreaterThan(0);
+      expect(result[0].reason).toBe("Mejor relación proteína/precio");
+    });
+
+    it("returns empty array when all products exceed remaining budget", () => {
+      // maxBudget=50000, totals.price=40000 → remaining=10000
+      // all products cost more than 10000
+      const p1 = makeProduct("p1", 50, 20, 10, 15000);
+      const p2 = makeProduct("p2", 30, 10, 5, 20000);
+      const almostFullCart: CartTotals = { protein: 0, carbs: 0, fat: 0, calories: 0, price: 40000, itemCount: 2 };
+      const result = recommend([p1, p2], almostFullCart, standardGoals, 6, [], 50000);
+      expect(result).toHaveLength(0);
+    });
+
+    it("maxBudget=0 is treated as undefined — no budget filtering applied (T-3-02 guard)", () => {
+      const p1 = makeProduct("p1", 50, 20, 10, 5000);
+      const p2 = makeProduct("p2", 10, 5, 2, 3000);
+      const withZeroBudget = recommend([p1, p2], emptyTotals, standardGoals, 6, [], 0);
+      const withoutBudget = recommend([p1, p2], emptyTotals, standardGoals, 6, []);
+      expect(withZeroBudget.map((p) => p.id)).toEqual(withoutBudget.map((p) => p.id));
+      // No badge on top-1 when budget is 0 (treated as inactive)
+      expect(withZeroBudget[0].reason).not.toBe("Mejor relación proteína/precio");
+    });
+  });
 });
