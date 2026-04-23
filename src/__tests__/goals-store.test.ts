@@ -11,15 +11,29 @@ vi.mock("@/lib/supabase/client", () => ({
         data: { user: { id: "test-uid-123" } },
       })),
     },
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(async () => ({
-            data: { protein: 160, carbs: 300, fat: 70 },
+    from: vi.fn((table: string) => {
+      if (table === "macro_goals") {
+        return {
+          select: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              single: vi.fn(async () => ({
+                data: { protein: 160, carbs: 300, fat: 70 },
+              })),
+            })),
+          })),
+        };
+      }
+      // profiles table — returns dietary_restrictions
+      return {
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            single: vi.fn(async () => ({
+              data: { dietary_restrictions: ["vegano", "sin_gluten"] },
+            })),
           })),
         })),
-      })),
-    })),
+      };
+    }),
   })),
 }));
 
@@ -27,7 +41,7 @@ import { buildGoals, DEFAULT_GOALS } from "@/domain/nutrition/macro-goals";
 import { useGoalsStore } from "@/stores/goals-store";
 
 beforeEach(() => {
-  useGoalsStore.setState({ goals: DEFAULT_GOALS, loading: false });
+  useGoalsStore.setState({ goals: DEFAULT_GOALS, restrictions: [], loading: false });
 });
 
 describe("buildGoals — Atwater formula (FIX-02 prerequisite)", () => {
@@ -79,5 +93,23 @@ describe("useGoalsStore — FIX-02", () => {
     expect(goals.fat).toBe(70);
     // Calories must be derived via Atwater (160*4+300*4+70*9 = 2470)
     expect(goals.calories).toBe(2470);
+  });
+
+  it("fetchGoals populates restrictions from profiles query (DIET-06)", async () => {
+    await useGoalsStore.getState().fetchGoals();
+    const { restrictions } = useGoalsStore.getState();
+    expect(restrictions).toEqual(["vegano", "sin_gluten"]);
+  });
+
+  it("fetchGoals populates both goals and restrictions in one call (DIET-06)", async () => {
+    await useGoalsStore.getState().fetchGoals();
+    const { goals, restrictions } = useGoalsStore.getState();
+    expect(goals.protein).toBe(160);
+    expect(restrictions).toEqual(["vegano", "sin_gluten"]);
+  });
+
+  it("initial restrictions state is empty array (DIET-06)", () => {
+    const { restrictions } = useGoalsStore.getState();
+    expect(restrictions).toEqual([]);
   });
 });
