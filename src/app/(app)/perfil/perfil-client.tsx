@@ -90,7 +90,7 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
         {[
           { icon: Clock, label: "Historial de pedidos", href: "/perfil/historial" },
           { icon: Save, label: "Combinaciones guardadas", href: "/perfil/favoritos" },
-          { icon: Shield, label: "Condiciones de salud", href: "#" },
+          { icon: Shield, label: "Condiciones de salud", href: "/perfil/condiciones" },
           { icon: Settings, label: "Configuración", href: "#" },
         ].map((item, i) => (
           <Link
