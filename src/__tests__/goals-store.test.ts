@@ -23,12 +23,12 @@ vi.mock("@/lib/supabase/client", () => ({
           })),
         };
       }
-      // profiles table — returns dietary_restrictions
+      // profiles table — returns dietary_restrictions AND max_budget (Phase 3 — PRICE-02)
       return {
         select: vi.fn(() => ({
           eq: vi.fn(() => ({
             single: vi.fn(async () => ({
-              data: { dietary_restrictions: ["vegano", "sin_gluten"] },
+              data: { dietary_restrictions: ["vegano", "sin_gluten"], max_budget: 80000 },
             })),
           })),
         })),
@@ -41,7 +41,7 @@ import { buildGoals, DEFAULT_GOALS } from "@/domain/nutrition/macro-goals";
 import { useGoalsStore } from "@/stores/goals-store";
 
 beforeEach(() => {
-  useGoalsStore.setState({ goals: DEFAULT_GOALS, restrictions: [], loading: false });
+  useGoalsStore.setState({ goals: DEFAULT_GOALS, restrictions: [], budget: null, loading: false });
 });
 
 describe("buildGoals — Atwater formula (FIX-02 prerequisite)", () => {
@@ -111,5 +111,16 @@ describe("useGoalsStore — FIX-02", () => {
   it("initial restrictions state is empty array (DIET-06)", () => {
     const { restrictions } = useGoalsStore.getState();
     expect(restrictions).toEqual([]);
+  });
+
+  it("fetchGoals populates budget from profiles query (PRICE-02)", async () => {
+    await useGoalsStore.getState().fetchGoals();
+    const { budget } = useGoalsStore.getState();
+    expect(budget).toBe(80000); // matches mock value
+  });
+
+  it("initial budget state is null (PRICE-02)", () => {
+    const { budget } = useGoalsStore.getState();
+    expect(budget).toBeNull();
   });
 });
