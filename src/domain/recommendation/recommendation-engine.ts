@@ -68,6 +68,7 @@ export const recommend = (
   limit = 6,
   restrictions: string[] = [], // Phase 2 (DIET-08) — defaults [] for backward compat
   maxBudget?: number,           // Phase 3 (PRICE-03) — undefined = budget mode off (D-09)
+  mealContext?: 'any' | 'breakfast' | 'lunch' | 'dinner', // Phase 4 (MEAL-05) — undefined = all contexts shown (D-05)
 ): RecommendedProduct[] => {
   // Step 1: Dietary restrictions pre-filter — hard exclusion for allergen safety (DIET-07, unchanged)
   const compatible =
@@ -82,14 +83,21 @@ export const recommend = (
     ? compatible.filter((p) => p.price <= (maxBudget - totals.price))
     : compatible;
 
+  // Step 3: Meal context hard filter — runs after budget, before scoring (D-07)
+  // Guard mirrors restrictions guard: undefined or 'any' = no filter (pass-through)
+  const mealFiltered =
+    mealContext === undefined || mealContext === 'any'
+      ? budgetFiltered
+      : budgetFiltered.filter((p) => p.mealContext === mealContext || p.mealContext === 'any');
+
   const dominant = findBiggestGap(totals, goals);
   const reason = dominant.gap > 0.1 ? REASON_BY_MACRO[dominant.macro] : "Recomendado para ti";
 
-  // Step 3: Score with optional price-blend (PRICE-04, D-08 step 2)
+  // Step 4: Score with optional price-blend (PRICE-04, D-08 step 2)
   // Blend formula: macroScore * (1 - price/remaining) — cheaper products with similar macros rank higher
   // Denominator is remaining budget (not full maxBudget) so scores reflect affordability within what's left
   const remaining = budgetActive ? maxBudget! - totals.price : 0;
-  const scored = [...budgetFiltered].map((p) => {
+  const scored = [...mealFiltered].map((p) => {
     const macroScore = scoreProduct(p, totals, goals);
     const score = budgetActive
       ? macroScore * (1 - p.price / remaining)  // D-08: remaining > 0 guaranteed by hard filter above
