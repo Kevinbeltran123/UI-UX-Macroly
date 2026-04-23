@@ -67,23 +67,40 @@ export const recommend = (
   goals: MacroGoals,
   limit = 6,
   restrictions: string[] = [], // Phase 2 (DIET-08) — defaults [] for backward compat
+  maxBudget?: number,           // Phase 3 (PRICE-03) — undefined = budget mode off (D-09)
 ): RecommendedProduct[] => {
-  // Pre-filter BEFORE scoring — hard exclusion for allergen safety (DIET-07)
-  // Short-circuit when no restrictions to avoid unnecessary iteration
+  // Step 1: Dietary restrictions pre-filter — hard exclusion for allergen safety (DIET-07, unchanged)
   const compatible =
     restrictions.length === 0
       ? products
       : products.filter((p) => restrictions.every((r) => p.dietaryTags.includes(r)));
 
+  // Step 2: Budget hard filter — remove products that don't fit remaining budget (PRICE-03, D-08 step 1)
+  // Guard: maxBudget <= 0 is treated as undefined (T-3-02: avoids division by zero in blend formula)
+  const budgetActive = maxBudget !== undefined && maxBudget > 0;
+  const budgetFiltered = budgetActive
+    ? compatible.filter((p) => p.price <= (maxBudget - totals.price))
+    : compatible;
+
   const dominant = findBiggestGap(totals, goals);
   const reason = dominant.gap > 0.1 ? REASON_BY_MACRO[dominant.macro] : "Recomendado para ti";
 
-  return [...compatible]
-    .map((p) => ({
-      ...p,
-      reason,
-      score: scoreProduct(p, totals, goals),
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
+  // Step 3: Score with optional price-blend (PRICE-04, D-08 step 2)
+  // Blend formula: macroScore * (1 - price/maxBudget) — cheaper products with similar macros rank higher
+  const scored = [...budgetFiltered].map((p) => {
+    const macroScore = scoreProduct(p, totals, goals);
+    const score = budgetActive
+      ? macroScore * (1 - p.price / maxBudget!)  // D-08: maxBudget! safe — budgetActive guards it
+      : macroScore;
+    return { ...p, reason, score };
+  });
+
+  const sorted = scored.sort((a, b) => b.score - a.score).slice(0, limit);
+
+  // Step 4: Badge top-1 AFTER slice — mutation is the last step (D-10, D-11; anti-Pitfall 4)
+  if (budgetActive && sorted.length > 0) {
+    sorted[0] = { ...sorted[0], reason: "Mejor relación proteína/precio" };
+  }
+
+  return sorted;
 };
