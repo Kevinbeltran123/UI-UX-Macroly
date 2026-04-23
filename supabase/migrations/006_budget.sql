@@ -9,4 +9,17 @@ ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS max_budget numeric;
 -- No DEFAULT — NULL means "no budget set" (D-05)
 -- No NOT NULL constraint — NULL is valid (budget optimization disabled)
--- No CHECK constraint — UI enforces >= 0; server saves null for <= 0 (T-3-03)
+
+-- WR-003: Defense-in-depth non-negativity constraint.
+-- IF NOT EXISTS not available for constraints pre-PG 9.5; use DO block for idempotency.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.check_constraints
+    WHERE constraint_schema = 'public'
+      AND constraint_name   = 'profiles_max_budget_positive'
+  ) THEN
+    ALTER TABLE public.profiles
+      ADD CONSTRAINT profiles_max_budget_positive CHECK (max_budget > 0);
+  END IF;
+END$$;
