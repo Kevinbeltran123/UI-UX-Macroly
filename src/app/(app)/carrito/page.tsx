@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Minus, Plus, ShoppingCart, Heart, Check, RotateCw, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Minus, Plus, ShoppingCart, Heart, Check, RotateCw, X, Wallet } from "lucide-react";
 import Link from "next/link";
 import { useToastStore } from "@/stores/toast-store";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/client";
 import { DAY_CODES, toggleDay, daysText, type DayCode } from "@/domain/orders/recurring-order";
 import { nextComboName } from "@/domain/favorites/favorite-combo";
 import { useGoalsStore } from "@/stores/goals-store";
+import { useSessionBudgetStore } from "@/stores/session-budget-store";
 import { PurchasePeriodSelector } from "@/components/period/purchase-period-selector";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { FavoriteCombo } from "@/domain/favorites/favorite-combo";
@@ -24,6 +25,23 @@ export default function CarritoPage() {
   const [showCheckout, setShowCheckout] = useState(false);
   const [recurDays, setRecurDays] = useState<DayCode[]>(["L"]);
   const [saving, setSaving] = useState(false);
+  // Phase 3 (D-04, D-14): session-only budget — initialized once from store, never re-synced
+  // Use getState() (NOT a selector) to read once on mount without subscribing to store changes (Pitfall 5)
+  const [sessionBudget, setSessionBudget] = useState<number | null>(
+    () => useGoalsStore.getState().budget
+  );
+
+  // Sync session budget into the cross-component store so inicio can read it (D-04)
+  useEffect(() => {
+    useSessionBudgetStore.setState({ budget: sessionBudget });
+  }, [sessionBudget]);
+
+  // Clear session budget from the store when user leaves the carrito page (D-04)
+  useEffect(() => {
+    return () => {
+      useSessionBudgetStore.setState({ budget: null });
+    };
+  }, []);
 
   const handlePay = async () => {
     if (items.length === 0) return;
@@ -117,7 +135,58 @@ export default function CarritoPage() {
       {/* D-02: Period selector placed below macro progress section */}
       <PurchasePeriodSelector />
 
-      <div className="mb-4" />
+      {/* Phase 3 (PRICE-01): Session budget widget — D-03/D-04/D-14 */}
+      <div className="bg-card rounded-[14px] p-4 border border-border-l mb-4">
+        <div className="flex items-center gap-3">
+          <Wallet size={16} className="text-sub flex-shrink-0" />
+          <div className="flex-1">
+            <span className="text-xs font-bold text-sub uppercase tracking-wider block mb-1.5">
+              Presupuesto de sesión
+            </span>
+            <div className="flex items-center gap-1">
+              <span className="text-sm text-muted">$</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                min="0"
+                step="1000"
+                value={sessionBudget ?? ""}
+                onChange={(e) => setSessionBudget(e.target.value ? Number(e.target.value) : null)}
+                placeholder="Sin límite"
+                aria-label="Presupuesto de sesión"
+                className="flex-1 text-sm font-display font-bold text-text bg-transparent focus:outline-none border-b border-border focus:border-primary"
+              />
+            </div>
+          </div>
+        </div>
+        {/* Remaining budget indicator — shown only when sessionBudget > 0 */}
+        {sessionBudget !== null && sessionBudget > 0 && (() => {
+          const remaining = Math.max(0, sessionBudget - totals.price);
+          const exhausted = remaining === 0;
+          return (
+            <div
+              role="status"
+              className={[
+                "mt-3 rounded-[10px] px-3 py-2 border flex items-center justify-between",
+                exhausted
+                  ? "bg-error/10 border-error/20"
+                  : "bg-primary-light border-primary-border",
+              ].join(" ")}
+            >
+              <span
+                className={`text-[11px] font-semibold ${exhausted ? "text-error" : "text-primary"}`}
+              >
+                {exhausted
+                  ? "Presupuesto agotado"
+                  : `$${remaining.toLocaleString("es-CO")} disponibles`}
+              </span>
+              <span className={`text-[11px] ${exhausted ? "text-error" : "text-sub"}`}>
+                de ${sessionBudget.toLocaleString("es-CO")} total
+              </span>
+            </div>
+          );
+        })()}
+      </div>
 
       {/* Empty state */}
       {items.length === 0 && !showCheckout && (
