@@ -43,6 +43,14 @@ export default function CarritoPage() {
     };
   }, []);
 
+  // WR-002: If goals weren't loaded on mount, pick up budget once fetchGoals resolves.
+  // prev ?? ... preserves any value the user typed before goals finished loading.
+  useEffect(() => {
+    if (!goalsLoading) {
+      setSessionBudget((prev) => prev ?? useGoalsStore.getState().budget);
+    }
+  }, [goalsLoading]);
+
   const handlePay = async () => {
     if (items.length === 0) return;
     setSaving(true);
