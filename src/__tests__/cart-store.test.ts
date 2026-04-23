@@ -24,10 +24,12 @@ const makeItem = (id: string): CartItem => ({
 });
 
 // Reset store between tests using setState back to initial values
+const ZERO_TOTALS = { protein: 0, carbs: 0, fat: 0, calories: 0, price: 0, itemCount: 0 };
+
 beforeEach(() => {
   useCartStore.setState({
     items: [],
-    totals: useCartStore.getState().totals,
+    totals: ZERO_TOTALS,
     purchaseDays: 1,
     lastUpdated: new Date().toDateString(),
   });
