@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Zap, Calendar, BookOpen } from "lucide-react";
+import { Bell, Zap, Calendar, BookOpen, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { ProductCard } from "@/components/product/product-card";
 import { useCart } from "@/hooks/use-cart";
@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useGoalsStore } from "@/stores/goals-store";
 import { PurchasePeriodSelector } from "@/components/period/purchase-period-selector";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { Product } from "@/domain/catalog/product";
 
 const BADGE_BY_CATEGORY: Record<string, string> = {
@@ -28,7 +29,7 @@ type Props = {
 };
 
 export const InicioClient = ({ allProducts }: Props) => {
-  const { goals: storeGoals, loading: goalsLoading } = useGoalsStore();
+  const { goals: storeGoals, loading: goalsLoading, restrictions } = useGoalsStore();
   const { totals, goals, purchaseDays } = useCart(storeGoals);
   // goals is now period-scaled — pass unchanged to recommend() and checkCompatibility()
   const addToCart = useAddToCart();
@@ -46,7 +47,7 @@ export const InicioClient = ({ allProducts }: Props) => {
     loadUser();
   }, []);
 
-  const recommended = recommend(allProducts, totals, goals, 6);
+  const recommended = recommend(allProducts, totals, goals, 6, restrictions);
   const calPct = goals.calories > 0 ? Math.round((totals.calories / goals.calories) * 100) : 0;
 
   const macros = [
@@ -132,18 +133,28 @@ export const InicioClient = ({ allProducts }: Props) => {
           Ver todo
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-2.5">
-        {recommended.map((p) => (
-          <Link key={p.id} href={`/catalogo/${p.id}`} className="no-underline">
-            <ProductCard
-              product={p}
-              badge={BADGE_BY_CATEGORY[p.categoryId ?? ""] ?? p.reason}
-              compatibility={checkCompatibility(p, totals, goals)}
-              onAdd={() => handleAdd(p)}
-            />
-          </Link>
-        ))}
-      </div>
+      {recommended.length === 0 ? (
+        <EmptyState
+          icon={AlertCircle}
+          title="Sin recomendaciones disponibles"
+          description="No encontramos productos compatibles con tus restricciones."
+          actionLabel="Revisar condiciones de salud →"
+          actionHref="/perfil/condiciones"
+        />
+      ) : (
+        <div className="grid grid-cols-2 gap-2.5">
+          {recommended.map((p) => (
+            <Link key={p.id} href={`/catalogo/${p.id}`} className="no-underline">
+              <ProductCard
+                product={p}
+                badge={BADGE_BY_CATEGORY[p.categoryId ?? ""] ?? p.reason}
+                compatibility={checkCompatibility(p, totals, goals)}
+                onAdd={() => handleAdd(p)}
+              />
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
