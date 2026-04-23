@@ -86,11 +86,13 @@ export const recommend = (
   const reason = dominant.gap > 0.1 ? REASON_BY_MACRO[dominant.macro] : "Recomendado para ti";
 
   // Step 3: Score with optional price-blend (PRICE-04, D-08 step 2)
-  // Blend formula: macroScore * (1 - price/maxBudget) — cheaper products with similar macros rank higher
+  // Blend formula: macroScore * (1 - price/remaining) — cheaper products with similar macros rank higher
+  // Denominator is remaining budget (not full maxBudget) so scores reflect affordability within what's left
+  const remaining = budgetActive ? maxBudget! - totals.price : 0;
   const scored = [...budgetFiltered].map((p) => {
     const macroScore = scoreProduct(p, totals, goals);
     const score = budgetActive
-      ? macroScore * (1 - p.price / maxBudget!)  // D-08: maxBudget! safe — budgetActive guards it
+      ? macroScore * (1 - p.price / remaining)  // D-08: remaining > 0 guaranteed by hard filter above
       : macroScore;
     return { ...p, reason, score };
   });
