@@ -57,13 +57,16 @@ describe("recommend() — period-scaled goals (PERIOD-06)", () => {
     expect(result[1].id).toBe("p3");
   });
 
-  it("with scaled goals (protein=300) scores differently than unscaled (protein=150)", () => {
+  it("with scaled goals (protein=300), partial cart produces different scores than unscaled", () => {
     const high = makeProduct("high", 80, 5, 2);
     const reg = makeProduct("reg", 20, 50, 20);
+    // Use a partially-filled cart so gap fractions differ between scaled and unscaled goals
+    // Standard protein gap: (150-60)/150 = 0.6  |  Scaled protein gap: (300-60)/300 = 0.8
+    const partialCart: CartTotals = { protein: 60, carbs: 0, fat: 0, calories: 240, price: 0, itemCount: 1 };
     const scaledGoals: MacroGoals = { protein: 300, carbs: 500, fat: 130, calories: 4370 };
-    const resultScaled = recommend([high, reg], emptyTotals, scaledGoals, 2);
-    const resultUnscaled = recommend([high, reg], emptyTotals, standardGoals, 2);
-    // With doubled goals, the protein gap is the same proportionally but scores still differ
+    const resultScaled = recommend([high, reg], partialCart, scaledGoals, 2);
+    const resultUnscaled = recommend([high, reg], partialCart, standardGoals, 2);
+    // Gap fractions differ when cart is partially filled → scores genuinely differ
     expect(resultScaled[0].score).not.toBe(resultUnscaled[0].score);
   });
 
