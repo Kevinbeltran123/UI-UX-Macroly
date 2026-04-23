@@ -73,7 +73,7 @@ describe("useCartStore", () => {
       useCartStore.setState(storedState);
       // Invoke the inner callback via Zustand v5 persist API (replaces broken _persist access)
       const { onRehydrateStorage } = useCartStore.persist.getOptions();
-      const callback = onRehydrateStorage?.();
+      const callback = onRehydrateStorage?.(useCartStore.getState());
       callback?.(useCartStore.getState(), undefined);
       expect(useCartStore.getState().items).toEqual([]);
       expect(useCartStore.getState().purchaseDays).toBe(5);

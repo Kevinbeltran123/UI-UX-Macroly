@@ -67,6 +67,9 @@ export default function CondicionesPage() {
     if (error) {
       setLocalRestrictions(localRestrictions); // revert on failure
       useToastStore.getState().add("No se pudo guardar. Intenta de nuevo.", "error");
+    } else {
+      // Sync into store so /inicio re-filters without a full page reload
+      useGoalsStore.setState({ restrictions: safeRestrictions });
     }
   };
 
