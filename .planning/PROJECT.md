@@ -66,7 +66,7 @@ Un usuario debe poder armar un carrito para N días, ver exactamente cuánto cub
 ### Active
 
 <!-- Correcciones + features de esta expansión -->
-- [ ] La base de datos tiene ≥30 productos nuevos con tags completos (restricciones + meal_context)
+- ✓ La base de datos tiene ≥30 productos nuevos con tags completos (restricciones + meal_context) — Validated in Phase 5: DB Expansion (50 products total, 38 new, filters return real results)
 - [ ] Las órdenes recurrentes muestran feedback de cobertura de macros por día de entrega
 
 ### Out of Scope
