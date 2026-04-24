@@ -36,6 +36,17 @@ Plans:
 - [x] 04-02-PLAN.md — recommend() engine extension (mealContext 7th param + Step 3 hard filter) + MEAL-05 tests
 - [x] 04-03-PLAN.md — [BLOCKING] supabase db push + inicio-client MealFilterChips UI + mealContext wiring + EmptyState
 
+### Phase 5: db-expansion
+
+**Goal:** Expand the Supabase products catalog with ≥30 new products fully tagged with `dietary_tags` and `meal_context`. Update existing products with correct tags. This makes dietary restrictions and meal context filters actually useful for users.
+**Requirements**: DB-01, DB-02, DB-03
+**Depends on:** Phase 4
+**Plans:** 2 plans
+
+Plans:
+- [x] 05-01-PLAN.md — SQL seed: ≥30 new products with dietary_tags + meal_context + UPDATE existing products
+- [x] 05-02-PLAN.md — [BLOCKING] supabase db push + smoke test queries validating tag coverage
+
 ---
 
 # Project State
