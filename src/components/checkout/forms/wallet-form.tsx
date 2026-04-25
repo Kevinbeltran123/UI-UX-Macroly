@@ -212,7 +212,8 @@ export function WalletForm({ total, method, onSubmit }: Props) {
               onPaste={handleOtpPaste}
               aria-label={`Dígito ${i + 1}`}
               className={cn(
-                "w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-extrabold text-xl rounded-xl border-2 bg-card text-text outline-none transition-all tabular-nums",
+                // Width steps: 40px on iPhone SE (<360px), 44px on regular phones (≥360px), 48px on tablet
+                "w-10 min-[360px]:w-11 h-12 min-[360px]:h-13 sm:w-12 sm:h-14 text-center font-mono font-extrabold text-xl rounded-xl border-2 bg-card text-text outline-none transition-all tabular-nums",
                 digit ? "border-current scale-100" : "border-border",
                 digit && "animate-[otpFill_0.28s_cubic-bezier(0.34,1.56,0.64,1)]"
               )}
