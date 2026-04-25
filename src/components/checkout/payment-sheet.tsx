@@ -193,7 +193,7 @@ export function PaymentSheet({ open, onClose, subtotal, itemCount, onSuccess }: 
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="fixed inset-x-0 bottom-0 z-100 bg-bg rounded-t-3xl max-h-[92vh] overflow-y-auto animate-[sheetSlideUp_300ms_cubic-bezier(0,0,0.2,1)_both] motion-reduce:animate-none"
+        className="fixed inset-x-0 bottom-0 z-100 bg-bg rounded-t-3xl max-h-[92vh] overflow-y-auto overflow-x-hidden animate-[sheetSlideUp_300ms_cubic-bezier(0,0,0.2,1)_both] motion-reduce:animate-none"
       >
         <div className="sticky top-0 z-10 bg-bg/95 backdrop-blur-md border-b border-border-l">
           <div className="w-9 h-1 bg-border rounded-full mx-auto mt-2" aria-hidden="true" />
@@ -212,7 +212,7 @@ export function PaymentSheet({ open, onClose, subtotal, itemCount, onSuccess }: 
             )}
             <h2
               id={titleId}
-              className="font-display font-extrabold text-[12px] uppercase tracking-[0.2em] text-text whitespace-nowrap"
+              className="font-display font-extrabold text-[12px] uppercase tracking-[0.12em] text-text whitespace-nowrap truncate min-w-0 flex-1 text-center"
             >
               {stepTitle(state.step)}
             </h2>
