@@ -1,41 +1,35 @@
 "use client";
 
 import { useToastStore } from "@/stores/toast-store";
-import { X, Check, AlertTriangle, AlertCircle } from "lucide-react";
+import { AlertTriangle, AlertCircle } from "lucide-react";
 
 const STYLES = {
-  success: { bg: "bg-[#DCFCE7]", border: "border-success", text: "text-[#065F46]", Icon: Check, iconColor: "text-success", role: "status" as const, live: "polite" as const },
-  warning: { bg: "bg-[#FEF3C7]", border: "border-warning", text: "text-[#92400E]", Icon: AlertTriangle, iconColor: "text-warning", role: "status" as const, live: "polite" as const },
-  error: { bg: "bg-[#FEE2E2]", border: "border-error", text: "text-[#991B1B]", Icon: AlertCircle, iconColor: "text-error", role: "alert" as const, live: "assertive" as const },
+  success: { bg: "bg-[#1B3D2A]", text: "text-white", Icon: null, role: "status" as const, live: "polite" as const },
+  warning: { bg: "bg-[#92400E]", text: "text-white", Icon: AlertTriangle, role: "status" as const, live: "polite" as const },
+  error:   { bg: "bg-error",     text: "text-white", Icon: AlertCircle,  role: "alert"  as const, live: "assertive" as const },
 } as const;
 
 export const ToastProvider = () => {
-  const { toasts, remove } = useToastStore();
+  const { toasts } = useToastStore();
 
   return (
     <div
-      className="fixed top-4 left-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none"
+      className="fixed bottom-20 inset-x-0 z-200 flex flex-col items-center gap-2 pointer-events-none"
       aria-label="Notificaciones"
     >
       {toasts.map((toast) => {
         const s = STYLES[toast.type];
+        const Icon = s.Icon;
         return (
           <div
             key={toast.id}
             role={s.role}
             aria-live={s.live}
             aria-atomic="true"
-            className={`${s.bg} border ${s.border} rounded-xl px-4 py-3 flex items-center gap-2.5 shadow-lg pointer-events-auto animate-[slideDown_0.3s_ease] motion-reduce:animate-none`}
+            className={`${s.bg} ${s.text} rounded-full px-4 py-2 flex items-center gap-2 shadow-lg pointer-events-none animate-[staggerFadeUp_0.25s_ease_both] max-w-70`}
           >
-            <s.Icon size={16} className={s.iconColor} aria-hidden="true" />
-            <span className={`${s.text} text-sm font-semibold flex-1`}>{toast.message}</span>
-            <button
-              onClick={() => remove(toast.id)}
-              className={`${s.text} opacity-70 hover:opacity-100 focus-visible:ring-2 focus-visible:ring-current rounded`}
-              aria-label="Cerrar notificación"
-            >
-              <X size={14} aria-hidden="true" />
-            </button>
+            {Icon && <Icon size={13} aria-hidden="true" className="shrink-0" />}
+            <span className="text-xs font-semibold">{toast.message}</span>
           </div>
         );
       })}

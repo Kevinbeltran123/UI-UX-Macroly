@@ -2,8 +2,10 @@ import { createClient } from "@/lib/supabase/server";
 import { mapArticle, mapProduct } from "@/lib/supabase/mappers";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Plus } from "lucide-react";
 import { MacroChip } from "@/components/nutrition/macro-chip";
+import { MarkArticleRead } from "../mark-article-read";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -39,6 +41,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <div className="px-5 pb-6">
+      <MarkArticleRead slug={article.slug} />
       <Link
         href="/educacion"
         className="flex items-center gap-1.5 text-sm text-primary font-semibold py-3.5 no-underline"
@@ -72,7 +75,18 @@ export default async function ArticleDetailPage({ params }: Props) {
             {relatedProducts.slice(0, 2).map((p) => (
               <Link key={p.id} href={`/catalogo/${p.id}`} className="no-underline">
                 <div className="bg-card rounded-xl p-2.5 border border-border-l">
-                  <div className="h-[60px] rounded-lg bg-gradient-to-br from-primary-light to-primary-border mb-1.5" />
+                  <div className="relative h-15 rounded-lg overflow-hidden bg-linear-to-br from-primary-light to-primary-border mb-1.5">
+                    {p.imageUrl && (
+                      <Image
+                        src={p.imageUrl}
+                        alt={p.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 50vw, 200px"
+                        unoptimized
+                      />
+                    )}
+                  </div>
                   <p className="font-display font-bold text-[11px] text-text mb-0.5">{p.name}</p>
                   <div className="mb-1">
                     <MacroChip

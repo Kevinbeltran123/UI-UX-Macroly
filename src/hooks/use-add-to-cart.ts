@@ -1,34 +1,31 @@
 "use client";
 
 import { useCart } from "./use-cart";
+import { useGoalsStore } from "@/stores/goals-store";
 import { useToastStore } from "@/stores/toast-store";
 import type { Product } from "@/domain/catalog/product";
 
-/**
- * Centralized add-to-cart with consistent macro warnings.
- */
 export const useAddToCart = () => {
-  const { add, totals, goals } = useCart();
+  const { goals: storeGoals } = useGoalsStore();
+  const { add, totals, goals } = useCart(storeGoals);
   const toast = useToastStore((s) => s.add);
 
   return (product: Product) => {
+    // Capture which macros were already over before this add
+    const alreadyOverProtein = totals.protein > goals.protein;
+    const alreadyOverCarbs   = totals.carbs   > goals.carbs;
+    const alreadyOverFat     = totals.fat     > goals.fat;
+
     add(product);
 
-    const newFat = totals.fat + product.fat;
-    const newProtein = totals.protein + product.protein;
-    const newCarbs = totals.carbs + product.carbs;
-    const newCount = totals.itemCount + 1;
-    const newPrice = totals.price + product.price;
-    const cartCtx = `Carrito: ${newCount} producto${newCount === 1 ? "" : "s"}, ${newPrice.toLocaleString()} pesos.`;
+    // Only alert for macros that THIS add newly pushes over the goal
+    const newlyExceeded: string[] = [];
+    if (!alreadyOverProtein && totals.protein + product.protein > goals.protein) newlyExceeded.push("proteína");
+    if (!alreadyOverCarbs   && totals.carbs   + product.carbs   > goals.carbs)   newlyExceeded.push("carbos");
+    if (!alreadyOverFat     && totals.fat     + product.fat     > goals.fat)     newlyExceeded.push("grasas");
 
-    if (newFat > goals.fat) {
-      toast(`${product.name} agregado. Grasas superadas (${newFat}g de ${goals.fat}g). ${cartCtx}`, "warning");
-    } else if (newProtein > goals.protein) {
-      toast(`${product.name} agregado. Proteína superada (${newProtein}g de ${goals.protein}g). ${cartCtx}`, "warning");
-    } else if (newCarbs > goals.carbs) {
-      toast(`${product.name} agregado. Carbos superados (${newCarbs}g de ${goals.carbs}g). ${cartCtx}`, "warning");
-    } else {
-      toast(`${product.name} agregado al carrito. ${cartCtx}`, "success");
+    if (newlyExceeded.length > 0) {
+      toast(`Meta de ${newlyExceeded.join(" y ")} superada`, "error");
     }
   };
 };

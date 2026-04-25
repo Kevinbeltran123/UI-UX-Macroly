@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Zap, Calendar, BookOpen, AlertCircle, Wallet, UtensilsCrossed } from "lucide-react";
+import { Bell, AlertCircle, Wallet, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
 import { ProductCard } from "@/components/product/product-card";
 import { useCart } from "@/hooks/use-cart";
@@ -10,15 +10,13 @@ import { recommend } from "@/domain/recommendation/recommendation-engine";
 import { checkCompatibility } from "@/domain/catalog/compatibility";
 import { createClient } from "@/lib/supabase/client";
 import { useGoalsStore } from "@/stores/goals-store";
-import { useSessionBudgetStore } from "@/stores/session-budget-store";
-import { PurchasePeriodSelector } from "@/components/period/purchase-period-selector";
-import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
+import { cn } from "@/lib/cn";
 import type { Product } from "@/domain/catalog/product";
 
 const BADGE_BY_CATEGORY: Record<string, string> = {
   proteina: "Alto en proteína",
-  carbohidrato: "Buena fuente de energia",
+  carbohidrato: "Buena fuente de energía",
   grasa: "Grasas saludables",
   lacteo: "Rico en calcio",
   fruta: "Natural y fresco",
@@ -26,10 +24,10 @@ const BADGE_BY_CATEGORY: Record<string, string> = {
 };
 
 const MEAL_CHIPS = [
-  { value: 'any',       label: 'Todo' },
-  { value: 'breakfast', label: 'Desayuno' },
-  { value: 'lunch',     label: 'Almuerzo' },
-  { value: 'dinner',    label: 'Cena' },
+  { value: "any",       label: "Todo" },
+  { value: "breakfast", label: "Desayuno" },
+  { value: "lunch",     label: "Almuerzo" },
+  { value: "dinner",    label: "Cena" },
 ] as const;
 
 type Props = {
@@ -37,15 +35,11 @@ type Props = {
 };
 
 export const InicioClient = ({ allProducts }: Props) => {
-  const { goals: storeGoals, loading: goalsLoading, restrictions, budget: profileBudget } = useGoalsStore();
-  const { budget: sessionBudget } = useSessionBudgetStore();
-  // Session override takes priority; falls back to profile budget (D-04)
-  const budget = sessionBudget ?? profileBudget;
-  const { totals, goals, purchaseDays } = useCart(storeGoals);
-  // goals is now period-scaled — pass unchanged to recommend() and checkCompatibility()
+  const { goals: storeGoals, restrictions, budget } = useGoalsStore();
+  const { totals, goals } = useCart(storeGoals);
   const addToCart = useAddToCart();
   const [firstName, setFirstName] = useState("Usuario");
-  const [mealContext, setMealContext] = useState<'any' | 'breakfast' | 'lunch' | 'dinner'>('any');
+  const [mealContext, setMealContext] = useState<"any" | "breakfast" | "lunch" | "dinner">("any");
 
   useEffect(() => {
     const loadUser = async () => {
@@ -61,123 +55,92 @@ export const InicioClient = ({ allProducts }: Props) => {
 
   const recommended = recommend(
     allProducts, totals, goals, 6, restrictions,
-    budget && budget > 0 ? budget : undefined, // T-3-02: 0 and null → undefined (budget mode off)
-    mealContext  // Phase 4 (MEAL-06) — 'any' = no filter; engine handles guard internally
+    budget && budget > 0 ? budget : undefined,
+    mealContext
   );
+
   const calPct = goals.calories > 0 ? Math.round((totals.calories / goals.calories) * 100) : 0;
 
-  const safePct = (current: number, goal: number) =>
-    goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
+  const calStatus =
+    calPct === 0
+      ? "Agrega productos para cubrir tus metas de hoy"
+      : calPct < 50
+      ? `Llevas el ${calPct}% de tus calorías — sigue sumando`
+      : calPct < 90
+      ? `¡Vas bien! ${calPct}% de tu meta calórica cubierta`
+      : `${calPct}% de tus calorías — casi listo`;
 
-  const macros = [
-    { label: "Proteína", value: `${totals.protein}g`, color: "#43A047", pct: safePct(totals.protein, goals.protein) },
-    { label: "Carbos", value: `${totals.carbs}g`, color: "#FB8C00", pct: safePct(totals.carbs, goals.carbs) },
-    { label: "Grasas", value: `${totals.fat}g`, color: "#1E88E5", pct: safePct(totals.fat, goals.fat) },
-  ];
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Buenos días" : hour < 18 ? "Buenas tardes" : "Buenas noches";
 
   const handleAdd = (p: Product) => addToCart(p);
 
   return (
     <div className="px-5 pt-4 pb-4 animate-[fadeUp_0.3s_ease]">
       {/* Top bar */}
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex justify-between items-center mb-2">
         <div>
-          <p className="text-xs text-sub">Buenos días</p>
-          <h1 className="font-display font-black text-xl text-text mt-0.5">
-            Hola, {firstName}
+          <h1 className="font-display font-extrabold text-xl text-text">
+            {greeting}, {firstName}
           </h1>
         </div>
         <button
-          className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center"
+          className="w-10 h-10 rounded-xl bg-card border border-border-l flex items-center justify-center shadow-card"
           aria-label="Notificaciones"
         >
-          <Bell size={18} className="text-text" />
+          <Bell size={17} className="text-sub" />
         </button>
       </div>
 
-      {/* Macro progress — real data from cart store */}
-      {goalsLoading ? (
-        <Skeleton className="h-[88px] w-full rounded-xl mb-5" />
-      ) : (
-        <div className="bg-gradient-to-br from-primary-dark to-primary rounded-xl p-5 text-white mb-3 relative overflow-hidden">
-          <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-white/5" />
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-[13px] font-semibold opacity-90">Macros del carrito</span>
-            <span className="text-[11px] bg-white/15 px-2.5 py-1 rounded-lg font-semibold">{calPct}%</span>
-          </div>
-          <div className="flex gap-3">
-            {macros.map((m) => (
-              <div key={m.label} className="flex-1">
-                <div className="flex justify-between mb-1">
-                  <span className="text-[10px] opacity-70">{m.label}</span>
-                  <span className="text-[10px] font-bold">{m.value}</span>
-                </div>
-                <div className="h-1 bg-white/15 rounded-full">
-                  <div
-                    className="h-full rounded-full transition-[width] duration-500"
-                    style={{ width: `${m.pct}%`, background: m.color }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Single contextual calorie status */}
+      <p className="text-xs text-sub mb-5" aria-live="polite">{calStatus}</p>
 
-      {/* D-02, PERIOD-02: Period selector placed below macro progress section (same position as carrito view) */}
-      <PurchasePeriodSelector />
-
-      {/* Quick actions */}
-      <div className="flex gap-2.5 mb-5">
-        {[
-          { icon: Zap, label: "Completar", bg: "bg-accent-light", href: "/catalogo" },
-          { icon: Calendar, label: "Planificar", bg: "bg-protein-light", href: "/catalogo" },
-          { icon: BookOpen, label: "Educación", bg: "bg-carbs-light", href: "/educacion" },
-        ].map(({ icon: Icon, label, bg, href }) => (
-          <Link
-            key={label}
-            href={href}
-            className={`flex-1 ${bg} rounded-xl py-3.5 flex flex-col items-center gap-1.5 no-underline`}
-          >
-            <Icon size={20} className="text-text" />
-            <span className="text-[10px] font-bold text-text">{label}</span>
-          </Link>
-        ))}
-      </div>
-
-      {/* Meal context filter chips — MEAL-04 */}
-      <div role="group" aria-label="Filtrar recomendaciones por momento">
-        <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide">
-          {MEAL_CHIPS.map((chip) => (
-            <button
-              key={chip.value}
-              onClick={() => setMealContext(chip.value)}
-              role="radio"
-              aria-checked={mealContext === chip.value}
-              aria-label={chip.label}
-              className={[
-                "px-4 py-3 rounded-full text-sm font-bold whitespace-nowrap border transition-all min-h-[44px]",
-                mealContext === chip.value
-                  ? "bg-primary-light border-primary-border text-primary"
-                  : "bg-card border-border text-sub",
-              ].join(" ")}
-            >
-              {chip.label}
-            </button>
-          ))}
+      {/* Meal context — tab underline style, sticky with frosted glass */}
+      <div
+        role="group"
+        aria-label="Filtrar recomendaciones por momento"
+        className="sticky top-0 z-30 -mx-5 px-5 pt-2 mb-4 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]"
+      >
+        <div className="flex justify-center overflow-x-auto scrollbar-hide border-b border-border-l">
+          {MEAL_CHIPS.map((chip) => {
+            const active = mealContext === chip.value;
+            return (
+              <button
+                key={chip.value}
+                onClick={() => setMealContext(chip.value)}
+                role="radio"
+                aria-checked={active}
+                aria-label={chip.label}
+                className={cn(
+                  "px-4 pb-2.5 pt-2 text-sm font-semibold whitespace-nowrap transition-all duration-150 active:scale-95 min-h-11 relative",
+                  active ? "text-primary" : "text-muted"
+                )}
+              >
+                {chip.label}
+                <span
+                  className={cn(
+                    "absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-200",
+                    active ? "w-5 bg-primary" : "w-0 bg-transparent"
+                  )}
+                  aria-hidden="true"
+                />
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Smart recommendations from domain engine */}
+      {/* Recommendations */}
       <div className="flex justify-between items-center mb-3">
-        <h3 className="font-display font-extrabold text-base">Recomendados</h3>
+        <h3 className="font-display font-bold text-base text-text">Recomendados</h3>
         <Link href="/catalogo" className="text-xs text-primary font-semibold no-underline">
           Ver todo
         </Link>
       </div>
+
       {recommended.length === 0 ? (
         (() => {
-          if (mealContext !== 'any') {
+          if (mealContext !== "any") {
             return (
               <EmptyState
                 icon={UtensilsCrossed}
@@ -211,7 +174,6 @@ export const InicioClient = ({ allProducts }: Props) => {
               />
             );
           }
-          // Default: restriction-only (Phase 2 copy)
           return (
             <EmptyState
               icon={AlertCircle}
@@ -224,8 +186,13 @@ export const InicioClient = ({ allProducts }: Props) => {
         })()
       ) : (
         <div className="grid grid-cols-2 gap-2.5">
-          {recommended.map((p) => (
-            <Link key={p.id} href={`/catalogo/${p.id}`} className="no-underline">
+          {recommended.map((p, index) => (
+            <Link
+              key={p.id}
+              href={`/catalogo/${p.id}`}
+              className="no-underline animate-[staggerFadeUp_0.4s_ease_both]"
+              style={{ animationDelay: `${index * 65}ms` }}
+            >
               <ProductCard
                 product={p}
                 badge={

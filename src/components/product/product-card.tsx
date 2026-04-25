@@ -4,33 +4,45 @@ import { useState } from "react";
 import Image from "next/image";
 import { Plus, Star, ShoppingBag, Check, AlertTriangle, AlertCircle } from "lucide-react";
 import { MacroChip } from "@/components/nutrition/macro-chip";
+import { useToastStore, type ToastType } from "@/stores/toast-store";
 import type { Product } from "@/domain/catalog/product";
 import type { Compatibility } from "@/domain/catalog/compatibility";
 
 const COMPAT_META: Record<Compatibility, {
   Icon: typeof Check;
   iconClass: string;
-  bg: string;
+  textColor: string;
   label: string;
+  toastType: ToastType;
 }> = {
   fits: {
     Icon: Check,
     iconClass: "text-success",
-    bg: "bg-success/15",
+    textColor: "text-success",
     label: "Cabe en tus macros",
+    toastType: "success",
   },
   tight: {
     Icon: AlertTriangle,
     iconClass: "text-warning",
-    bg: "bg-warning/15",
-    label: "Casi al límite de macros",
+    textColor: "text-warning",
+    label: "Casi al límite",
+    toastType: "warning",
   },
   exceeds: {
     Icon: AlertCircle,
     iconClass: "text-error",
-    bg: "bg-error/10",
-    label: "Excede tus macros",
+    textColor: "text-error",
+    label: "Excede macros",
+    toastType: "error",
   },
+};
+
+/* Add button color shifts with compatibility — communicates risk at the decision moment */
+const ADD_BTN_CLASS: Record<Compatibility, string> = {
+  fits: "bg-primary hover:bg-primary-dark",
+  tight: "bg-warning hover:bg-amber-600",
+  exceeds: "bg-muted",
 };
 
 type ProductCardProps = {
@@ -42,21 +54,20 @@ type ProductCardProps = {
 
 export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCardProps) => {
   const [imgError, setImgError] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+  const toast = useToastStore((s) => s.add);
   const compat = compatibility ? COMPAT_META[compatibility] : null;
+  const addBtnClass = compatibility ? ADD_BTN_CLASS[compatibility] : "bg-primary hover:bg-primary-dark";
 
-  const altText = `${product.name}${product.brand ? `, ${product.brand}` : ""}. ${product.protein} gramos de proteína, ${product.carbs} gramos de carbohidratos, ${product.fat} gramos de grasa. ${product.price.toLocaleString()} pesos.`;
+  const altText = `${product.name}${product.brand ? `, ${product.brand}` : ""}. ${product.protein}g proteína, ${product.carbs}g carbohidratos, ${product.fat}g grasa. $${product.price.toLocaleString()}.`;
 
   return (
     <article
-      className="bg-card rounded-[14px] overflow-hidden border border-border-l hover:shadow-card-hover hover:-translate-y-0.5 motion-reduce:hover:transform-none transition-all cursor-pointer relative"
+      className="bg-card rounded-xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-0.5 active:scale-[0.98] motion-reduce:hover:transform-none motion-reduce:active:scale-100 transition-all duration-200 cursor-pointer"
       aria-label={altText}
     >
-      {badge && (
-        <div className="absolute top-0 left-0 right-0 z-10 bg-accent text-white text-center py-0.5 text-[9px] font-bold">
-          {badge}
-        </div>
-      )}
-      <div className="relative h-[110px] overflow-hidden bg-gradient-to-br from-primary-light to-primary-border">
+      {/* Image area with gradient overlay — no spanning banner */}
+      <div className="relative h-27 overflow-hidden bg-linear-to-br from-primary-light to-primary-border">
         {product.imageUrl && !imgError ? (
           <Image
             src={product.imageUrl}
@@ -69,46 +80,75 @@ export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCar
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center" role="presentation">
-            <ShoppingBag size={32} className="text-primary-border" aria-hidden="true" />
+            <ShoppingBag size={28} className="text-primary-border" aria-hidden="true" />
           </div>
         )}
-        <span className="absolute top-2 right-2 bg-white/95 backdrop-blur-sm rounded-full px-2 py-0.5 text-[10px] font-bold text-primary-dark">
-          {product.protein}g prot
+        {/* Gradient fade to white at bottom */}
+        <div className="absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-black/25 to-transparent pointer-events-none" />
+        {/* Rating — minimal, no white pill */}
+        <span className="absolute top-2 left-2 flex items-center gap-0.5 text-[9px] font-bold text-white drop-shadow-sm">
+          <Star size={8} fill="currentColor" aria-hidden="true" /> {product.rating}
         </span>
-        <span className="absolute top-2 left-2 bg-white/95 backdrop-blur-sm rounded-full px-2 py-0.5 text-[10px] font-semibold text-text flex items-center gap-1">
-          <Star size={10} fill="currentColor" aria-hidden="true" /> {product.rating}
+        {/* Protein — minimal */}
+        <span className="absolute top-2 right-2 text-[9px] font-bold text-white drop-shadow-sm tabular-nums">
+          {product.protein}g P
         </span>
       </div>
-      <div className="p-3">
-        {compat && (
-          <div
-            className={`${compat.bg} rounded-md px-1.5 py-0.5 mb-1.5 inline-flex items-center gap-1`}
-            role="status"
-          >
-            <compat.Icon size={11} className={compat.iconClass} aria-hidden="true" />
-            <span className={`text-[9px] font-semibold ${compat.iconClass}`}>
-              {compat.label}
-            </span>
-          </div>
+
+      <div className="p-2.5 pt-2">
+        {/* Badge — small chip above name instead of spanning banner */}
+        {badge && (
+          <span className="inline-block text-[8px] font-bold text-accent bg-accent-light px-1.5 py-0.5 rounded mb-1 leading-none">
+            {badge}
+          </span>
         )}
-        <p className="font-display font-bold text-xs text-text leading-tight">{product.name}</p>
-        <p className="text-[11px] text-sub mt-0.5 mb-2">{product.brand} · {product.weight}</p>
-        <div className="flex gap-1 mb-2" role="list" aria-label="Macros del producto">
+
+        <p className="font-display font-bold text-[11px] text-text leading-snug">{product.name}</p>
+
+        {/* Brand + compatibility indicator on same row */}
+        <div className="flex items-center justify-between mt-0.5 mb-2">
+          <p className="text-[10px] text-muted">{product.brand} · {product.weight}</p>
+          {compat && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toast(compat.label, compat.toastType);
+              }}
+              className={`flex items-center justify-center -m-1 p-1 rounded-md active:opacity-60 transition-opacity ${compat.textColor}`}
+              aria-label={compat.label}
+            >
+              <compat.Icon size={11} aria-hidden="true" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex gap-1 mb-2.5" role="list" aria-label="Macros del producto">
           <MacroChip type="protein" value={product.protein} compact />
           <MacroChip type="carbs" value={product.carbs} compact />
           <MacroChip type="fat" value={product.fat} compact />
         </div>
+
         <div className="flex justify-between items-center">
-          <span className="font-display font-extrabold text-sm text-text">
+          <span className="font-display font-extrabold text-sm text-text tabular-nums">
             ${product.price.toLocaleString()}
           </span>
           {onAdd && (
             <button
-              onClick={(e) => { e.stopPropagation(); onAdd(); }}
-              className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-2"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (justAdded) return;
+                onAdd();
+                setJustAdded(true);
+                setTimeout(() => setJustAdded(false), 1000);
+              }}
+              className={`h-7 w-7 rounded-lg text-white flex items-center justify-center transition-all duration-200 active:scale-90 motion-reduce:active:scale-100 focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-1 ${justAdded ? "bg-success animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]" : addBtnClass}`}
               aria-label={`Agregar ${product.name} al carrito`}
+              disabled={compatibility === "exceeds"}
             >
-              <Plus size={16} aria-hidden="true" />
+              {justAdded ? <Check size={14} aria-hidden="true" /> : <Plus size={14} aria-hidden="true" />}
             </button>
           )}
         </div>

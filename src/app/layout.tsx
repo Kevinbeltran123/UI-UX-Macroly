@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Nunito, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import { PWARegister } from "@/components/pwa-register";
 import "./globals.css";
 
-const nunito = Nunito({
+const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
+  weight: ["600", "700", "800"],
   display: "swap",
 });
 
@@ -68,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${nunito.variable} ${inter.variable} h-full antialiased`}>
+    <html lang="es" className={`${plusJakarta.variable} ${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <PWARegister />
         {children}

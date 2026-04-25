@@ -2,36 +2,36 @@
 
 /* ===== Macroly Design Tokens ===== */
 @theme {
-  /* Brand greens */
-  --color-primary: #2E7D32;
-  --color-primary-dark: #1B5E20;
-  --color-primary-mid: #43A047;
-  --color-primary-soft: #66BB6A;
-  --color-primary-light: #E8F5E9;
-  --color-primary-border: #C8E6C9;
+  /* Brand greens — richer, deeper forest palette */
+  --color-primary: #2D6A4F;
+  --color-primary-dark: #1B3D2A;
+  --color-primary-mid: #3D8B62;
+  --color-primary-soft: #52B788;
+  --color-primary-light: #EDF5F0;
+  --color-primary-border: #C0D9CB;
 
-  /* Macro semantic colors */
-  --color-protein: #43A047;
-  --color-protein-light: #E8F5E9;
-  --color-carbs: #FB8C00;
-  --color-carbs-light: #FFF3E0;
-  --color-fat: #1E88E5;
-  --color-fat-light: #E3F2FD;
-  --color-cal: #8B5CF6;
-  --color-cal-light: #F3EFFE;
+  /* Macro semantic colors — refined */
+  --color-protein: #38A169;
+  --color-protein-light: #EBF8F0;
+  --color-carbs: #D97706;
+  --color-carbs-light: #FEF3C7;
+  --color-fat: #3B82F6;
+  --color-fat-light: #EFF6FF;
+  --color-cal: #7C3AED;
+  --color-cal-light: #F5F3FF;
 
   /* Accent */
-  --color-accent: #FB8C00;
-  --color-accent-light: #FFF3E0;
+  --color-accent: #D97706;
+  --color-accent-light: #FEF3C7;
 
-  /* Neutrals */
-  --color-bg: #F5F7F5;
+  /* Warm neutrals — cream base instead of cold grey */
+  --color-bg: #F6F4F0;
   --color-card: #FFFFFF;
-  --color-text: #333333;
-  --color-sub: #6B7280;
-  --color-muted: #9CA3AF;
-  --color-border: #E0E0E0;
-  --color-border-l: #F0F0F0;
+  --color-text: #1A1A18;
+  --color-sub: #6B6B67;
+  --color-muted: #A8A8A4;
+  --color-border: #DDD9D3;
+  --color-border-l: #EDEBE6;
 
   /* Status */
   --color-success: #10B981;
@@ -39,21 +39,22 @@
   --color-error: #E53935;
 
   /* Fonts */
-  --font-display: "Nunito", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
 
-  /* Radii */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
+  /* Radii — tighter for editorial feel */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
-  --shadow-card-hover: 0 8px 28px rgba(0, 0, 0, 0.1);
-  --shadow-modal: 0 20px 80px rgba(0, 0, 0, 0.2);
+  /* Shadows — warmer tones */
+  --shadow-card: 0 1px 3px rgba(26,26,24,0.07), 0 4px 14px rgba(26,26,24,0.05);
+  --shadow-card-hover: 0 6px 24px rgba(26,26,24,0.13);
+  --shadow-modal: 0 16px 64px rgba(0,0,0,0.18);
+  --shadow-nav: 0 -1px 0 rgba(26,26,24,0.08);
 }
 
 html,
@@ -65,35 +66,75 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display font for headings */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
 }
 
-/* Animations from prototipo */
+/* Animations */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
 @keyframes badgePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3); }
   100% { transform: scale(1); }
+}
+
+/* Staggered card entrance */
+@keyframes staggerFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Spring bounce for add button */
+@keyframes springPop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(0.85); }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Nav indicator line grow */
+@keyframes navLine {
+  from { width: 0; opacity: 0; }
+  to   { width: 1.25rem; opacity: 1; }
+}
+
+/* Macro bar fill */
+@keyframes barFill {
+  from { width: 0%; }
+}
+
+/* Toast slide-up utility */
+.animate-toast-in {
+  animation: slideUp 0.3s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-toast-in { animation: none; }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 
 button:active { transform: scale(0.97); }
 button { font-family: inherit; transition: transform 0.1s ease; }
 
-/* Respect reduced motion preference */
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -120,7 +161,7 @@ button { font-family: inherit; transition: transform 0.1s ease; }
 }
 .skip-link:focus { top: 8px; }
 
-/* Screen reader only utility */
+/* Screen reader only */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -133,11 +174,11 @@ button { font-family: inherit; transition: transform 0.1s ease; }
   border: 0;
 }
 
-/* Focus visible ring for accessibility */
+/* Focus visible ring */
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 /* Hide scrollbar on filter chips */
@@ -147,8 +188,26 @@ button { font-family: inherit; transition: transform 0.1s ease; }
 /* Stagger animation for lists */
 @keyframes staggerIn {
   from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Smooth image loading */
 img { transition: opacity 0.3s ease; }
+
+/* Bottom sheet animations */
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes sheetSlideDown {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes overlayFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}

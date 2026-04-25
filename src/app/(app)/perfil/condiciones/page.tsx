@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Check, Leaf, WheatOff, MilkOff, Fish, Dumbbell } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useGoalsStore } from "@/stores/goals-store";
 import { useToastStore } from "@/stores/toast-store";
+import { cn } from "@/lib/cn";
 
-// Canonical restriction tag values (D-13) — snake_case internal, display labels for UI
 const VALID_RESTRICTIONS = [
   "vegano",
   "sin_gluten",
@@ -16,20 +16,62 @@ const VALID_RESTRICTIONS = [
   "alto_proteico",
 ] as const;
 
-const CHIP_LABELS: Record<string, string> = {
-  vegano: "Vegano",
-  sin_gluten: "Sin gluten",
-  sin_lactosa: "Sin lactosa",
-  sin_mariscos: "Sin mariscos",
-  alto_proteico: "Alto en proteína",
+const RESTRICTION_META: Record<string, {
+  label: string;
+  description: string;
+  icon: React.ElementType;
+  activeColor: string;
+  activeBg: string;
+  activeBorder: string;
+}> = {
+  vegano: {
+    label: "Vegano",
+    description: "Sin productos de origen animal",
+    icon: Leaf,
+    activeColor: "text-primary",
+    activeBg: "bg-primary-light",
+    activeBorder: "border-primary-border",
+  },
+  sin_gluten: {
+    label: "Sin gluten",
+    description: "Sin trigo, cebada ni centeno",
+    icon: WheatOff,
+    activeColor: "text-accent",
+    activeBg: "bg-accent/10",
+    activeBorder: "border-accent/30",
+  },
+  sin_lactosa: {
+    label: "Sin lactosa",
+    description: "Sin leche ni derivados",
+    icon: MilkOff,
+    activeColor: "text-carbs",
+    activeBg: "bg-carbs-light",
+    activeBorder: "border-carbs/30",
+  },
+  sin_mariscos: {
+    label: "Sin mariscos",
+    description: "Sin mariscos ni crustáceos",
+    icon: Fish,
+    activeColor: "text-fat",
+    activeBg: "bg-fat-light",
+    activeBorder: "border-fat/30",
+  },
+  alto_proteico: {
+    label: "Alto en proteína",
+    description: "Prioriza alimentos ricos en proteína",
+    icon: Dumbbell,
+    activeColor: "text-protein",
+    activeBg: "bg-protein-light",
+    activeBorder: "border-protein/30",
+  },
 };
 
 export default function CondicionesPage() {
   const { restrictions } = useGoalsStore();
   const [localRestrictions, setLocalRestrictions] = useState<string[]>([]);
   const [saving, setSaving] = useState<string | null>(null);
+  const [justToggled, setJustToggled] = useState<string | null>(null);
 
-  // Sync from store on mount (pre-loaded by GoalsLoader — D-05)
   useEffect(() => {
     setLocalRestrictions(restrictions);
   }, [restrictions]);
@@ -39,23 +81,18 @@ export default function CondicionesPage() {
       ? localRestrictions.filter((r) => r !== tag)
       : [...localRestrictions, tag];
 
-    // T-2-05-01: Allowlist guard — filter to canonical values before persisting
-    // Prevents arbitrary string injection into dietary_restrictions column
     const safeRestrictions = newRestrictions.filter((r) =>
       (VALID_RESTRICTIONS as readonly string[]).includes(r)
     );
 
-    setLocalRestrictions(safeRestrictions); // optimistic update
+    setLocalRestrictions(safeRestrictions);
+    setJustToggled(tag);
+    setTimeout(() => setJustToggled(null), 350);
     setSaving(tag);
 
     const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      setSaving(null);
-      return;
-    }
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setSaving(null); return; }
 
     const { error } = await supabase
       .from("profiles")
@@ -65,17 +102,17 @@ export default function CondicionesPage() {
     setSaving(null);
 
     if (error) {
-      setLocalRestrictions(localRestrictions); // revert on failure
+      setLocalRestrictions(localRestrictions);
       useToastStore.getState().add("No se pudo guardar. Intenta de nuevo.", "error");
     } else {
-      // Sync into store so /inicio re-filters without a full page reload
       useGoalsStore.setState({ restrictions: safeRestrictions });
     }
   };
 
+  const activeCount = localRestrictions.length;
+
   return (
-    <div className="px-5 pb-6 animate-[fadeUp_0.3s_ease]">
-      {/* Back navigation — matches editar-metas/page.tsx line 53 */}
+    <div className="px-5 pb-8 animate-[fadeUp_0.3s_ease]">
       <Link
         href="/perfil"
         className="flex items-center gap-1.5 text-sm text-primary font-semibold py-3.5 no-underline"
@@ -83,28 +120,23 @@ export default function CondicionesPage() {
         <ArrowLeft size={16} /> Volver
       </Link>
 
-      {/* Page title — font-display font-bold (UI-SPEC: 700, not 900) */}
-      <h1 className="font-display font-bold text-xl text-text mb-6">Condiciones de salud</h1>
-
-      {/* Section label — matches period-selector pattern */}
-      <p className="text-xs font-bold text-sub uppercase tracking-wider mb-2">
-        Restricciones dietéticas
-      </p>
-
-      {/* Section description */}
+      <h1 className="font-display font-bold text-xl text-text mb-1">Condiciones de salud</h1>
       <p className="text-sm text-sub mb-6">
-        Selecciona tus restricciones. Solo verás productos compatibles en tus recomendaciones.
+        Solo verás productos compatibles con tus restricciones en recomendaciones.
       </p>
 
-      {/* Chip grid — role="group" for accessibility */}
       <div
         role="group"
         aria-label="Restricciones dietéticas"
-        className="flex flex-wrap gap-2"
+        className="grid grid-cols-2 gap-2.5"
       >
-        {VALID_RESTRICTIONS.map((tag) => {
+        {VALID_RESTRICTIONS.map((tag, index) => {
+          const meta = RESTRICTION_META[tag];
+          const Icon = meta.icon;
           const isSelected = localRestrictions.includes(tag);
           const isSaving = saving === tag;
+          const isPopping = justToggled === tag;
+
           return (
             <button
               key={tag}
@@ -112,27 +144,59 @@ export default function CondicionesPage() {
               disabled={saving !== null}
               role="checkbox"
               aria-checked={isSelected}
-              aria-label={CHIP_LABELS[tag]}
+              aria-label={meta.label}
               aria-busy={isSaving}
-              className={[
-                "px-4 py-3 rounded-full text-sm font-bold whitespace-nowrap border transition-all",
+              className={cn(
+                "relative p-4 rounded-xl border text-left transition-all duration-200 animate-[staggerFadeUp_0.35s_ease_both]",
+                isPopping && "animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)_both]",
                 isSelected
-                  ? "bg-primary-light border-primary-border text-primary"
-                  : "bg-card border-border text-sub",
-                saving !== null ? "opacity-60" : "",
-              ]
-                .join(" ")
-                .trim()}
-            >
-              {isSaving ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                CHIP_LABELS[tag]
+                  ? cn("border", meta.activeBorder, meta.activeBg)
+                  : "bg-card border-border-l",
+                saving !== null && !isSaving ? "opacity-50" : ""
               )}
+              style={{ animationDelay: `${index * 55}ms` }}
+            >
+              {/* Checkmark or spinner — top-right corner */}
+              <div className="absolute top-3 right-3">
+                {isSaving ? (
+                  <Loader2 size={14} className="animate-spin text-muted" />
+                ) : isSelected ? (
+                  <div className={cn("w-5 h-5 rounded-full flex items-center justify-center", meta.activeBg, meta.activeColor)}>
+                    <Check size={11} strokeWidth={3} />
+                  </div>
+                ) : (
+                  <div className="w-5 h-5 rounded-full border border-border" />
+                )}
+              </div>
+
+              {/* Icon container */}
+              <div className={cn(
+                "w-9 h-9 rounded-lg flex items-center justify-center mb-3 transition-colors duration-200",
+                isSelected ? cn(meta.activeBg, meta.activeColor) : "bg-border-l text-muted"
+              )}>
+                <Icon size={17} aria-hidden="true" />
+              </div>
+
+              <p className={cn(
+                "text-xs font-bold mb-0.5 transition-colors duration-200",
+                isSelected ? meta.activeColor : "text-text"
+              )}>
+                {meta.label}
+              </p>
+              <p className="text-[10px] text-sub leading-tight">{meta.description}</p>
             </button>
           );
         })}
       </div>
+
+      {/* Active restrictions summary — only shown when at least one is active */}
+      {activeCount > 0 && (
+        <div className="mt-5 rounded-xl px-4 py-3 border bg-primary-light border-primary-border">
+          <p className="text-xs font-semibold text-primary">
+            {activeCount} restricción{activeCount !== 1 ? "es" : ""} activa{activeCount !== 1 ? "s" : ""}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

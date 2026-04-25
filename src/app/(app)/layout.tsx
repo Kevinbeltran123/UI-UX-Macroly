@@ -24,7 +24,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div
       className="min-h-screen bg-bg"
       style={{
-        paddingBottom: "calc(5rem + env(safe-area-inset-bottom, 0px))",
+        paddingTop: "env(safe-area-inset-top, 0px)",
+        paddingBottom: "5rem",
         paddingLeft: "env(safe-area-inset-left, 0px)",
         paddingRight: "env(safe-area-inset-right, 0px)",
       }}
