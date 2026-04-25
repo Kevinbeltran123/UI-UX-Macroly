@@ -63,7 +63,7 @@ export function CashForm({ total, onSubmit }: Props) {
             value={paidRaw ? Number(paidRaw.replace(/\D/g, "")).toLocaleString("es-CO") : ""}
             onChange={(e) => setPaidRaw(e.target.value)}
             placeholder="0"
-            className="w-full h-12 rounded-xl border border-border bg-card pl-7 pr-3.5 text-[15px] font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+            className="w-full h-12 rounded-xl border border-border bg-card pl-7 pr-3.5 text-base font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
           />
         </div>
 
@@ -127,7 +127,7 @@ export function CashForm({ total, onSubmit }: Props) {
         type="button"
         onClick={handleSubmit}
         disabled={!valid}
-        className="w-full mt-6 rounded-xl bg-primary-dark text-white font-bold text-[15px] disabled:opacity-40 active:scale-[0.985] transition-transform shadow-[0_8px_22px_-8px_rgba(27,61,42,0.55)]"
+        className="w-full mt-6 rounded-xl bg-primary-dark text-white font-bold text-base disabled:opacity-40 active:scale-[0.985] transition-transform shadow-[0_8px_22px_-8px_rgba(27,61,42,0.55)]"
         style={{ height: 52 }}
       >
         Confirmar pedido contra entrega

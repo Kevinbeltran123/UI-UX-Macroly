@@ -162,7 +162,7 @@ export function DeliveryLocationForm({ initial, onConfirm }: Props) {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Calle 123 #45-67"
-                className="w-full h-12 rounded-xl border border-border bg-card pl-9 pr-3.5 text-[15px] text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+                className="w-full h-12 rounded-xl border border-border bg-card pl-9 pr-3.5 text-base text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
               />
             </div>
           )}
@@ -175,7 +175,7 @@ export function DeliveryLocationForm({ initial, onConfirm }: Props) {
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               placeholder="Apto 802, Torre 3"
-              className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-[15px] text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+              className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-base text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
             />
           )}
         </Field>
@@ -187,7 +187,7 @@ export function DeliveryLocationForm({ initial, onConfirm }: Props) {
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
               placeholder="Dejar en portería · Llamar al llegar"
-              className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-[15px] text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+              className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-base text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
             />
           )}
         </Field>
@@ -196,7 +196,7 @@ export function DeliveryLocationForm({ initial, onConfirm }: Props) {
       <button
         type="button"
         onClick={handleConfirm}
-        className="w-full mt-6 rounded-xl bg-primary-dark text-white font-bold text-[15px] flex items-center justify-center gap-2 active:scale-[0.985] transition-transform shadow-[0_8px_22px_-8px_rgba(27,61,42,0.55)]"
+        className="w-full mt-6 rounded-xl bg-primary-dark text-white font-bold text-base flex items-center justify-center gap-2 active:scale-[0.985] transition-transform shadow-[0_8px_22px_-8px_rgba(27,61,42,0.55)]"
         style={{ height: 52 }}
       >
         <Check size={16} aria-hidden="true" />

@@ -200,7 +200,7 @@ export const InicioClient = ({ allProducts }: Props) => {
             <Link
               key={p.id}
               href={`/catalogo/${p.id}`}
-              className="no-underline animate-[staggerFadeUp_0.4s_ease_both]"
+              className="no-underline block h-full animate-[staggerFadeUp_0.4s_ease_both]"
               style={{ animationDelay: `${index * 65}ms` }}
             >
               <ProductCard

@@ -70,6 +70,17 @@ h1, h2, h3, h4 {
   font-family: var(--font-display);
 }
 
+/* iOS Safari auto-zooms on input focus when font-size < 16px.
+   We removed maximum-scale=1 from the viewport (WCAG 1.4.4 requires zoom),
+   so we enforce 16px minimum on form controls to prevent the unwanted
+   viewport zoom that breaks layout. Unlayered rule wins over Tailwind
+   utility classes (which live in @layer utilities). */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+  font-size: 16px;
+}
+
 /* Animations */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }

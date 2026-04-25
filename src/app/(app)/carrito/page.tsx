@@ -15,6 +15,7 @@ import { useGoalsStore } from "@/stores/goals-store";
 import { PurchasePeriodSelector } from "@/components/period/purchase-period-selector";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/cn";
+import { haptic } from "@/lib/haptic";
 import type { FavoriteCombo } from "@/domain/favorites/favorite-combo";
 import { PaymentSheet, type PaymentSuccess } from "@/components/checkout/payment-sheet";
 import { PAYMENT_METHODS } from "@/domain/payment/method";
@@ -33,7 +34,12 @@ export default function CarritoPage() {
     if (!alreadyOverProtein && totals.protein + item.protein > goals.protein) newlyExceeded.push("proteína");
     if (!alreadyOverCarbs   && totals.carbs   + item.carbs   > goals.carbs)   newlyExceeded.push("carbos");
     if (!alreadyOverFat     && totals.fat     + item.fat     > goals.fat)     newlyExceeded.push("grasas");
-    if (newlyExceeded.length > 0) toast(`Meta de ${newlyExceeded.join(" y ")} superada`, "error");
+    if (newlyExceeded.length > 0) {
+      haptic("warning");
+      toast(`Meta de ${newlyExceeded.join(" y ")} superada`, "error");
+    } else {
+      haptic("tap");
+    }
   };
 
   const [showPayment, setShowPayment] = useState(false);
@@ -174,7 +180,10 @@ export default function CarritoPage() {
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <button
-                    onClick={() => remove(item.id)}
+                    onClick={() => {
+                      haptic("tap");
+                      remove(item.id);
+                    }}
                     className="w-11 h-11 rounded-lg bg-border-l text-sub flex items-center justify-center transition-all duration-100 active:bg-border active:scale-90"
                     aria-label="Reducir cantidad"
                   >

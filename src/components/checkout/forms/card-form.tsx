@@ -228,7 +228,7 @@ export function CardForm({ total, onSubmit }: Props) {
                 onChange={(e) => setNumber(e.target.value)}
                 onFocus={() => setFlipped(false)}
                 placeholder="0000 0000 0000 0000"
-                className="w-full h-12 rounded-xl border border-border bg-card pl-3.5 pr-12 text-[15px] font-mono tabular-nums tracking-wider text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+                className="w-full h-12 rounded-xl border border-border bg-card pl-3.5 pr-12 text-base font-mono tabular-nums tracking-wider text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
               />
               {brand !== "unknown" && (
                 <span
@@ -255,7 +255,7 @@ export function CardForm({ total, onSubmit }: Props) {
               onChange={(e) => setHolder(e.target.value.replace(/[0-9]/g, ""))}
               onFocus={() => setFlipped(false)}
               placeholder="Nombre Apellido"
-              className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-[15px] uppercase tracking-wide text-text placeholder:text-muted/70 placeholder:normal-case focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+              className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-base uppercase tracking-wide text-text placeholder:text-muted/70 placeholder:normal-case focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
             />
           )}
         </Field>
@@ -271,7 +271,7 @@ export function CardForm({ total, onSubmit }: Props) {
                 onChange={(e) => setExpiry(e.target.value)}
                 onFocus={() => setFlipped(false)}
                 placeholder="MM/AA"
-                className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-[15px] font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+                className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-base font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
               />
             )}
           </Field>
@@ -286,7 +286,7 @@ export function CardForm({ total, onSubmit }: Props) {
                 onFocus={() => setFlipped(true)}
                 onBlur={() => setFlipped(false)}
                 placeholder="•••"
-                className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-[15px] font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+                className="w-full h-12 rounded-xl border border-border bg-card px-3.5 text-base font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
               />
             )}
           </Field>
@@ -330,7 +330,7 @@ export function CardForm({ total, onSubmit }: Props) {
       <button
         type="button"
         onClick={handleSubmit}
-        className="w-full h-13 rounded-xl bg-primary-dark text-white font-bold text-[15px] mt-6 flex items-center justify-center gap-2 active:scale-[0.985] transition-transform shadow-[0_8px_22px_-8px_rgba(27,61,42,0.55)]"
+        className="w-full h-13 rounded-xl bg-primary-dark text-white font-bold text-base mt-6 flex items-center justify-center gap-2 active:scale-[0.985] transition-transform shadow-[0_8px_22px_-8px_rgba(27,61,42,0.55)]"
         style={{ height: 52 }}
       >
         <Lock size={14} aria-hidden="true" />

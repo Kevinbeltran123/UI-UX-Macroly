@@ -128,7 +128,7 @@ export function WalletForm({ total, method, onSubmit }: Props) {
                   if (phoneError) setPhoneError("");
                 }}
                 placeholder="300 123 4567"
-                className="flex-1 h-12 rounded-xl border border-border bg-card px-3.5 text-[15px] font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
+                className="flex-1 h-12 rounded-xl border border-border bg-card px-3.5 text-base font-mono tabular-nums text-text placeholder:text-muted/70 focus:border-primary focus:shadow-[0_0_0_3px_rgba(45,106,79,0.12)] outline-none transition-all"
               />
             </div>
           )}
@@ -136,7 +136,7 @@ export function WalletForm({ total, method, onSubmit }: Props) {
 
         <button
           onClick={handleSendCode}
-          className="w-full mt-6 rounded-xl text-white font-bold text-[15px] flex items-center justify-center gap-2 active:scale-[0.985] transition-transform"
+          className="w-full mt-6 rounded-xl text-white font-bold text-base flex items-center justify-center gap-2 active:scale-[0.985] transition-transform"
           style={{
             backgroundColor: config.accent,
             height: 52,
@@ -226,7 +226,7 @@ export function WalletForm({ total, method, onSubmit }: Props) {
         type="button"
         onClick={() => onSubmit({ phoneDigits, otp: otpString })}
         disabled={!otpReady}
-        className="w-full mt-6 rounded-xl text-white font-bold text-[15px] disabled:opacity-40 transition-all active:scale-[0.985]"
+        className="w-full mt-6 rounded-xl text-white font-bold text-base disabled:opacity-40 transition-all active:scale-[0.985]"
         style={{
           backgroundColor: config.accent,
           height: 52,

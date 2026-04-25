@@ -3,6 +3,7 @@
 import { useCart } from "./use-cart";
 import { useGoalsStore } from "@/stores/goals-store";
 import { useToastStore } from "@/stores/toast-store";
+import { haptic } from "@/lib/haptic";
 import type { Product } from "@/domain/catalog/product";
 
 export const useAddToCart = () => {
@@ -25,7 +26,10 @@ export const useAddToCart = () => {
     if (!alreadyOverFat     && totals.fat     + product.fat     > goals.fat)     newlyExceeded.push("grasas");
 
     if (newlyExceeded.length > 0) {
+      haptic("warning");
       toast(`Meta de ${newlyExceeded.join(" y ")} superada`, "error");
+    } else {
+      haptic("success");
     }
   };
 };

@@ -63,7 +63,7 @@ export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCar
 
   return (
     <article
-      className="bg-card rounded-xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-0.5 active:scale-[0.98] motion-reduce:hover:transform-none motion-reduce:active:scale-100 transition-all duration-200 cursor-pointer"
+      className="h-full flex flex-col bg-card rounded-xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-0.5 active:scale-[0.98] motion-reduce:hover:transform-none motion-reduce:active:scale-100 transition-all duration-200 cursor-pointer"
       aria-label={altText}
     >
       {/* Image area with gradient overlay — no spanning banner */}
@@ -95,7 +95,7 @@ export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCar
         </span>
       </div>
 
-      <div className="p-2.5 pt-2">
+      <div className="p-2.5 pt-2 flex-1 flex flex-col">
         {/* Badge — small chip above name instead of spanning banner */}
         {badge && (
           <span className="inline-block text-xs font-bold text-accent bg-accent-light px-1.5 py-0.5 rounded mb-1 leading-none">
@@ -103,7 +103,7 @@ export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCar
           </span>
         )}
 
-        <p className="font-display font-bold text-xs text-text leading-snug">{product.name}</p>
+        <p className="font-display font-bold text-xs text-text leading-snug line-clamp-2 min-h-[2.6em]">{product.name}</p>
 
         {/* Brand + compatibility indicator on same row */}
         <div className="flex items-center justify-between mt-0.5 mb-2">
@@ -130,7 +130,7 @@ export const ProductCard = ({ product, badge, compatibility, onAdd }: ProductCar
           <MacroChip type="fat" value={product.fat} compact />
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="mt-auto flex justify-between items-center">
           <span className="font-display font-extrabold text-sm text-text tabular-nums">
             ${product.price.toLocaleString()}
           </span>

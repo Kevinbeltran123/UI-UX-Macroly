@@ -137,7 +137,7 @@ export const CatalogoClient = ({ products, categories }: Props) => {
             <Link
               key={p.id}
               href={`/catalogo/${p.id}`}
-              className="no-underline animate-[staggerFadeUp_0.4s_ease_both]"
+              className="no-underline block h-full animate-[staggerFadeUp_0.4s_ease_both]"
               style={{ animationDelay: `${Math.min(index * 35, 500)}ms` }}
             >
               <ProductCard product={p} compatibility={checkCompatibility(p, totals, goals)} onAdd={() => addToCart(p)} />
