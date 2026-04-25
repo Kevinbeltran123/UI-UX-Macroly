@@ -29,7 +29,9 @@ export function haptic(pattern: HapticPattern = "tap"): void {
     return;
   }
   try {
-    navigator.vibrate(PATTERNS[pattern]);
+    const p = PATTERNS[pattern];
+    // Spread tuple to a mutable array — VibratePattern doesn't accept readonly arrays
+    navigator.vibrate(typeof p === "number" ? p : [...p]);
   } catch {
     // Some browsers throw if vibrate is disabled by site permissions — silently ignore
   }
