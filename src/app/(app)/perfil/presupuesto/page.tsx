@@ -96,7 +96,7 @@ export default function PresupuestoPage() {
         />
       </div>
 
-      <p id="budget-helper" className="text-[11px] text-muted mb-6">
+      <p id="budget-helper" className="text-xs text-muted mb-6">
         Déjalo en 0 para no aplicar presupuesto
       </p>
 

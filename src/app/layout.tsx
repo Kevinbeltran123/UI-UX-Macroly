@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import { PWARegister } from "@/components/pwa-register";
+import { Announcer } from "@/components/a11y/announcer";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -56,8 +57,6 @@ export const viewport: Viewport = {
   ],
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
   colorScheme: "light",
 };
@@ -71,6 +70,7 @@ export default function RootLayout({
     <html lang="es" className={`${plusJakarta.variable} ${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <PWARegister />
+        <Announcer />
         {/* Status bar mask — fixed cream band that covers content scrolling under the iOS notch.
             Lives in root layout so it covers ALL pages: (app), (auth), and any future route group.
             Height = 0 in browsers / Android (safe-area returns 0); ~47–59px in iOS standalone PWA. */}

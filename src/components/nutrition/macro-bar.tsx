@@ -27,7 +27,7 @@ export const MacroBar = ({
     <div className={cn(compact ? "mb-2" : "mb-3.5")}>
       <div className="flex justify-between mb-1.5">
         <span
-          className={cn("font-semibold", compact ? "text-[11px]" : "text-xs")}
+          className={cn("font-semibold", "text-xs")}
           style={{ color }}
         >
           {label}
@@ -35,7 +35,7 @@ export const MacroBar = ({
         <span
           className={cn(
             "tabular-nums",
-            compact ? "text-[11px]" : "text-xs",
+            "text-xs",
             over ? "text-error font-bold" : "text-sub",
           )}
         >

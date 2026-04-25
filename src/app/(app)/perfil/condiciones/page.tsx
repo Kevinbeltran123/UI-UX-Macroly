@@ -183,7 +183,7 @@ export default function CondicionesPage() {
               )}>
                 {meta.label}
               </p>
-              <p className="text-[10px] text-sub leading-tight">{meta.description}</p>
+              <p className="text-xs text-sub leading-tight">{meta.description}</p>
             </button>
           );
         })}

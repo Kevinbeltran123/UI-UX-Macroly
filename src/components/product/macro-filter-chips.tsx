@@ -25,8 +25,9 @@ export const MacroFilterChips = ({ value, onChange }: Props) => (
         <button
           key={f.id}
           onClick={() => onChange(f.id)}
+          aria-pressed={active}
           className={cn(
-            "px-3 pb-2 pt-1.5 text-[11px] font-semibold whitespace-nowrap shrink-0 relative transition-all duration-150 active:scale-95 min-h-9",
+            "px-3 pb-2 pt-1.5 text-xs font-semibold whitespace-nowrap shrink-0 relative transition-all duration-150 active:scale-95 min-h-11",
             active ? "text-primary" : "text-muted"
           )}
         >

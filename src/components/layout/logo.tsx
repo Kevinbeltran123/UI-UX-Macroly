@@ -1,5 +1,12 @@
-export const LogoIsotipo = ({ size = 36 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 64 64">
+export const LogoIsotipo = ({ size = 36, decorative = false }: { size?: number; decorative?: boolean }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 64 64"
+    role={decorative ? undefined : "img"}
+    aria-label={decorative ? undefined : "Macroly"}
+    aria-hidden={decorative ? true : undefined}
+  >
     <g transform="translate(32,30)">
       <path d="M-16,2 L-11,-14 L21,-14 L18,12 L-13,12 Z" fill="none" stroke="#1B5E20" strokeWidth="3.5" strokeLinejoin="round" strokeLinecap="round" />
       <path d="M-23,-6 L-16,2" fill="none" stroke="#1B5E20" strokeWidth="3.5" strokeLinecap="round" />
@@ -24,7 +31,7 @@ export const LogoText = ({ size = 20 }: { size?: number }) => (
 
 export const Logo = ({ iconSize = 32, textSize = 18 }: { iconSize?: number; textSize?: number }) => (
   <div className="flex items-center gap-2">
-    <LogoIsotipo size={iconSize} />
+    <LogoIsotipo size={iconSize} decorative />
     <LogoText size={textSize} />
   </div>
 );

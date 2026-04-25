@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
-    <div className="px-5 pt-4 pb-4 animate-pulse">
+    <div role="status" aria-busy="true" aria-label="Cargando catálogo" className="px-5 pt-4 pb-4 animate-pulse">
       <Skeleton className="h-6 w-28 mb-3" />
       <Skeleton className="h-12 rounded-xl mb-3" />
       <div className="flex gap-1.5 mb-3">{[1,2,3,4].map(i=><Skeleton key={i} className="h-8 w-24 rounded-full" />)}</div>

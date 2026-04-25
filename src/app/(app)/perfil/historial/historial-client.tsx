@@ -57,7 +57,7 @@ export const HistorialClient = ({ orders }: { orders: Order[] }) => {
                 <p className="font-display font-bold text-sm text-text">
                   {new Date(order.created_at).toLocaleDateString("es-CO")}
                 </p>
-                <p className="text-[11px] text-sub mt-0.5">
+                <p className="text-xs text-sub mt-0.5">
                   {order.items.reduce((a: number, i: CartItem) => a + i.qty, 0)} productos
                 </p>
               </div>
@@ -66,14 +66,14 @@ export const HistorialClient = ({ orders }: { orders: Order[] }) => {
               </span>
             </div>
             <div className="flex gap-2 mb-2.5">
-              <span className="text-[10px] font-semibold text-protein">P:{order.total_protein}g</span>
-              <span className="text-[10px] font-semibold text-carbs">C:{order.total_carbs}g</span>
-              <span className="text-[10px] font-semibold text-fat">G:{order.total_fat}g</span>
-              <span className="text-[10px] font-semibold text-cal">{order.total_calories} kcal</span>
+              <span className="text-xs font-semibold text-protein">P:{order.total_protein}g</span>
+              <span className="text-xs font-semibold text-carbs">C:{order.total_carbs}g</span>
+              <span className="text-xs font-semibold text-fat">G:{order.total_fat}g</span>
+              <span className="text-xs font-semibold text-cal">{order.total_calories} kcal</span>
             </div>
             <button
               onClick={() => handleRepeat(order)}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-primary-light text-primary font-bold text-[11px]"
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-primary-light text-primary font-bold text-xs"
             >
               <RotateCw size={12} /> Repetir pedido
             </button>

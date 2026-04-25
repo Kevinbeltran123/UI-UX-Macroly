@@ -100,8 +100,8 @@ function MacroSlider({
       </div>
 
       <div className="flex justify-between mt-1 px-10">
-        <span className="text-[10px] text-muted">{min}g</span>
-        <span className="text-[10px] text-muted">{max}g</span>
+        <span className="text-xs text-muted">{min}g</span>
+        <span className="text-xs text-muted">{max}g</span>
       </div>
     </div>
   );
@@ -162,7 +162,7 @@ export default function EditarMetasPage() {
       {/* Calorie + save — unified bottom row */}
       <div className="mt-2 flex items-center gap-3 bg-card rounded-xl p-4 border border-border-l">
         <div className="flex-1">
-          <p className="text-[10px] text-muted uppercase tracking-wide mb-0.5">Total</p>
+          <p className="text-xs text-muted uppercase tracking-wide mb-0.5">Total</p>
           <p className="font-display font-extrabold text-2xl text-text tabular-nums leading-none">
             {calories.toLocaleString()}
             <span className="text-sm font-semibold text-sub ml-1">kcal/día</span>

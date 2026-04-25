@@ -6,6 +6,16 @@ import { createClient } from "@/lib/supabase/client";
 import { LogoIsotipo } from "@/components/layout/logo";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { Field } from "@/components/a11y/field";
+
+const mapLoginError = (raw: string): string => {
+  const msg = raw.toLowerCase();
+  if (msg.includes("invalid") && msg.includes("credentials")) return "Correo o contraseña incorrectos.";
+  if (msg.includes("email") && msg.includes("confirm")) return "Confirma tu correo antes de iniciar sesión.";
+  if (msg.includes("rate limit")) return "Demasiados intentos. Espera unos segundos e inténtalo de nuevo.";
+  if (msg.includes("network") || msg.includes("fetch")) return "Error de conexión. Verifica tu internet e inténtalo de nuevo.";
+  return "No pudimos iniciar sesión. Inténtalo de nuevo.";
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,7 +35,7 @@ export default function LoginPage() {
 
     if (error) {
       console.error("Login error:", error.message, error.status);
-      setError(error.message);
+      setError(mapLoginError(error.message));
       setLoading(false);
       return;
     }
@@ -45,10 +55,10 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col bg-card">
       {/* Green header curve */}
       <div className="bg-gradient-to-br from-primary-dark via-primary to-primary-mid rounded-b-[40px] px-8 pt-16 pb-10 flex flex-col items-center gap-3">
-        <LogoIsotipo size={56} />
-        <h1 className="font-display font-black text-3xl text-white">
+        <LogoIsotipo size={56} decorative />
+        <p className="font-display font-black text-3xl text-white" aria-hidden="true">
           Macro<span className="text-primary-border">ly</span>
-        </h1>
+        </p>
         <p className="text-white/60 text-xs tracking-[3px] uppercase">
           Nutrición inteligente
         </p>
@@ -57,9 +67,9 @@ export default function LoginPage() {
       {/* Form */}
       <form onSubmit={handleLogin} className="flex-1 px-7 pt-8 flex flex-col">
         <div className="flex border-b-2 border-border-l mb-7">
-          <div className="flex-1 text-center pb-3 text-sm font-semibold text-primary border-b-[3px] border-primary -mb-[2px]">
+          <h1 className="flex-1 text-center pb-3 text-sm font-semibold text-primary border-b-[3px] border-primary -mb-[2px] m-0">
             Iniciar sesión
-          </div>
+          </h1>
           <Link
             href="/registro"
             className="flex-1 text-center pb-3 text-sm font-semibold text-muted no-underline"
@@ -68,51 +78,69 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        {error && (
+        {/* Generic credentials error — Supabase intentionally doesn't tell which field is wrong (anti-enumeration), so we mark BOTH fields as invalid and show the message globally + per-field */}
+        {error && !error.toLowerCase().includes("incorrectos") && !error.toLowerCase().includes("confirma") && (
           <p role="alert" className="text-error text-sm font-semibold mb-4 text-center">{error}</p>
         )}
 
-        <label htmlFor="login-email" className="text-xs font-semibold text-sub mb-1.5">Correo electrónico</label>
-        <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-4 focus-within:border-primary transition-colors">
-          <Mail size={16} className="text-muted" aria-hidden="true" />
-          <input
-            id="login-email"
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="tu@email.com"
-            required
-            className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
-          />
-        </div>
+        <Field
+          label="Correo electrónico"
+          required
+          className="mb-4"
+          labelClassName="text-xs font-semibold text-sub"
+          error={error && (error.toLowerCase().includes("incorrectos") || error.toLowerCase().includes("confirma")) ? error : undefined}
+        >
+          {(props) => (
+            <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 focus-within:border-primary transition-colors">
+              <Mail size={16} className="text-muted" aria-hidden="true" />
+              <input
+                {...props}
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="tu@email.com"
+                className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
+              />
+            </div>
+          )}
+        </Field>
 
-        <label htmlFor="login-password" className="text-xs font-semibold text-sub mb-1.5">Contraseña</label>
-        <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-6 focus-within:border-primary transition-colors">
-          <Lock size={16} className="text-muted" aria-hidden="true" />
-          <input
-            id="login-password"
-            type={showPw ? "text" : "password"}
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="********"
-            required
-            className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPw(!showPw)}
-            className="text-muted focus-visible:ring-2 focus-visible:ring-primary rounded"
-            aria-label={showPw ? "Ocultar contraseña" : "Mostrar contraseña"}
-          >
-            {showPw ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
-          </button>
-        </div>
+        <Field
+          label="Contraseña"
+          required
+          className="mb-6"
+          labelClassName="text-xs font-semibold text-sub"
+          error={error && error.toLowerCase().includes("incorrectos") ? error : undefined}
+        >
+          {(props) => (
+            <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 focus-within:border-primary transition-colors">
+              <Lock size={16} className="text-muted" aria-hidden="true" />
+              <input
+                {...props}
+                type={showPw ? "text" : "password"}
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="********"
+                className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPw(!showPw)}
+                className="text-muted focus-visible:ring-2 focus-visible:ring-primary rounded"
+                aria-label={showPw ? "Ocultar contraseña" : "Mostrar contraseña"}
+              >
+                {showPw ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
+              </button>
+            </div>
+          )}
+        </Field>
 
         <button
           type="submit"
           disabled={loading}
+          aria-busy={loading}
           className="w-full py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-display font-bold text-[15px] rounded-xl shadow-[0_4px_16px_rgba(46,125,50,.3)] disabled:opacity-50 transition-opacity"
         >
           {loading ? "Ingresando..." : "Iniciar sesión"}

@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
-    <div className="px-5 pt-4 pb-4 animate-pulse">
+    <div role="status" aria-busy="true" aria-label="Cargando perfil" className="px-5 pt-4 pb-4 animate-pulse">
       <Skeleton className="h-6 w-24 mb-3.5" />
       <Skeleton className="h-28 rounded-[14px] mb-3.5" />
       <Skeleton className="h-5 w-28 mb-2" />

@@ -28,6 +28,7 @@ export const BottomNav = ({ cartCount = 0 }: { cartCount?: number }) => {
           <Link
             key={href}
             href={href}
+            aria-current={active ? "page" : undefined}
             className="flex flex-col items-center gap-0.5 px-3 py-1 relative transition-opacity"
           >
             {/* Indicator line above active icon */}
@@ -50,7 +51,7 @@ export const BottomNav = ({ cartCount = 0 }: { cartCount?: number }) => {
             />
             <span
               className={cn(
-                "text-[9px] transition-all duration-150",
+                "text-xs transition-all duration-150",
                 active ? "font-bold text-primary-dark" : "font-medium text-muted"
               )}
             >
@@ -60,7 +61,7 @@ export const BottomNav = ({ cartCount = 0 }: { cartCount?: number }) => {
               /* key={cartCount} forces remount on count change → springPop re-fires every increment */
               <span
                 key={cartCount}
-                className="absolute -top-0.5 right-0.5 min-w-3.75 h-3.75 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center px-1 animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+                className="absolute -top-0.5 right-0.5 min-w-4 h-4 rounded-full bg-accent text-white text-xs font-bold flex items-center justify-center px-1 animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
               >
                 {cartCount}
               </span>

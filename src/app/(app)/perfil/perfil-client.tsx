@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { User, Clock, Save, Shield, Settings, ChevronRight, LogOut } from "lucide-react";
+import { User, Clock, Save, Shield, Settings, ChevronRight, LogOut, Accessibility } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const DAY_NAMES: Record<string, string> = {
@@ -47,7 +47,7 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
         >
           <User size={26} className="text-white" aria-hidden="true" />
         </div>
-        <h3 className="font-display font-bold text-[17px] text-text">{name}</h3>
+        <h2 className="font-display font-bold text-[17px] text-text">{name}</h2>
       </div>
 
       {/* Goals */}
@@ -62,7 +62,7 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
           <div key={m.k} className="bg-card rounded-xl p-3 border border-border-l relative overflow-hidden">
             {/* Colored top-accent bar */}
             <div className={`absolute top-0 left-0 right-0 h-0.5 ${m.bar}`} aria-hidden="true" />
-            <span className="text-[10px] text-sub">{m.label}</span>
+            <span className="text-xs text-sub">{m.label}</span>
             <span className={`font-display font-extrabold text-xl ${m.color} tabular-nums block mt-1`}>
               {m.value}
             </span>
@@ -81,25 +81,26 @@ export const PerfilClient = ({ userMeta, goals, recurring }: Props) => {
                 Activo · {recurring.days.map((d: string) => DAY_NAMES[d] ?? d).join(", ")}
               </span>
             </div>
-            <p className="text-[11px] text-sub mb-2.5">
+            <p className="text-xs text-sub mb-2.5">
               {recurring.items.map((i) => i.name).join(", ")}
             </p>
-            <Link href="/carrito" className="px-3 py-1.5 rounded-lg bg-primary-light text-primary font-bold text-[11px] no-underline">
+            <Link href="/carrito" className="px-3 py-1.5 rounded-lg bg-primary-light text-primary font-bold text-xs no-underline">
               Editar
             </Link>
           </div>
         ) : (
-          <p className="text-[11px] text-muted mt-2">Activa al pagar desde el carrito</p>
+          <p className="text-xs text-muted mt-2">Activa al pagar desde el carrito</p>
         )}
       </div>
 
       {/* Menu list */}
       <div className="bg-card rounded-xl overflow-hidden border border-border-l mb-4">
         {[
-          { icon: Clock,    label: "Historial de pedidos",     href: "/perfil/historial" },
-          { icon: Save,     label: "Combinaciones guardadas",  href: "/perfil/favoritos" },
-          { icon: Shield,   label: "Condiciones de salud",     href: "/perfil/condiciones" },
-          { icon: Settings, label: "Configuración",            href: "#" },
+          { icon: Clock,         label: "Historial de pedidos",     href: "/perfil/historial" },
+          { icon: Save,          label: "Combinaciones guardadas",  href: "/perfil/favoritos" },
+          { icon: Shield,        label: "Condiciones de salud",     href: "/perfil/condiciones" },
+          { icon: Accessibility, label: "Accesibilidad",            href: "/accesibilidad" },
+          { icon: Settings,      label: "Configuración",            href: "#" },
         ].map((item, i) => (
           <Link
             key={i}

@@ -28,9 +28,9 @@
   --color-bg: #F6F4F0;
   --color-card: #FFFFFF;
   --color-text: #1A1A18;
-  --color-sub: #6B6B67;
-  --color-muted: #A8A8A4;
-  --color-border: #DDD9D3;
+  --color-sub: #595955;
+  --color-muted: #717171;
+  --color-border: #C9C4BC;
   --color-border-l: #EDEBE6;
 
   /* Status */
@@ -210,4 +210,119 @@ img { transition: opacity 0.3s ease; }
 @keyframes overlayFadeOut {
   from { opacity: 1; }
   to   { opacity: 0; }
+}
+
+/* ============== Checkout / payment-sheet motion ============== */
+
+/* 3D card flip — used by card-form preview when CVV is focused */
+.card3d {
+  perspective: 1000px;
+}
+.card3d-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card3d.flipped .card3d-inner {
+  transform: rotateY(180deg);
+}
+.card3d-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.card3d-back {
+  transform: rotateY(180deg);
+}
+
+/* Bre-B QR vertical scan-line */
+@keyframes qrScan {
+  0%   { transform: translateY(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* QR pulse when scan completes */
+@keyframes qrLock {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); filter: brightness(1.05); }
+}
+
+/* OTP digit fill — confetti-like pop */
+@keyframes otpFill {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+/* Processing shimmer band */
+@keyframes shimmerBand {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-band {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerBand 1.6s linear infinite;
+}
+
+/* Method-card entrance (staggered) */
+@keyframes methodIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Receipt perforated edge — used as a top/bottom mask via repeating gradient.
+   Apply as the ::before on a wrapper that should look "torn". */
+.receipt-edge::before,
+.receipt-edge::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background:
+    radial-gradient(circle at 7px 7px, var(--color-bg) 6px, transparent 6.5px) 0 0 / 14px 14px;
+}
+.receipt-edge::before { top: -7px; }
+.receipt-edge::after  { bottom: -7px; }
+
+/* Spinning processing ring */
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Processing dots */
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.85); }
+  40%           { opacity: 1;   transform: scale(1); }
+}
+
+/* Success checkmark stroke */
+@keyframes checkDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes circleDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Failure cross stroke */
+@keyframes crossDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Tiny shake for declined state */
+@keyframes errShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
 }

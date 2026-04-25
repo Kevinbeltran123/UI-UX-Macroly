@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
@@ -12,6 +12,7 @@ import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { useGoalsStore } from "@/stores/goals-store";
 import { applyFilters, type CategoryId, type MacroFilter, type CatalogFilters } from "@/domain/catalog/filters";
 import { checkCompatibility } from "@/domain/catalog/compatibility";
+import { useAnnounce } from "@/hooks/a11y/use-announce";
 import type { Product } from "@/domain/catalog/product";
 
 type Props = {
@@ -27,9 +28,20 @@ export const CatalogoClient = ({ products, categories }: Props) => {
   const { totals, goals } = useCart(storeGoals);
   // goals is now period-scaled — checkCompatibility(p, totals, goals) unchanged
   const addToCart = useAddToCart();
+  const announce = useAnnounce();
+  const initializedRef = useRef(false);
 
   const filters: CatalogFilters = { category, macro: macroFilter, search };
   const filtered = applyFilters(products, filters);
+
+  useEffect(() => {
+    if (!initializedRef.current) { initializedRef.current = true; return; }
+    const msg = filtered.length === 0
+      ? "No se encontraron productos"
+      : `${filtered.length} producto${filtered.length !== 1 ? "s" : ""} encontrado${filtered.length !== 1 ? "s" : ""}`;
+    announce(msg);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, macroFilter, search]);
 
   return (
     <div className="px-5 pt-4 pb-4 animate-[fadeUp_0.3s_ease]">
@@ -43,8 +55,9 @@ export const CatalogoClient = ({ products, categories }: Props) => {
             <button
               key={c.id}
               onClick={() => setCategory(c.id as CategoryId)}
+              aria-pressed={active}
               className={cn(
-                "px-3.5 py-1.5 text-[11px] font-semibold whitespace-nowrap shrink-0 transition-all duration-150 active:scale-95",
+                "px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap shrink-0 transition-all duration-150 active:scale-95",
                 active
                   ? "bg-primary-dark text-white rounded-lg"
                   : "text-muted hover:text-sub"
@@ -61,11 +74,12 @@ export const CatalogoClient = ({ products, categories }: Props) => {
       <div className="sticky top-[env(safe-area-inset-top,0px)] z-30 -mx-5 px-5 pt-2 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]">
         {/* Search */}
         <div className="flex items-center gap-2.5 bg-card rounded-xl px-3.5 py-3 mb-3 border border-border-l focus-within:border-primary transition-colors shadow-card">
-          <Search size={16} className="text-muted" />
+          <Search size={16} className="text-muted" aria-hidden="true" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar productos..."
+            aria-label="Buscar productos"
             className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
           />
         </div>
@@ -81,8 +95,8 @@ export const CatalogoClient = ({ products, categories }: Props) => {
               ].map((m) => (
                 <div key={m.l} className="flex-1">
                   <div className="flex justify-between mb-0.5">
-                    <span className="text-[9px] font-bold" style={{ color: m.cl }}>{m.l}</span>
-                    <span className="text-[9px] text-sub tabular-nums">{m.c}/{m.g}g</span>
+                    <span className="text-xs font-bold" style={{ color: m.cl }}>{m.l}</span>
+                    <span className="text-xs text-sub tabular-nums">{m.c}/{m.g}g</span>
                   </div>
                   <div className="h-1 rounded-full" style={{ background: m.bg }}>
                     <div

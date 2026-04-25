@@ -97,7 +97,7 @@ export const EducacionClient = ({ articles }: Props) => {
           {/* key={progressPct} → springPop fires when reading progress increments */}
           <span
             key={progressPct}
-            className="text-[11px] text-primary font-bold tabular-nums inline-block animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+            className="text-xs text-primary font-bold tabular-nums inline-block animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
           >
             {progressPct}%
           </span>
@@ -154,13 +154,13 @@ export const EducacionClient = ({ articles }: Props) => {
               aria-hidden="true"
             />
             <div className="relative">
-              <span className="text-[9px] font-bold bg-white/20 px-2.5 py-1 rounded-full uppercase tracking-widest">
+              <span className="text-xs font-bold bg-white/20 px-2.5 py-1 rounded-full uppercase tracking-widest">
                 Guía destacada
               </span>
-              <h3 className="font-display font-extrabold text-[18px] leading-snug mt-3 mb-1.5">
+              <h2 className="font-display font-extrabold text-[18px] leading-snug mt-3 mb-1.5">
                 {featured.title}
-              </h3>
-              <p className="text-[11px] opacity-75 leading-relaxed">
+              </h2>
+              <p className="text-xs opacity-75 leading-relaxed">
                 {featured.content[0]?.text.slice(0, 80)}…
               </p>
               <span className="inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-lg bg-white/15 border border-white/25 text-white font-semibold text-xs">
@@ -181,10 +181,10 @@ export const EducacionClient = ({ articles }: Props) => {
             <section key={col.id} className="mb-6">
               <div className="flex items-baseline justify-between mb-2.5">
                 <div className="min-w-0">
-                  <h3 className="font-display font-bold text-base text-text leading-tight">{col.label}</h3>
-                  <p className="text-[10px] text-muted mt-0.5">{col.intro}</p>
+                  <h2 className="font-display font-bold text-base text-text leading-tight">{col.label}</h2>
+                  <p className="text-xs text-muted mt-0.5">{col.intro}</p>
                 </div>
-                <span className="text-[10px] text-muted shrink-0 ml-2 tabular-nums">
+                <span className="text-xs text-muted shrink-0 ml-2 tabular-nums">
                   {col.items.length} guía{col.items.length !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -234,6 +234,7 @@ const ArticleCard = ({ article, read }: { article: Article; read: boolean }) => 
     <Link
       href={`/educacion/${article.slug}`}
       className="no-underline block w-42.5 shrink-0"
+      aria-label={`Leer guía: ${article.title}${read ? ", leída" : ""}`}
     >
       <div
         className="bg-card rounded-xl border border-border-l h-40 relative overflow-hidden flex flex-col transition-all duration-150 hover:shadow-card active:bg-border-l active:scale-[0.98]"
@@ -246,7 +247,7 @@ const ArticleCard = ({ article, read }: { article: Article; read: boolean }) => 
         />
         <div className="flex flex-col h-full pl-4 pr-3 py-3">
           <div className="flex items-center justify-between mb-2">
-            <span className={cn("text-[9px] font-bold uppercase tracking-widest truncate", color.text)}>
+            <span className={cn("text-xs font-bold uppercase tracking-widest truncate", color.text)}>
               {article.tag}
             </span>
             {read && (
@@ -263,8 +264,8 @@ const ArticleCard = ({ article, read }: { article: Article; read: boolean }) => 
             {article.title}
           </p>
           <div className="flex items-center justify-between pt-2 mt-auto border-t border-border-l">
-            <span className="text-[10px] text-sub font-semibold">Leer →</span>
-            <span className="text-[10px] text-muted tabular-nums">{article.readingTime} min</span>
+            <span className="text-xs text-sub font-semibold">Leer →</span>
+            <span className="text-xs text-muted tabular-nums">{article.readingTime} min</span>
           </div>
         </div>
       </div>
@@ -286,10 +287,10 @@ const PlaceholderCard = ({ tag, title }: { tag: string; title: string }) => {
       />
       <div className="flex flex-col h-full pl-4 pr-3 py-3">
         <div className="flex items-center justify-between mb-2">
-          <span className={cn("text-[9px] font-bold uppercase tracking-widest opacity-50", color.text)}>
+          <span className={cn("text-xs font-bold uppercase tracking-widest opacity-50", color.text)}>
             {tag}
           </span>
-          <span className="text-[8px] text-muted font-semibold uppercase tracking-wider">
+          <span className="text-xs text-muted font-semibold uppercase tracking-wider">
             Pronto
           </span>
         </div>
@@ -297,8 +298,8 @@ const PlaceholderCard = ({ tag, title }: { tag: string; title: string }) => {
           {title}
         </p>
         <div className="flex items-center justify-between pt-2 mt-auto border-t border-dashed border-border">
-          <span className="text-[10px] text-muted">En camino</span>
-          <span className="text-[10px] text-muted">— min</span>
+          <span className="text-xs text-muted">En camino</span>
+          <span className="text-xs text-muted">— min</span>
         </div>
       </div>
     </div>
@@ -308,7 +309,11 @@ const PlaceholderCard = ({ tag, title }: { tag: string; title: string }) => {
 const ArticleListItem = ({ article, read }: { article: Article; read: boolean }) => {
   const color = TAG_COLOR[article.tag ?? ""] ?? FALLBACK_TAG;
   return (
-    <Link href={`/educacion/${article.slug}`} className="no-underline block">
+    <Link
+      href={`/educacion/${article.slug}`}
+      className="no-underline block"
+      aria-label={`Leer guía: ${article.title}${read ? ", leída" : ""}`}
+    >
       <div className="bg-card rounded-xl border border-border-l flex items-stretch transition-all duration-150 hover:shadow-card active:bg-border-l active:scale-[0.98] overflow-hidden">
         <span
           className="w-1 shrink-0"
@@ -321,10 +326,10 @@ const ArticleListItem = ({ article, read }: { article: Article; read: boolean })
               {article.title}
             </p>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className={cn("text-[10px] font-bold uppercase tracking-wider", color.text)}>
+              <span className={cn("text-xs font-bold uppercase tracking-wider", color.text)}>
                 {article.tag}
               </span>
-              <span className="text-[10px] text-muted">· {article.readingTime} min lectura</span>
+              <span className="text-xs text-muted">· {article.readingTime} min lectura</span>
             </div>
           </div>
           {read ? (
@@ -360,13 +365,13 @@ const PlaceholderListItem = ({ tag, title }: { tag: string; title: string }) => 
         <div className="flex-1 min-w-0">
           <p className="font-display font-bold text-[13px] text-muted leading-snug">{title}</p>
           <div className="flex items-center gap-1.5 mt-1">
-            <span className={cn("text-[10px] font-bold uppercase tracking-wider opacity-50", color.text)}>
+            <span className={cn("text-xs font-bold uppercase tracking-wider opacity-50", color.text)}>
               {tag}
             </span>
-            <span className="text-[10px] text-muted">· Próximamente</span>
+            <span className="text-xs text-muted">· Próximamente</span>
           </div>
         </div>
-        <span className="text-[9px] text-muted font-bold uppercase tracking-widest shrink-0">
+        <span className="text-xs text-muted font-bold uppercase tracking-widest shrink-0">
           Pronto
         </span>
       </div>

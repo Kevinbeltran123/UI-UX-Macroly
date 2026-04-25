@@ -142,7 +142,7 @@ export const InicioClient = ({ allProducts }: Props) => {
 
       {/* Recommendations */}
       <div className="flex justify-between items-center mb-3">
-        <h3 className="font-display font-bold text-base text-text">Recomendados</h3>
+        <h2 className="font-display font-bold text-base text-text">Recomendados</h2>
         <Link href="/catalogo" className="text-xs text-primary font-semibold no-underline">
           Ver todo
         </Link>

@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
-    <div className="px-5 pt-4 pb-4 animate-pulse">
+    <div role="status" aria-busy="true" aria-label="Cargando inicio" className="px-5 pt-4 pb-4 animate-pulse">
       <div className="flex justify-between items-center mb-5">
         <div><Skeleton className="h-3 w-20 mb-2" /><Skeleton className="h-6 w-36" /></div>
         <Skeleton className="w-10 h-10 rounded-xl" />

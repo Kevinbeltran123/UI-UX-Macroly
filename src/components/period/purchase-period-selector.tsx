@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Check, Calendar } from "lucide-react";
 import { useCartStore } from "@/stores/cart-store";
+import { useEscapeKey } from "@/hooks/a11y/use-escape-key";
 import { cn } from "@/lib/cn";
 
 const PERIOD_OPTIONS = [1, 2, 3, 5, 7] as const;
@@ -16,6 +17,13 @@ export function PurchasePeriodSelector() {
   const [confirming, setConfirming] = useState<PeriodOption | null>(null);
 
   const { purchaseDays, setPurchaseDays, clear } = useCartStore();
+  const confirmBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (confirming !== null) {
+      setTimeout(() => confirmBtnRef.current?.focus(), 50);
+    }
+  }, [confirming]);
 
   const handleTrigger = () => {
     setConfirming(null);
@@ -31,6 +39,8 @@ export function PurchasePeriodSelector() {
       setOpen(false);
     }, ANIMATION_DURATION);
   };
+
+  useEscapeKey(handleClose, open);
 
   const handleSelect = (days: PeriodOption) => {
     if (days === purchaseDays) {
@@ -102,8 +112,7 @@ export function PurchasePeriodSelector() {
                 : "animate-[sheetSlideUp_260ms_cubic-bezier(0,0,0.2,1)_both]"
             )}
             onClick={(e) => e.stopPropagation()}
-            role="listbox"
-            aria-label="Seleccionar período de compra"
+            role="presentation"
           >
             {/* Handle bar */}
             <div className="w-9 h-1 bg-border rounded-full mx-auto mb-5" aria-hidden="true" />
@@ -122,6 +131,7 @@ export function PurchasePeriodSelector() {
                 </p>
                 <div className="flex gap-2">
                   <button
+                    ref={confirmBtnRef}
                     onClick={handleConfirm}
                     className="flex-1 py-2.5 rounded-lg bg-primary text-white font-bold text-xs"
                   >
@@ -136,7 +146,7 @@ export function PurchasePeriodSelector() {
                 </div>
               </div>
             ) : (
-              <div role="group" className="flex flex-col gap-2">
+              <div role="listbox" aria-label="Seleccionar período de compra" tabIndex={-1} className="flex flex-col gap-2">
                 {PERIOD_OPTIONS.map((days) => {
                   const isSelected = days === purchaseDays;
                   const label = days === 1 ? "1 día" : `${days} días`;

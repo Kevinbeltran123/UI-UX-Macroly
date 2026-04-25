@@ -76,7 +76,7 @@ export default function FavoritosPage() {
             <div className="flex justify-between items-center mb-2">
               <div>
                 <p className="font-display font-bold text-sm text-text">{combo.name}</p>
-                <p className="text-[11px] text-sub mt-0.5">
+                <p className="text-xs text-sub mt-0.5">
                   {new Date(combo.created_at).toLocaleDateString("es-CO")} · {combo.items.reduce((a, i) => a + i.qty, 0)} productos
                 </p>
               </div>
@@ -85,20 +85,20 @@ export default function FavoritosPage() {
               </span>
             </div>
             <div className="flex gap-2 mb-2.5">
-              <span className="text-[10px] font-semibold text-protein">P:{combo.total_protein}g</span>
-              <span className="text-[10px] font-semibold text-carbs">C:{combo.total_carbs}g</span>
-              <span className="text-[10px] font-semibold text-fat">G:{combo.total_fat}g</span>
+              <span className="text-xs font-semibold text-protein">P:{combo.total_protein}g</span>
+              <span className="text-xs font-semibold text-carbs">C:{combo.total_carbs}g</span>
+              <span className="text-xs font-semibold text-fat">G:{combo.total_fat}g</span>
             </div>
             <div className="flex gap-1.5">
               <button
                 onClick={() => handleLoad(combo)}
-                className="flex items-center gap-1 px-3 py-2 rounded-lg bg-primary-light text-primary font-bold text-[11px]"
+                className="flex items-center gap-1 px-3 py-2 rounded-lg bg-primary-light text-primary font-bold text-xs"
               >
                 <ShoppingCart size={12} /> Cargar al carrito
               </button>
               <button
                 onClick={() => handleDelete(combo.id)}
-                className="flex items-center gap-1 px-3 py-2 rounded-lg bg-[#FEE2E2] text-error font-bold text-[11px]"
+                className="flex items-center gap-1 px-3 py-2 rounded-lg bg-[#FEE2E2] text-error font-bold text-xs"
               >
                 <Trash2 size={12} /> Eliminar
               </button>

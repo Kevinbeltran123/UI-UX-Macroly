@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Minus, Plus } from "lucide-react";
 import { computeCalories } from "@/domain/nutrition/macro-goals";
 import { cn } from "@/lib/cn";
+import { useAnnounce } from "@/hooks/a11y/use-announce";
 
 const SLIDERS = [
   { key: "protein" as const, label: "Proteína",      min: 50,  max: 300, color: "var(--color-protein)", light: "var(--color-protein-light)", tokenColor: "text-protein" },
@@ -99,8 +100,8 @@ function MacroSlider({
       </div>
 
       <div className="flex justify-between mt-1 px-10">
-        <span className="text-[10px] text-muted">{min}g</span>
-        <span className="text-[10px] text-muted">{max}g</span>
+        <span className="text-xs text-muted">{min}g</span>
+        <span className="text-xs text-muted">{max}g</span>
       </div>
     </div>
   );
@@ -110,8 +111,14 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [goals, setGoals] = useState<Goals>({ protein: 150, carbs: 250, fat: 65 });
   const [loading, setLoading] = useState(false);
+  const announce = useAnnounce();
 
-  const setMacro = (key: MacroKey) => (v: number) => setGoals((g) => ({ ...g, [key]: v }));
+  const setMacro = (key: MacroKey) => (v: number) => {
+    const next = { ...goals, [key]: v };
+    setGoals(next);
+    const label = SLIDERS.find((s) => s.key === key)?.label ?? key;
+    announce(`${label}: ${v}g. Total ${computeCalories(next).toLocaleString()} kcal`);
+  };
   const calories = computeCalories({ ...goals });
 
   const handleSave = async () => {
@@ -128,8 +135,11 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-bg">
       <div className="flex-1 px-5 pt-10 pb-6 flex flex-col">
-        {/* Progress dots */}
-        <div className="flex gap-2 justify-center mb-8">
+        {/* Progress dots — placeholder UI: dots 1 and 2 are not yet implemented as separate steps.
+            The three-step onboarding suggested by the design exists only visually here. If real
+            multi-step onboarding is added later, route each step to its own page and use <Field>
+            from the start so a11y wiring is correct. */}
+        <div className="flex gap-2 justify-center mb-8" aria-hidden="true">
           <div className="w-2.5 h-2.5 rounded-full bg-border" />
           <div className="w-2.5 h-2.5 rounded-full bg-border" />
           <div className="w-6 h-2.5 rounded-[5px] bg-primary" />
@@ -159,7 +169,7 @@ export default function OnboardingPage() {
         {/* Calorie + action — unified bottom row */}
         <div className="mt-2 flex items-center gap-3 bg-card rounded-xl p-4 border border-border-l mb-4">
           <div className="flex-1">
-            <p className="text-[10px] text-muted uppercase tracking-wide mb-0.5">Total</p>
+            <p className="text-xs text-muted uppercase tracking-wide mb-0.5">Total</p>
             <p className="font-display font-extrabold text-2xl text-text tabular-nums leading-none">
               {calories.toLocaleString()}
               <span className="text-sm font-semibold text-sub ml-1">kcal/día</span>
@@ -168,6 +178,7 @@ export default function OnboardingPage() {
           <button
             onClick={handleSave}
             disabled={loading}
+            aria-busy={loading}
             className="px-5 py-3 bg-primary-dark text-white font-bold text-sm rounded-xl disabled:opacity-50 transition-opacity shrink-0"
           >
             {loading ? "Guardando…" : "Comenzar"}

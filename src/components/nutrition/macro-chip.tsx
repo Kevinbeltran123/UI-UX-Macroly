@@ -16,7 +16,7 @@ export const MacroChip = ({ type, value, compact = false }: MacroChipProps) => {
   return (
     <span
       className={`${s.bg} ${s.text} font-semibold rounded tabular-nums ${
-        compact ? "text-[8px] px-1.5 py-0.5" : "text-[11px] px-2.5 py-1"
+        compact ? "text-xs px-1.5 py-0.5" : "text-xs px-2.5 py-1"
       }`}
     >
       {s.label} {value}g

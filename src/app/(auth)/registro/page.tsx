@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { LogoIsotipo } from "@/components/layout/logo";
 import { Mail, Lock, User, MailCheck } from "lucide-react";
 import Link from "next/link";
+import { Field } from "@/components/a11y/field";
 
 const mapSignupError = (raw: string): string => {
   const msg = raw.toLowerCase();
@@ -86,7 +87,7 @@ export default function RegistroPage() {
     return (
       <div className="min-h-screen flex flex-col bg-card">
         <div className="bg-gradient-to-br from-primary-dark via-primary to-primary-mid rounded-b-[40px] px-8 pt-16 pb-10 flex flex-col items-center gap-3">
-          <LogoIsotipo size={56} />
+          <LogoIsotipo size={56} decorative />
           <h1 className="font-display font-black text-3xl text-white">
             Macro<span className="text-primary-border">ly</span>
           </h1>
@@ -99,9 +100,9 @@ export default function RegistroPage() {
           <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-5">
             <MailCheck size={40} className="text-primary" />
           </div>
-          <h2 className="font-display font-bold text-2xl text-text mb-3">
+          <h1 className="font-display font-bold text-2xl text-text mb-3">
             Revisa tu correo
-          </h2>
+          </h1>
           <p className="text-sm text-sub leading-relaxed mb-2">
             Enviamos un enlace de confirmación a
           </p>
@@ -119,6 +120,7 @@ export default function RegistroPage() {
             type="button"
             onClick={handleResend}
             disabled={loading}
+            aria-busy={loading}
             className="text-primary font-semibold text-sm mb-4 disabled:opacity-50"
           >
             {loading ? "Reenviando..." : "Reenviar correo"}
@@ -135,10 +137,10 @@ export default function RegistroPage() {
   return (
     <div className="min-h-screen flex flex-col bg-card">
       <div className="bg-gradient-to-br from-primary-dark via-primary to-primary-mid rounded-b-[40px] px-8 pt-16 pb-10 flex flex-col items-center gap-3">
-        <LogoIsotipo size={56} />
-        <h1 className="font-display font-black text-3xl text-white">
+        <LogoIsotipo size={56} decorative />
+        <p className="font-display font-black text-3xl text-white" aria-hidden="true">
           Macro<span className="text-primary-border">ly</span>
-        </h1>
+        </p>
         <p className="text-white/60 text-xs tracking-[3px] uppercase">
           Nutrición inteligente
         </p>
@@ -152,58 +154,88 @@ export default function RegistroPage() {
           >
             Iniciar sesión
           </Link>
-          <div className="flex-1 text-center pb-3 text-sm font-semibold text-primary border-b-[3px] border-primary -mb-[2px]">
+          <h1 className="flex-1 text-center pb-3 text-sm font-semibold text-primary border-b-[3px] border-primary -mb-[2px] m-0">
             Registrarse
-          </div>
+          </h1>
         </div>
 
-        {error && (
-          <p className="text-error text-sm font-semibold mb-4 text-center">{error}</p>
+        {error && !error.includes("correo") && !error.includes("registrado") && !error.includes("contraseña") && (
+          <p role="alert" className="text-error text-sm font-semibold mb-4 text-center">{error}</p>
         )}
 
-        <label className="text-xs font-semibold text-sub mb-1.5">Nombre completo</label>
-        <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-4 focus-within:border-primary transition-colors">
-          <User size={16} className="text-muted" />
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Tu nombre"
-            required
-            className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
-          />
-        </div>
+        <Field
+          label="Nombre completo"
+          required
+          className="mb-4"
+          labelClassName="text-xs font-semibold text-sub"
+        >
+          {(props) => (
+            <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 focus-within:border-primary transition-colors">
+              <User size={16} className="text-muted" aria-hidden="true" />
+              <input
+                {...props}
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Tu nombre"
+                autoComplete="name"
+                className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
+              />
+            </div>
+          )}
+        </Field>
 
-        <label className="text-xs font-semibold text-sub mb-1.5">Correo electrónico</label>
-        <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-4 focus-within:border-primary transition-colors">
-          <Mail size={16} className="text-muted" />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="tu@email.com"
-            required
-            className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
-          />
-        </div>
+        <Field
+          label="Correo electrónico"
+          required
+          className="mb-4"
+          labelClassName="text-xs font-semibold text-sub"
+          error={error && (error.includes("correo") || error.includes("registrado")) ? error : undefined}
+        >
+          {(props) => (
+            <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 focus-within:border-primary transition-colors">
+              <Mail size={16} className="text-muted" aria-hidden="true" />
+              <input
+                {...props}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="tu@email.com"
+                autoComplete="email"
+                className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
+              />
+            </div>
+          )}
+        </Field>
 
-        <label className="text-xs font-semibold text-sub mb-1.5">Contraseña</label>
-        <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 mb-6 focus-within:border-primary transition-colors">
-          <Lock size={16} className="text-muted" />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Mínimo 6 caracteres"
-            required
-            minLength={6}
-            className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
-          />
-        </div>
+        <Field
+          label="Contraseña"
+          required
+          className="mb-6"
+          labelClassName="text-xs font-semibold text-sub"
+          error={error && error.includes("contraseña") ? error : undefined}
+        >
+          {(props) => (
+            <div className="flex items-center gap-3 border-2 border-border rounded-xl px-4 py-3.5 focus-within:border-primary transition-colors">
+              <Lock size={16} className="text-muted" aria-hidden="true" />
+              <input
+                {...props}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Mínimo 6 caracteres"
+                autoComplete="new-password"
+                minLength={6}
+                className="flex-1 outline-none text-sm text-text bg-transparent placeholder:text-muted"
+              />
+            </div>
+          )}
+        </Field>
 
         <button
           type="submit"
           disabled={loading}
+          aria-busy={loading}
           className="w-full py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-display font-bold text-[15px] rounded-xl shadow-[0_4px_16px_rgba(46,125,50,.3)] disabled:opacity-50"
         >
           {loading ? "Creando cuenta..." : "Crear cuenta"}

@@ -82,7 +82,7 @@ export const ProductDetailClient = ({ product, allProducts }: Props) => {
             return (
               <span
                 key={tag}
-                className={cn("flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold", meta.bg, meta.color)}
+                className={cn("flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold", meta.bg, meta.color)}
               >
                 <Icon size={11} aria-hidden="true" />
                 {meta.label}
@@ -90,7 +90,7 @@ export const ProductDetailClient = ({ product, allProducts }: Props) => {
             );
           })}
           {hasMeal && (
-            <span className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-border-l text-sub">
+            <span className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-border-l text-sub">
               {MEAL_LABELS[product.mealContext]}
             </span>
           )}
@@ -119,7 +119,7 @@ export const ProductDetailClient = ({ product, allProducts }: Props) => {
                   <div className="h-14 rounded-lg bg-linear-to-br from-primary-light to-primary-border mb-1.5 relative overflow-hidden">
                     {alt.imageUrl && <Image src={alt.imageUrl} alt={alt.name} fill className="object-cover" sizes="140px" unoptimized />}
                   </div>
-                  <p className="font-display font-bold text-[11px] text-text mb-1">{alt.name}</p>
+                  <p className="font-display font-bold text-xs text-text mb-1">{alt.name}</p>
                   <div className="flex gap-1 mb-1">
                     <MacroChip type="protein" value={alt.protein} compact />
                     <MacroChip type="carbs" value={alt.carbs} compact />
