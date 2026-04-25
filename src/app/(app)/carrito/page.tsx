@@ -89,11 +89,17 @@ export default function CarritoPage() {
   };
 
   return (
-    <div className="px-5 pt-4 pb-4 relative animate-[fadeUp_0.3s_ease]">
-      <h1 className="font-display font-extrabold text-xl text-text mb-4">Mi Carrito</h1>
+    /* Constrained-viewport layout: header + items (scrolls) + footer (always visible).
+       Height = viewport minus iOS status bar minus bottom nav reservation. */
+    <div
+      className="px-5 pt-4 flex flex-col relative animate-[fadeUp_0.3s_ease]"
+      style={{ height: "calc(100dvh - env(safe-area-inset-top, 0px) - 5rem)" }}
+    >
+      <h1 className="font-display font-extrabold text-xl text-text mb-3 shrink-0">Mi Carrito</h1>
 
-      {/* Macro progress — sticky with frosted glass + soft downward drop shadow */}
-      <div className="sticky top-0 z-30 -mx-5 px-5 pt-2 pb-3 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]">
+      {/* Macro progress — fixed at top of column. No longer needs to be sticky:
+          the items list scrolls internally, so macros stay visible by virtue of column layout. */}
+      <div className="shrink-0 mb-3">
         {goalsLoading ? (
           <Skeleton className="h-22 w-full rounded-xl" />
         ) : (
@@ -105,12 +111,14 @@ export default function CarritoPage() {
         )}
       </div>
 
-      <PurchasePeriodSelector />
+      <div className="shrink-0">
+        <PurchasePeriodSelector />
+      </div>
 
-      {/* Empty state */}
-      {items.length === 0 && !showCheckout && (
-        <div className="text-center py-12">
-          <div className="w-14 h-14 rounded-xl bg-border-l mx-auto mb-3.5 flex items-center justify-center">
+      {/* Empty state — centered in available space when no items */}
+      {items.length === 0 && !showCheckout ? (
+        <div className="flex-1 flex flex-col items-center justify-center text-center">
+          <div className="w-14 h-14 rounded-xl bg-border-l mb-3.5 flex items-center justify-center">
             <ShoppingCart size={22} className="text-muted" aria-hidden="true" />
           </div>
           <p className="text-sm text-sub mb-4">Agrega productos del catálogo</p>
@@ -118,83 +126,94 @@ export default function CarritoPage() {
             Ir al catálogo
           </Link>
         </div>
-      )}
-
-      {/* Cart items — staggered entrance */}
-      {items.map((item, index) => (
-        <div
-          key={item.id}
-          className="bg-card rounded-xl p-3 mb-2 border border-border-l flex items-center gap-2.5 animate-[staggerFadeUp_0.35s_ease_both]"
-          style={{ animationDelay: `${index * 50}ms` }}
-        >
-          <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-linear-to-br from-primary-light to-primary-border relative">
-            {item.imageUrl && (
-              <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="48px" unoptimized />
-            )}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-display font-bold text-xs text-text truncate">{item.name}</p>
-            <span className="text-[10px] text-muted">
-              P:{item.protein * item.qty}g · C:{item.carbs * item.qty}g · G:{item.fat * item.qty}g
-            </span>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => remove(item.id)}
-              className="w-7 h-7 rounded-lg bg-border-l text-sub flex items-center justify-center transition-all duration-100 active:bg-border active:scale-90"
-              aria-label="Reducir cantidad"
-            >
-              <Minus size={12} aria-hidden="true" />
-            </button>
-            <span className="text-sm font-bold w-5 text-center tabular-nums">{item.qty}</span>
-            <button
-              onClick={() => handleIncrease(item)}
-              className="w-7 h-7 rounded-lg bg-primary-light text-primary flex items-center justify-center transition-all duration-100 active:bg-primary-border active:scale-90"
-              aria-label="Aumentar cantidad"
-            >
-              <Plus size={12} aria-hidden="true" />
-            </button>
-          </div>
-        </div>
-      ))}
-
-      {/* Footer */}
-      {items.length > 0 && !showCheckout && (
+      ) : (
         <>
-          <button
-            onClick={handleSaveFavorite}
-            className="w-full mt-2 mb-4 py-2.5 rounded-xl border border-border text-xs text-sub font-semibold flex items-center justify-center gap-1.5 transition-colors active:bg-border-l"
-          >
-            <Heart size={13} className="text-muted" aria-hidden="true" />
-            Guardar combinación como favorita
-          </button>
-
-          <div className="bg-card rounded-xl p-4 border border-border-l">
-            <div className="flex justify-between items-baseline mb-4">
-              <span className="font-display font-bold text-base text-text">Total</span>
-              {/* key={totals.price} remounts the span on price change, retriggering the pop animation */}
-              <span
-                key={totals.price}
-                className="font-display font-extrabold text-xl text-primary tabular-nums inline-block animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+          {/* Items list — scrolls internally when content exceeds available height */}
+          <div className="flex-1 overflow-y-auto -mx-5 px-5 mt-3 pb-1">
+            {items.map((item, index) => (
+              <div
+                key={item.id}
+                className="bg-card rounded-xl p-3 mb-2 border border-border-l flex items-center gap-2.5 animate-[staggerFadeUp_0.35s_ease_both]"
+                style={{ animationDelay: `${index * 50}ms` }}
               >
-                ${totals.price.toLocaleString()}
-              </span>
-            </div>
-            <button
-              onClick={handlePay}
-              disabled={saving}
-              className="w-full py-3.5 rounded-xl bg-primary-dark text-white font-bold text-sm disabled:opacity-50 transition-opacity"
-            >
-              {saving ? "Procesando…" : `Pagar $${totals.price.toLocaleString()}`}
-            </button>
-            <p className="text-[10px] text-muted text-center mt-2">
-              Al pagar podrás guardar y programar recurrencia
-            </p>
+                <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-linear-to-br from-primary-light to-primary-border relative">
+                  {item.imageUrl && (
+                    <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="48px" unoptimized />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-display font-bold text-xs text-text truncate">{item.name}</p>
+                  {/* key={item.qty} → macro line pops with springPop when quantity changes */}
+                  <span
+                    key={item.qty}
+                    className="text-[10px] text-muted inline-block animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+                  >
+                    P:{item.protein * item.qty}g · C:{item.carbs * item.qty}g · G:{item.fat * item.qty}g
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => remove(item.id)}
+                    className="w-7 h-7 rounded-lg bg-border-l text-sub flex items-center justify-center transition-all duration-100 active:bg-border active:scale-90"
+                    aria-label="Reducir cantidad"
+                  >
+                    <Minus size={12} aria-hidden="true" />
+                  </button>
+                  {/* key={item.qty} → quantity number pops on every +/- tap */}
+                  <span
+                    key={item.qty}
+                    className="text-sm font-bold w-5 text-center tabular-nums inline-block animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+                  >
+                    {item.qty}
+                  </span>
+                  <button
+                    onClick={() => handleIncrease(item)}
+                    className="w-7 h-7 rounded-lg bg-primary-light text-primary flex items-center justify-center transition-all duration-100 active:bg-primary-border active:scale-90"
+                    aria-label="Aumentar cantidad"
+                  >
+                    <Plus size={12} aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
+
+          {/* Footer — favorite button + total + pay. Always visible at bottom of viewport. */}
+          {!showCheckout && (
+            <div className="shrink-0 pt-2 pb-3">
+              <button
+                onClick={handleSaveFavorite}
+                className="w-full mb-2.5 py-2.5 rounded-xl border border-border text-xs text-sub font-semibold flex items-center justify-center gap-1.5 transition-colors active:bg-border-l"
+              >
+                <Heart size={13} className="text-muted" aria-hidden="true" />
+                Guardar combinación como favorita
+              </button>
+
+              <div className="bg-card rounded-xl p-4 border border-border-l">
+                <div className="flex justify-between items-baseline mb-3">
+                  <span className="font-display font-bold text-base text-text">Total</span>
+                  {/* key={totals.price} remounts the span on price change, retriggering the pop animation */}
+                  <span
+                    key={totals.price}
+                    className="font-display font-extrabold text-xl text-primary tabular-nums inline-block animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+                  >
+                    ${totals.price.toLocaleString()}
+                  </span>
+                </div>
+                <button
+                  onClick={handlePay}
+                  disabled={saving}
+                  className="w-full py-3 rounded-xl bg-primary-dark text-white font-bold text-sm disabled:opacity-50 transition-opacity"
+                >
+                  {saving ? "Procesando…" : `Pagar $${totals.price.toLocaleString()}`}
+                </button>
+              </div>
+            </div>
+          )}
         </>
       )}
 
-      {/* Checkout modal */}
+      {/* Checkout modal — independent fixed overlay, unaffected by container layout */}
       {showCheckout && (
         <div className="fixed inset-0 bg-black/50 z-100 flex items-end justify-center animate-[overlayFadeIn_260ms_ease_both]">
           <div className="bg-card rounded-t-3xl p-6 pb-10 w-full max-h-[90vh] overflow-y-auto relative animate-[sheetSlideUp_260ms_cubic-bezier(0,0,0.2,1)_both]">

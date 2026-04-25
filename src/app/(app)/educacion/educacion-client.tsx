@@ -94,7 +94,13 @@ export const EducacionClient = ({ articles }: Props) => {
               ? "¡Has leído todas las guías!"
               : `Has leído ${readCount} de ${totalCount} guías`}
           </span>
-          <span className="text-[11px] text-primary font-bold tabular-nums">{progressPct}%</span>
+          {/* key={progressPct} → springPop fires when reading progress increments */}
+          <span
+            key={progressPct}
+            className="text-[11px] text-primary font-bold tabular-nums inline-block animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+          >
+            {progressPct}%
+          </span>
         </div>
         <div className="h-1.5 bg-border-l rounded-full overflow-hidden">
           <div
@@ -108,7 +114,7 @@ export const EducacionClient = ({ articles }: Props) => {
       <div
         role="group"
         aria-label="Filtrar por categoría"
-        className="sticky top-0 z-30 flex gap-2 overflow-x-auto scrollbar-hide pt-2 pb-3 mb-3 -mx-5 px-5 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]"
+        className="sticky top-[env(safe-area-inset-top,0px)] z-30 flex gap-2 overflow-x-auto scrollbar-hide pt-2 pb-3 mb-3 -mx-5 px-5 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]"
       >
         {FILTER_CHIPS.map((chip) => {
           const active = filter === chip.value;

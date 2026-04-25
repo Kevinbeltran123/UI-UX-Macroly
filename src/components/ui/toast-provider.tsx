@@ -14,7 +14,10 @@ export const ToastProvider = () => {
 
   return (
     <div
-      className="fixed bottom-20 inset-x-0 z-200 flex flex-col items-center gap-2 pointer-events-none"
+      /* bottom = nav height (~56px) + safe-area-inset-bottom + 12px breathing room.
+         Static bottom-20 (80px) overlapped the nav icons on iPhones with home indicator. */
+      style={{ bottom: "calc(56px + env(safe-area-inset-bottom, 0px) + 12px)" }}
+      className="fixed inset-x-0 z-200 flex flex-col items-center gap-2 pointer-events-none"
       aria-label="Notificaciones"
     >
       {toasts.map((toast) => {

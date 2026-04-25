@@ -71,6 +71,14 @@ export default function RootLayout({
     <html lang="es" className={`${plusJakarta.variable} ${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <PWARegister />
+        {/* Status bar mask — fixed cream band that covers content scrolling under the iOS notch.
+            Lives in root layout so it covers ALL pages: (app), (auth), and any future route group.
+            Height = 0 in browsers / Android (safe-area returns 0); ~47–59px in iOS standalone PWA. */}
+        <div
+          aria-hidden="true"
+          className="fixed top-0 left-0 right-0 bg-bg z-40 pointer-events-none"
+          style={{ height: "env(safe-area-inset-top, 0px)" }}
+        />
         {children}
       </body>
     </html>

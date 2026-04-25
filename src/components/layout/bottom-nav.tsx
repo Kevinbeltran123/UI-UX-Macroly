@@ -20,7 +20,7 @@ export const BottomNav = ({ cartCount = 0 }: { cartCount?: number }) => {
     <nav
       aria-label="Navegación principal"
       className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-l flex justify-around pt-2 z-50"
-      style={{ paddingBottom: "calc(0.625rem + env(safe-area-inset-bottom, 0px))" }}
+      style={{ paddingBottom: "calc(0.375rem + env(safe-area-inset-bottom, 0px))" }}
     >
       {tabs.map(({ href, icon: Icon, label }) => {
         const active = pathname.startsWith(href);
@@ -57,7 +57,11 @@ export const BottomNav = ({ cartCount = 0 }: { cartCount?: number }) => {
               {label}
             </span>
             {href === "/carrito" && cartCount > 0 && (
-              <span className="absolute -top-0.5 right-0.5 min-w-3.75 h-3.75 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center px-1 animate-[badgePulse_0.3s_ease]">
+              /* key={cartCount} forces remount on count change → springPop re-fires every increment */
+              <span
+                key={cartCount}
+                className="absolute -top-0.5 right-0.5 min-w-3.75 h-3.75 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center px-1 animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+              >
                 {cartCount}
               </span>
             )}

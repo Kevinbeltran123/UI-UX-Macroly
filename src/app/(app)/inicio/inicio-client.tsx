@@ -61,14 +61,24 @@ export const InicioClient = ({ allProducts }: Props) => {
 
   const calPct = goals.calories > 0 ? Math.round((totals.calories / goals.calories) * 100) : 0;
 
-  const calStatus =
+  /* Wrap the % in a span with key={calPct} so it pops with springPop every time the value changes. */
+  const pctSpan = (
+    <span
+      key={calPct}
+      className="inline-block font-bold text-text animate-[springPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
+    >
+      {calPct}%
+    </span>
+  );
+
+  const calStatus: React.ReactNode =
     calPct === 0
       ? "Agrega productos para cubrir tus metas de hoy"
       : calPct < 50
-      ? `Llevas el ${calPct}% de tus calorías — sigue sumando`
+      ? <>Llevas el {pctSpan} de tus calorías — sigue sumando</>
       : calPct < 90
-      ? `¡Vas bien! ${calPct}% de tu meta calórica cubierta`
-      : `${calPct}% de tus calorías — casi listo`;
+      ? <>¡Vas bien! {pctSpan} de tu meta calórica cubierta</>
+      : <>{pctSpan} de tus calorías — casi listo</>;
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Buenos días" : hour < 18 ? "Buenas tardes" : "Buenas noches";
@@ -99,7 +109,7 @@ export const InicioClient = ({ allProducts }: Props) => {
       <div
         role="group"
         aria-label="Filtrar recomendaciones por momento"
-        className="sticky top-0 z-30 -mx-5 px-5 pt-2 mb-4 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]"
+        className="sticky top-[env(safe-area-inset-top,0px)] z-30 -mx-5 px-5 pt-2 mb-4 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]"
       >
         <div className="flex justify-center overflow-x-auto scrollbar-hide border-b border-border-l">
           {MEAL_CHIPS.map((chip) => {

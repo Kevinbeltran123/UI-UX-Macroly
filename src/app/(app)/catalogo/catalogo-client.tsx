@@ -56,8 +56,9 @@ export const CatalogoClient = ({ products, categories }: Props) => {
         })}
       </div>
 
-      {/* Sticky: search + macro progress + macro filter. Frosted glass + soft downward drop shadow. */}
-      <div className="sticky top-0 z-30 -mx-5 px-5 pt-2 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]">
+      {/* Sticky: search + macro progress + macro filter. Frosted glass + soft downward drop shadow.
+          top respects iOS status bar via safe-area-inset-top so sticky doesn't slide under the notch. */}
+      <div className="sticky top-[env(safe-area-inset-top,0px)] z-30 -mx-5 px-5 pt-2 bg-bg/90 backdrop-blur-md shadow-[0_6px_16px_-8px_rgba(26,26,24,0.12)]">
         {/* Search */}
         <div className="flex items-center gap-2.5 bg-card rounded-xl px-3.5 py-3 mb-3 border border-border-l focus-within:border-primary transition-colors shadow-card">
           <Search size={16} className="text-muted" />
