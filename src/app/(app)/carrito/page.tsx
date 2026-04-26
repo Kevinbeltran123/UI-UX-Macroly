@@ -248,8 +248,10 @@ export default function CarritoPage() {
         onSuccess={handlePaymentSuccess}
       />
 
-      {/* Post-payment recurring prompt — kept from before */}
-      <Dialog open={showCheckout} onClose={handleSkipRecurring} title="Pedido confirmado" className="relative">
+      {/* Post-payment recurring prompt — kept from before. The X button inside uses
+          absolute positioning; that works because the Dialog itself is position:fixed,
+          which establishes the containing block for absolutely-positioned descendants. */}
+      <Dialog open={showCheckout} onClose={handleSkipRecurring} title="Pedido confirmado">
             <div className="w-9 h-1 bg-border rounded-full mx-auto mb-5" aria-hidden="true" />
             <button
               onClick={handleSkipRecurring}
