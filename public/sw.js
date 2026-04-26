@@ -1,7 +1,7 @@
 // Macroly PWA Service Worker
 // Network-first for HTML, cache-first for assets
 
-const CACHE = "macroly-v1";
+const CACHE = "macroly-v2";
 const ASSETS = [
   "/",
   "/login",
