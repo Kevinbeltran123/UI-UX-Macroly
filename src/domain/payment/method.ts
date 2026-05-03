@@ -34,7 +34,7 @@ export const PAYMENT_METHODS: Record<PaymentMethod, MethodConfig> = {
     tagline: "Paga con tu celular",
     accent: "#DA0081",
     accentSoft: "#FCE7F3",
-    latencyMs: 1600,
+    latencyMs: 2300,
     processingMessages: [
       "Enviando notificación a tu Nequi…",
       "Esperando confirmación…",
@@ -47,7 +47,7 @@ export const PAYMENT_METHODS: Record<PaymentMethod, MethodConfig> = {
     tagline: "Cuenta digital de Davivienda",
     accent: "#ED1C27",
     accentSoft: "#FEE2E2",
-    latencyMs: 1800,
+    latencyMs: 2400,
     processingMessages: [
       "Notificación enviada a Daviplata…",
       "Verificando saldo disponible…",
@@ -60,7 +60,7 @@ export const PAYMENT_METHODS: Record<PaymentMethod, MethodConfig> = {
     tagline: "Pago inmediato interbancario",
     accent: "#0E7C7B",
     accentSoft: "#E0F2F1",
-    latencyMs: 1100,
+    latencyMs: 2200,
     processingMessages: [
       "Buscando llave Bre-B…",
       "Validando con tu banco…",
@@ -73,7 +73,7 @@ export const PAYMENT_METHODS: Record<PaymentMethod, MethodConfig> = {
     tagline: "Paga al recibir tu pedido",
     accent: "#2D6A4F",
     accentSoft: "#EDF5F0",
-    latencyMs: 600,
+    latencyMs: 2000,
     processingMessages: [
       "Reservando pedido…",
       "Asignando repartidor…",
