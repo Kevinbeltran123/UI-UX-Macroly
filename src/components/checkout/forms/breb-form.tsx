@@ -275,16 +275,16 @@ function KeyPanel({
       <div className="h-7 mt-2.5 flex items-center justify-center">
         {kind ? (
           <span
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold animate-[fadeUp_0.25s_ease]"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.6875rem] font-bold animate-[fadeUp_0.25s_ease]"
             style={{ backgroundColor: `${accent}1A`, color: accent }}
           >
             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accent }} aria-hidden="true" />
             Llave de tipo: {brebKeyLabel[kind]}
           </span>
         ) : llave ? (
-          <span className="text-[11px] text-muted">Formato no reconocido</span>
+          <span className="text-[0.6875rem] text-muted">Formato no reconocido</span>
         ) : (
-          <span className="text-[11px] text-muted">Tipo se detectará automáticamente</span>
+          <span className="text-[0.6875rem] text-muted">Tipo se detectará automáticamente</span>
         )}
       </div>
 

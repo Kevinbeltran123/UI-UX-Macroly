@@ -32,7 +32,7 @@ export function MethodPicker({ total, itemCount, onPick }: Props) {
       {/* ===== Order summary block — editorial, monospaced amount ===== */}
       <div className="mb-5 p-4 bg-card border border-border-l rounded-2xl flex items-end justify-between">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-1">
+          <p className="text-[0.6875rem] uppercase tracking-[0.16em] text-muted font-semibold mb-1">
             Total a pagar
           </p>
           <p className="font-display font-extrabold text-3xl text-text tabular-nums">
@@ -42,12 +42,12 @@ export function MethodPicker({ total, itemCount, onPick }: Props) {
             {itemCount} producto{itemCount !== 1 ? "s" : ""}
           </p>
         </div>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-bold pb-1.5">
+        <span className="text-[0.625rem] uppercase tracking-[0.2em] text-muted font-bold pb-1.5">
           COP
         </span>
       </div>
 
-      <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2.5 px-1">
+      <p className="text-[0.6875rem] uppercase tracking-[0.16em] text-muted font-semibold mb-2.5 px-1">
         Elige cómo pagar
       </p>
 
@@ -75,7 +75,7 @@ export function MethodPicker({ total, itemCount, onPick }: Props) {
                 <span className="block font-display font-bold text-[15px] text-text leading-tight">
                   {config.label}
                 </span>
-                <span className="block text-[11px] text-sub truncate mt-0.5">
+                <span className="block text-[0.6875rem] text-sub truncate mt-0.5">
                   {SUBTITLE[id]}
                 </span>
               </span>

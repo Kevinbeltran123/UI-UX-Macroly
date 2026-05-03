@@ -50,7 +50,7 @@ export function CashForm({ total, onSubmit }: Props) {
         <label htmlFor="cash-paid-amount" className="block text-sm font-semibold text-text mb-1.5">
           ¿Con cuánto vas a pagar?
         </label>
-        <p className="text-[11px] text-sub leading-snug mb-2.5">
+        <p className="text-[0.6875rem] text-sub leading-snug mb-2.5">
           Te llevamos el vuelto preparado al momento de la entrega.
         </p>
         <div className="relative">
@@ -74,7 +74,7 @@ export function CashForm({ total, onSubmit }: Props) {
               key={amount}
               type="button"
               onClick={() => setPaidRaw(String(amount))}
-              className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-card border border-border-l text-sub active:scale-95 transition-transform"
+              className="px-3 py-1.5 rounded-lg text-[0.6875rem] font-bold bg-card border border-border-l text-sub active:scale-95 transition-transform"
             >
               {amount === total ? "Pago exacto" : `$${amount.toLocaleString("es-CO")}`}
             </button>
@@ -112,7 +112,7 @@ export function CashForm({ total, onSubmit }: Props) {
               <button
                 type="button"
                 onClick={() => setPaidRaw(String(result.suggestion))}
-                className="text-[11px] font-bold text-error flex items-center gap-1 active:opacity-60"
+                className="text-[0.6875rem] font-bold text-error flex items-center gap-1 active:opacity-60"
               >
                 Sube a ${result.suggestion.toLocaleString("es-CO")}
                 <ArrowRight size={11} aria-hidden="true" />

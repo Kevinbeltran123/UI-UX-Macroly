@@ -40,7 +40,7 @@ export default function AccesibilidadPage() {
           <h2 className="font-display font-bold text-lg text-text mb-2">Lo que ya está cubierto</h2>
           <ul className="text-sm text-sub leading-relaxed list-disc pl-5 space-y-1.5">
             <li>Tokens de color con contraste AA verificado (≥4.5:1 texto, ≥3:1 elementos no textuales)</li>
-            <li>Tipografía mínima de 12px en toda la interfaz</li>
+            <li>Tipografía en unidades relativas (rem): la app respeta el tamaño de fuente configurado en tu navegador o sistema operativo</li>
             <li>Zoom hasta 400% sin pérdida de funcionalidad</li>
             <li>Navegación completa por teclado con foco visible</li>
             <li>Encabezados (h1–h2) con jerarquía consistente</li>

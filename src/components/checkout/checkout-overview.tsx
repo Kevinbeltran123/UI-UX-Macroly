@@ -78,14 +78,14 @@ export function CheckoutOverview({
                 <p className="font-display font-extrabold text-[14px] text-text leading-tight truncate">
                   {delivery.address}
                 </p>
-                <p className="text-[11px] text-sub truncate mt-0.5">
+                <p className="text-[0.6875rem] text-sub truncate mt-0.5">
                   {delivery.details || "Tocar para editar"}
                 </p>
               </div>
               <ChevronRight size={16} className="text-muted shrink-0" aria-hidden="true" />
             </div>
             {/* Top-right accent */}
-            <div className="absolute top-4 left-4 bg-primary-dark text-white text-[10px] uppercase tracking-[0.16em] font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5">
+            <div className="absolute top-4 left-4 bg-primary-dark text-white text-[0.625rem] uppercase tracking-[0.16em] font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-soft animate-pulse" aria-hidden="true" />
               Entregamos aquí
             </div>
@@ -155,11 +155,11 @@ export function CheckoutOverview({
                           {speed === "fast" ? "Rápido" : "Estándar"}
                         </span>
                       </span>
-                      <span className={cn("text-[11px] font-bold tabular-nums", active ? "text-white" : speedFee === 0 ? "text-primary-dark" : "text-muted")}>
+                      <span className={cn("text-[0.6875rem] font-bold tabular-nums", active ? "text-white" : speedFee === 0 ? "text-primary-dark" : "text-muted")}>
                         {speedFee === 0 ? "Gratis" : `+$${speedFee.toLocaleString("es-CO")}`}
                       </span>
                     </div>
-                    <p className={cn("text-[11px]", active ? "text-white/75" : "text-sub")}>
+                    <p className={cn("text-[0.6875rem]", active ? "text-white/75" : "text-sub")}>
                       {DELIVERY_SPEED_ETA[speed]}
                     </p>
                   </button>
@@ -177,7 +177,7 @@ export function CheckoutOverview({
               <button
                 type="button"
                 onClick={onEditMethod}
-                className="text-[11px] font-bold uppercase tracking-[0.12em] text-primary-dark active:opacity-60"
+                className="text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-primary-dark active:opacity-60"
               >
                 Cambiar
               </button>
@@ -206,7 +206,7 @@ export function CheckoutOverview({
                   <span className="block font-display font-bold text-[15px] text-text leading-tight">
                     {PAYMENT_METHODS[method].label}
                   </span>
-                  <span className="block text-[11px] text-sub truncate mt-0.5">
+                  <span className="block text-[0.6875rem] text-sub truncate mt-0.5">
                     {PAYMENT_METHODS[method].tagline}
                   </span>
                 </span>
@@ -221,7 +221,7 @@ export function CheckoutOverview({
                   <span className="block font-display font-bold text-[15px] text-text leading-tight">
                     Elegir método de pago
                   </span>
-                  <span className="block text-[11px] text-sub truncate mt-0.5">
+                  <span className="block text-[0.6875rem] text-sub truncate mt-0.5">
                     Tarjeta, Nequi, Daviplata, Bre-B o efectivo
                   </span>
                 </span>
@@ -248,7 +248,7 @@ export function CheckoutOverview({
             </div>
             <div className="border-t border-dashed border-border my-4" aria-hidden="true" />
             <div className="flex items-baseline justify-between">
-              <span className="text-[10px] uppercase tracking-[0.18em] text-muted font-bold">
+              <span className="text-[0.625rem] uppercase tracking-[0.18em] text-muted font-bold">
                 Total a pagar
               </span>
               <span className="font-display font-extrabold text-[28px] leading-none text-text tabular-nums">
@@ -296,7 +296,7 @@ function SectionLabel({ children, className }: { children: React.ReactNode; clas
   return (
     <p
       className={cn(
-        "text-[10px] uppercase tracking-[0.22em] font-bold text-muted mb-3 px-1",
+        "text-[0.625rem] uppercase tracking-[0.22em] font-bold text-muted mb-3 px-1",
         className
       )}
     >

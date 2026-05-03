@@ -178,15 +178,15 @@ export function WalletForm({ total, method, onSubmit }: Props) {
           </span>
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline justify-between gap-2">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em]" style={{ color: config.accent }}>
+              <p className="text-[0.625rem] font-extrabold uppercase tracking-[0.14em]" style={{ color: config.accent }}>
                 Notificación enviada
               </p>
-              <p className="text-[10px] text-muted">ahora</p>
+              <p className="text-[0.625rem] text-muted">ahora</p>
             </div>
             <p className="text-sm font-bold text-text leading-snug mt-1">
               ¿Autorizas el pago de ${total.toLocaleString("es-CO")}?
             </p>
-            <p className="text-[11px] text-sub mt-1">
+            <p className="text-[0.6875rem] text-sub mt-1">
               Enviado a <span className="font-mono font-semibold text-text">{formatColombianMobile(phone)}</span>
             </p>
           </div>

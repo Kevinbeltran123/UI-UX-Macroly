@@ -105,7 +105,7 @@ export function ProcessingScreen({ method }: Props) {
         <div className="h-full w-full shimmer-band" />
       </div>
 
-      <p className="text-[11px] text-muted mt-5">
+      <p className="text-[0.6875rem] text-muted mt-5">
         No cierres esta ventana
       </p>
     </div>

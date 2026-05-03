@@ -48,13 +48,13 @@ export function PaymentHero({ total, surfaceCss, logo, tagline, footer }: Props)
       <div className="relative p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] uppercase tracking-[0.22em] font-semibold text-white/60">
+            <p className="text-[0.625rem] uppercase tracking-[0.22em] font-semibold text-white/60">
               Total a pagar
             </p>
             <p className="font-display font-extrabold text-[40px] leading-none tabular-nums text-white mt-2">
               ${total.toLocaleString("es-CO")}
             </p>
-            <p className="text-[11px] text-white/70 mt-2 font-semibold">
+            <p className="text-[0.6875rem] text-white/70 mt-2 font-semibold">
               COP{tagline ? ` · ${tagline}` : ""}
             </p>
           </div>
@@ -64,7 +64,7 @@ export function PaymentHero({ total, surfaceCss, logo, tagline, footer }: Props)
         </div>
 
         {footer && (
-          <div className="mt-4 pt-3 border-t border-white/15 text-[11px] text-white/75">
+          <div className="mt-4 pt-3 border-t border-white/15 text-[0.6875rem] text-white/75">
             {footer}
           </div>
         )}

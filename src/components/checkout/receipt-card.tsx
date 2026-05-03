@@ -91,7 +91,7 @@ export function ReceiptCard({
           <p className="font-display font-extrabold text-base tracking-tight text-text">
             Macroly
           </p>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted mt-0.5">
+          <p className="text-[0.625rem] uppercase tracking-[0.2em] text-muted mt-0.5">
             Comprobante de pago
           </p>
         </div>
@@ -137,7 +137,7 @@ export function ReceiptCard({
         <div className="border-t border-dashed border-border my-4" aria-hidden="true" />
 
         {/* Delivery section */}
-        <p className="text-[10px] uppercase tracking-[0.16em] text-muted font-bold mb-2">
+        <p className="text-[0.625rem] uppercase tracking-[0.16em] text-muted font-bold mb-2">
           Entrega
         </p>
         <dl className="space-y-2.5 text-xs">
@@ -174,7 +174,7 @@ export function ReceiptCard({
           onClick={copyRef}
           className="w-full bg-bg rounded-lg px-3 py-2.5 flex items-center justify-between hover:bg-border-l transition-colors"
         >
-          <span className="text-[10px] uppercase tracking-[0.16em] text-muted font-bold">
+          <span className="text-[0.625rem] uppercase tracking-[0.16em] text-muted font-bold">
             Ref. transacción
           </span>
           <span className="flex items-center gap-2">

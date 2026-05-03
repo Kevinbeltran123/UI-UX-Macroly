@@ -112,7 +112,7 @@ export function DeliveryLocationForm({ initial, onConfirm }: Props) {
 
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2.5">
+      <p className="text-[0.6875rem] uppercase tracking-[0.16em] text-muted font-semibold mb-2.5">
         ¿Dónde entregamos?
       </p>
 
@@ -137,14 +137,14 @@ export function DeliveryLocationForm({ initial, onConfirm }: Props) {
           <Crosshair size={16} aria-hidden="true" />
         </button>
         {geocoding && (
-          <div className="absolute top-3 left-3 bg-card/95 backdrop-blur-sm rounded-full px-3 py-1.5 text-[10px] font-bold text-sub flex items-center gap-1.5">
+          <div className="absolute top-3 left-3 bg-card/95 backdrop-blur-sm rounded-full px-3 py-1.5 text-[0.625rem] font-bold text-sub flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" aria-hidden="true" />
             Buscando dirección…
           </div>
         )}
       </div>
 
-      <p className="text-[11px] text-muted leading-snug mb-4 px-1">
+      <p className="text-[0.6875rem] text-muted leading-snug mb-4 px-1">
         Arrastra el pin o toca el mapa para ajustar el punto exacto.
       </p>
 

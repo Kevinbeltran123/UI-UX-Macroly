@@ -128,7 +128,7 @@ export function CardForm({ total, onSubmit }: Props) {
                   <ContactlessMark />
                 </div>
                 <div className="text-right">
-                  <div className="text-[9px] uppercase tracking-[0.22em] text-white/50 font-semibold">
+                  <div className="text-[0.5625rem] uppercase tracking-[0.22em] text-white/50 font-semibold">
                     Emitida por
                   </div>
                   <div className="font-display font-extrabold text-[13px] tracking-tight text-white mt-0.5">
@@ -145,7 +145,7 @@ export function CardForm({ total, onSubmit }: Props) {
               {/* Bottom row */}
               <div className="flex items-end justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <div className="text-[9px] uppercase tracking-[0.18em] text-white/55 font-semibold mb-1">
+                  <div className="text-[0.5625rem] uppercase tracking-[0.18em] text-white/55 font-semibold mb-1">
                     Titular
                   </div>
                   <div className="text-[13px] font-bold tracking-wide truncate">
@@ -153,7 +153,7 @@ export function CardForm({ total, onSubmit }: Props) {
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="text-[9px] uppercase tracking-[0.18em] text-white/55 font-semibold mb-1">
+                  <div className="text-[0.5625rem] uppercase tracking-[0.18em] text-white/55 font-semibold mb-1">
                     Vence
                   </div>
                   <div className="text-[13px] font-bold font-mono tabular-nums">
@@ -196,7 +196,7 @@ export function CardForm({ total, onSubmit }: Props) {
                     </span>
                   </div>
                 </div>
-                <p className="text-[10px] text-white/60 mt-3 leading-snug">
+                <p className="text-[0.625rem] text-white/60 mt-3 leading-snug">
                   Autorizo el cargo de ${total.toLocaleString("es-CO")} a esta tarjeta.
                 </p>
               </div>
@@ -317,7 +317,7 @@ export function CardForm({ total, onSubmit }: Props) {
                   <div className="font-display font-extrabold text-base leading-none tabular-nums">
                     {n}x
                   </div>
-                  <div className={cn("text-[9px] uppercase tracking-[0.14em] mt-0.5 leading-none", active ? "text-white/70" : "text-muted")}>
+                  <div className={cn("text-[0.5625rem] uppercase tracking-[0.14em] mt-0.5 leading-none", active ? "text-white/70" : "text-muted")}>
                     {n === 1 ? "Único pago" : `$${Math.ceil(total / n).toLocaleString("es-CO")}`}
                   </div>
                 </button>
